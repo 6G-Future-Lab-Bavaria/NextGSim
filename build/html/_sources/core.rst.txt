@@ -1,0 +1,8 @@
+Core
+=====================================
+
+.. automodule:: sixgedgesim.core
+   :members:
+
+.. automethod:: sixgedgesim.core.Sim.__report_backhaul_status
+.. automethod:: sixgedgesim.core.Sim.__perform_computations

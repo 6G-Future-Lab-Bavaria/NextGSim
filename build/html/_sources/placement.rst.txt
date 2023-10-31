@@ -1,0 +1,5 @@
+Placement
+=====================================
+
+.. automodule:: sixgedgesim.placement
+   :members:

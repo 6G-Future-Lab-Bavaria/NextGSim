@@ -1,0 +1,159 @@
+{
+"disable_printing": true,
+"simulation_time": 1000,
+"area_length": 120,
+"area_width": 80,
+"num_of_users": 200,
+"scenario": "indoor factory SL",
+"communication_type": "UL",
+"operating_frequency": "FR1",
+"scheduler_type": "Proportional_Fair",
+"subcarrier_spacing": "15",
+"service_placement_algorithm": "Round_Robin",
+"application": "redcap_application",
+"service_type" : "radio-aware",
+"number_of_instances_per_server" :10,
+"computing_period": 2,
+"scheduling_granularity": 10,
+"consider_traffic_models": false,
+"consider_mobility": true,
+"cycles_per_bit_min":  45000,
+"cycles_per_bit_max":  55000,
+"delay_min": 30,
+"delay_max": 31,
+"data_size_min": 30,
+"data_size_max": 31,
+"use_configFile": "True",
+"hardcoded_initial_setup": false  ,
+"disable_print": false,
+"sim_duration": 20205,
+"initial_TTI": 0,
+"TTI_duration": 10,
+"controllers_on": false,
+"include_MEC": true,
+"MEC_host":"127.0.0.1",
+"MEC_port": 9990,
+"MECFile": "MEC.csv",
+"traffic_model": false,
+"aggregated_traffic_model": "model2",
+"with_mobility": true,
+"generate_mobility_traces": false,
+"channel_metric_for_handover": "RSRP",
+"num_controllers": 1,
+"num_cells": 18,
+"max_cells_in_one_row": 10,
+"snr_averaging": false,
+"with_interference": false,
+"channel_measurement_granularity":1,
+"schedule_PRBs": true,
+"visualize_scenario": false,
+"show_connections": true,
+"los_update_periodicity" : 1000,
+"always_los_flag": false,
+"always_non_los_flag" : false,
+"with_sanity_checks": false,
+"handover_algorithm" : "normal_5g_mbb",
+"mobility_model" : "random_waypoint",
+"slaw_range" : 1000,
+"t_gap_slaw" : 1000,
+"instantaneous_handover" : false,
+"num_top_gnbs" : "None",
+"look_ahead": "None",
+"start_offset" : 0 ,
+"error_probability" : 0,
+"plot_snr_per_TTI" : false,
+"mec_entities": {
+"1": {
+  "model": "edge_server",
+  "location" : [60,50],
+  "processing_speed" : 412000,
+  "memory" : 32
+},
+"2" : {
+  "model": "edge_server",
+  "location" : [10,15],
+  "processing_speed" : 412000,
+  "memory" : 32
+},
+"3": {
+  "model": "edge_server",
+  "location" : [11,15],
+  "processing_speed" : 412000,
+  "memory" : 32
+  },
+"4": {
+  "model": "edge_server",
+  "location" : [12,15],
+  "processing_speed" : 412000,
+  "memory" : 32
+  },
+"5": {
+  "model": "edge_server",
+  "location" : [13,15],
+  "processing_speed" : 412000,
+  "memory" : 32
+  },
+"6": {
+  "model": "router",
+  "location": [25,25]
+},
+"7": {
+    "model": "router",
+    "location": [65,35]
+  },
+"8": {
+    "model": "router",
+    "location": [35,40]
+  }
+},
+"topology": {
+  "1": {
+    "src": 1,
+    "dst": 6,
+    "latency": 0.01,
+    "bandwidth": 10000
+  },
+  "2": {
+    "src": 2,
+    "dst": 6,
+    "latency": 0.01,
+    "bandwidth": 10000
+  },
+  "3": {
+    "src": 6,
+    "dst": 7,
+    "latency": 0.01,
+    "bandwidth": 10000
+  },
+  "4": {
+    "src": 7,
+    "dst": 8,
+    "latency": 0.01,
+    "bandwidth": 10000
+  },
+  "5": {
+    "src": 7,
+    "dst": 8,
+    "latency": 0.01,
+    "bandwidth": 10000
+  },
+  "6": {
+    "src": 6,
+    "dst": 3,
+    "latency": 0.01,
+    "bandwidth": 10000
+  },
+  "7": {
+    "src": 6,
+    "dst": 4,
+    "latency": 0.01,
+    "bandwidth": 10000
+  },
+  "8": {
+    "src": 6,
+    "dst": 5,
+    "latency": 0.01,
+    "bandwidth": 10000
+  }
+}
+}

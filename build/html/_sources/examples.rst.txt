@@ -1,0 +1,7 @@
+App Examples
+=====================================
+
+.. toctree::
+   :maxdepth: 2
+
+   simple_app_example

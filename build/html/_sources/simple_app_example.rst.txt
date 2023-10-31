@@ -1,0 +1,5 @@
+Simple App
+=====================================
+
+.. automodule:: examples.simple_app_example
+   :members:

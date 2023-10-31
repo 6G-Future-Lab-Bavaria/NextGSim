@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Core &mdash; 6GEdgeSim  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Dataflow" href="dataflow.html" />
+    <link rel="prev" title="Application" href="application.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> 6GEdgeSim
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="sixgedgesim.html">Simulation Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="app_examples.html">App Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application.html">Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataflow.html">Dataflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="distribution.html">Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="entity.html">Entity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html">Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="placement.html">Placement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot.html">Plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="routing.html">Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topology.html">Topology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="useful_functions.html">Useful Functions</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">6GEdgeSim</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="sixgedgesim.html">Simulation Modules</a> &raquo;</li>
+      <li>Core</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/core.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-sixgedgesim.core">
+<span id="core"></span><h1>Core<a class="headerlink" href="#module-sixgedgesim.core" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="sixgedgesim.core.Sim">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sixgedgesim.core.</span></span><span class="sig-name descname"><span class="pre">Sim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topology</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sixgedgesim.core.Sim" title="Permalink to this definition"></a></dt>
+<dd><p>This class contains the discrete-event simulation environment that is responsible for orchestration of the
+simulation.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Args:</dt><dd><p>topology (Topology) : Topology of the network that is being simulated.
+results_path (string) : Path of the folder where results will be saved.
+logger (Logger) : Logger settings for the simulation log.</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="sixgedgesim.core.Sim.deploy_app">
+<span class="sig-name descname"><span class="pre">deploy_app</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">placement</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataflow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sixgedgesim.core.Sim.deploy_app" title="Permalink to this definition"></a></dt>
+<dd><dl>
+<dt>Args:</dt><dd><p>app (Application): Application to be deployed</p>
+<p>placement (Placement): Placement strategy for the applications’ modules</p>
+<p>dataflow (Population): Population consisting of sinks and sources</p>
+<p>selector (Selector): Route selection method</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sixgedgesim.core.Sim.deploy_data_source">
+<span class="sig-name descname"><span class="pre">deploy_source_service</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distribution</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sixgedgesim.core.Sim.deploy_data_source" title="Permalink to this definition"></a></dt>
+<dd><p>Adds a discrete event process that generates a message with a given distribution (e.g a sensor)</p>
+<dl>
+<dt>Args:</dt><dd><p>app_name (str): application name</p>
+<p>message (Message) : message that the data source is generating</p>
+<p>node_id (int): ID of the node that the source is attached</p>
+<p>distribution (Distribution): distribution function of the data generation</p>
+</dd>
+<dt>Returns:</dt><dd><p>process_id (int): ID of the created process</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sixgedgesim.core.Sim.deploy_module">
+<span class="sig-name descname"><span class="pre">deploy_compute_service</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sixgedgesim.core.Sim.deploy_module" title="Permalink to this definition"></a></dt>
+<dd><dl>
+<dt>Args:</dt><dd><p>app_name (str) : Application name that module is a part of</p>
+<p>module (Module) : Module to be deployed</p>
+<p>node_id (int) : ID of the node which module is being deployed</p>
+</dd>
+<dt>Returns:</dt><dd><p>process_id (int): Process ID of the module.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sixgedgesim.core.Sim.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">until</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_initial_deployment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sixgedgesim.core.Sim.run" title="Permalink to this definition"></a></dt>
+<dd><p>Starts the simulation.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>until (int): Simulation running time
+test_initial_deployment (bool): Test initial deployment</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sixgedgesim.core.Sim.start_process">
+<span class="sig-name descname"><span class="pre">start_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sixgedgesim.core.Sim.start_process" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Args:</dt><dd><p>process_id (int): ID of the process to be started.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sixgedgesim.core.Sim.stop_process">
+<span class="sig-name descname"><span class="pre">stop_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sixgedgesim.core.Sim.stop_process" title="Permalink to this definition"></a></dt>
+<dd><p>Stops the process with the given ‘process_id’</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>process_id (int): ID of the process to be stopped</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sixgedgesim.core.Sim.undeploy_all_modules">
+<span class="sig-name descname"><span class="pre">undeploy_all_modules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topology_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sixgedgesim.core.Sim.undeploy_all_modules" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Args:</dt><dd><p>app_name (Application): Application name
+topology_id (int): ID of the topology</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sixgedgesim.core.Sim.__report_backhaul_status">
+<span class="sig-prename descclassname"><span class="pre">Sim.</span></span><span class="sig-name descname"><span class="pre">__report_backhaul_status</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sixgedgesim.core.Sim.__report_backhaul_status" title="Permalink to this definition"></a></dt>
+<dd><p>Reports information about the messages in backhaul such as : process id of the process they belong, ID of the user they serve, ID of the entity that the message is being or going to be processed,
+completion percentage of the processing, latency experienced by the app in the backhaul, and a boolean value indicating if the message is waiting to be scheduled by a base station or not ( if this value is None, the message is not meant
+to be sent by a base station ).</p>
+<p>It can report them as a log, or if enabled, it can output them as a .csv file to be used by the RAN simulator.</p>
+<p>e.g :</p>
+<blockquote>
+<div><p>Messages in the Backhaul at time : 879</p>
+<p>Sensor_1_Data_APP4</p>
+<p>Percentage : 53.54330708661415</p>
+<p>Location : 12 - edge_server</p>
+<p>Processed_Sensor_Data_APP4</p>
+<p>Percentage : 0</p>
+<p>Location : 8 - base_station</p>
+<p>Processed_Sensor_Data_APP4</p>
+<p>Percentage : 0</p>
+<p>Location : 3 - base_station</p>
+<p>[‘Process ID’, 21, 31, 25]</p>
+<p>[‘User ID’, 21, 30, 24]</p>
+<p>[‘Server ID’, 12, 30, 24]</p>
+<p>[‘Processing Percentage’, 53.54330708661415, 0, 0]</p>
+<p>[‘Latency’, None, 12.800000004062326, 12.800000008062284]</p>
+<p>[‘Waiting to be Scheduled’, False, True, True]</p>
+</div></blockquote>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="application.html" class="btn btn-neutral float-left" title="Application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dataflow.html" class="btn btn-neutral float-right" title="Dataflow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Mehmet Mert Bese.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

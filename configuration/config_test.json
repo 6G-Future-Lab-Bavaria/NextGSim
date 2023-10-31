@@ -1,0 +1,90 @@
+{
+"disable_printing": true,
+"simulation_time": 10001,
+"area_length": 40,
+"area_width": 40,
+"num_of_bs": 18,
+"num_of_users": 10,
+"scenario": "indoor factory SL",
+"communication_type": "UL",
+"operating_frequency": "FR1",
+ "scheduler_type": "Round_Robin",
+"subcarrier_spacing": "15",
+"service_placement_algorithm": "Round_Robin",
+"computing_period": 2,
+"service_replacement_algorithm": "autoscaling",
+"scheduling_granularity": 10,
+"consider_traffic_models": false,
+"consider_mobility": true,
+"mec_entities": {
+"1": {
+  "model": "edge_server",
+  "location" : [60,50]
+},
+"2" : {
+  "model": "edge_server",
+  "location" : [10,15]
+},
+"3": {
+  "model": "router",
+  "location": [25,25]
+},
+  "4": {
+    "model": "router",
+    "location": [65,35]
+  },
+  "5": {
+    "model": "router",
+    "location": [35,40]
+  }
+},
+"mec_links": {
+  "1": {
+    "src": 1,
+    "dst": 3,
+    "latency": 0.01,
+    "bandwidth": 10000
+  },
+  "2": {
+    "src": 2,
+    "dst": 3,
+    "latency": 0.01,
+    "bandwidth": 10000
+  },
+  "3": {
+    "src": 3,
+    "dst": 4,
+    "latency": 0.01,
+    "bandwidth": 10000
+  },
+  "4": {
+    "src": 3,
+    "dst": 5,
+    "latency": 0.01,
+    "bandwidth": 10000
+  },
+  "5": {
+    "src": 4,
+    "dst": 5,
+    "latency": 0.01,
+    "bandwidth": 10000
+  }
+},
+  "mec_applications": {
+    "edge_servers": {
+      "1": {
+      "from": 1,
+      "to": 2,
+      "application": "RANApplicationPublicRadioAware",
+      "num_of_instances": 5
+}},
+    "mobile_devices":{
+      "1":
+    {
+        "from": 1,
+        "to" : 10,
+        "application": "RANApplicationPublicRadioAware"
+    }
+  }
+  }
+}

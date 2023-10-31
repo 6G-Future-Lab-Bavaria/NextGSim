@@ -1,0 +1,5 @@
+Useful Functions
+=====================================
+
+.. automodule:: sixgedgesim.useful_functions
+   :members:

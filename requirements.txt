@@ -1,0 +1,15 @@
+networkx~=2.5
+matplotlib~=3.5.2
+numpy~=1.23.3
+tqdm~=4.65.0
+pandas~=0.25.3
+tabulate~=0.8.10
+termcolor~=2.1.0
+scipy~=1.9.1
+seaborn~=0.12.1
+scikit-image~=0.19.3
+colorama~=0.4.6
+shapely~=2.0.1
+dash~=2.7.0
+selenium~=3.141.0
+tikzplotlib~=0.10.1

@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+    <key id="comment" attr.name="comment" for="graph" attr.type="string">
+        <default></default>
+    </key>
+    <key id="creator" attr.name="creator" for="graph" attr.type="string">
+        <default>Qt Visual Graph Editor 0.6.3</default>
+    </key>
+    <key id="labels.policy" attr.name="labels.policy" for="graph" attr.type="integer">
+        <default>0</default>
+    </key>
+    <key id="color" attr.name="color" for="edge" attr.type="string">
+        <default>#a0a0a4</default>
+    </key>
+    <key id="direction" attr.name="direction" for="edge" attr.type="string">
+        <default>directed</default>
+    </key>
+    <key id="labels.visibleIds" attr.name="labels.visibleIds" for="edge" attr.type="string">
+        <default>label</default>
+    </key>
+    <key id="points" attr.name="points" for="edge" attr.type="string"/>
+    <key id="style" attr.name="style" for="edge" attr.type="string">
+        <default>solid</default>
+    </key>
+    <key id="weight" attr.name="weight" for="edge" attr.type="double">
+        <default>1</default>
+    </key>
+    <key id="color" attr.name="color" for="node" attr.type="string">
+        <default>#ff00ff</default>
+    </key>
+    <key id="labels.visibleIds" attr.name="labels.visibleIds" for="node" attr.type="string">
+        <default>label</default>
+    </key>
+    <key id="shape" attr.name="shape" for="node" attr.type="string">
+        <default>disc</default>
+    </key>
+    <key id="stroke.color" attr.name="stroke.color" for="node" attr.type="string">
+        <default>#000000</default>
+    </key>
+    <key id="stroke.size" attr.name="stroke.size" for="node" attr.type="double">
+        <default>1</default>
+    </key>
+    <key id="stroke.style" attr.name="stroke.style" for="node" attr.type="string">
+        <default>solid</default>
+    </key>
+    <key id="x" attr.name="x" for="node" attr.type="float"/>
+    <key id="y" attr.name="y" for="node" attr.type="float"/>
+    <graph edgedefault="directed">
+        <node id="N5">
+            <data key="height">11</data>
+            <data key="model">edge-server</data>
+            <data key="width">11</data>
+            <data key="x">-325</data>
+            <data key="y">325</data>
+        </node>
+        <node id="N12">
+            <data key="height">11</data>
+            <data key="model">edge-server</data>
+            <data key="width">11</data>
+            <data key="x">400</data>
+            <data key="y">-375</data>
+        </node>
+        <node id="N1">
+            <data key="height">11</data>
+            <data key="model">edge-server</data>
+            <data key="width">11</data>
+            <data key="x">-350</data>
+            <data key="y">200</data>
+        </node>
+        <node id="N16">
+            <port name="Port 1" color="#a0a0a4" anchor="132" x="0" y="0"/>
+            <data key="height">11</data>
+            <data key="model">router</data>
+            <data key="width">11</data>
+            <data key="x">225</data>
+            <data key="y">-225</data>
+        </node>
+        <node id="N13">
+            <port name="Port 1" color="#a0a0a4" anchor="132" x="0" y="0"/>
+            <data key="height">11</data>
+            <data key="model">router</data>
+            <data key="width">11</data>
+            <data key="x">-250</data>
+            <data key="y">-150</data>
+        </node>
+        <node id="N17">
+            <data key="height">11</data>
+            <data key="model">cloud-server</data>
+            <data key="width">11</data>
+            <data key="x">-25</data>
+            <data key="y">-25</data>
+        </node>
+        <node id="N3">
+            <data key="height">11</data>
+            <data key="model">edge-server</data>
+            <data key="width">11</data>
+            <data key="x">-375</data>
+            <data key="y">-350</data>
+        </node>
+        <node id="N15">
+            <port name="Port 1" color="#a0a0a4" anchor="132" x="0" y="0"/>
+            <data key="height">11</data>
+            <data key="model">router</data>
+            <data key="width">11</data>
+            <data key="x">200</data>
+            <data key="y">125</data>
+        </node>
+        <node id="N14">
+            <port name="Port 1" color="#a0a0a4" anchor="132" x="0" y="0"/>
+            <data key="height">11</data>
+            <data key="model">router</data>
+            <data key="width">11</data>
+            <data key="x">-225</data>
+            <data key="y">150</data>
+        </node>
+        <node id="N2">
+            <data key="height">11</data>
+            <data key="model">edge-server</data>
+            <data key="width">11</data>
+            <data key="x">-400</data>
+            <data key="y">-250</data>
+        </node>
+        <node id="N4">
+            <data key="height">11</data>
+            <data key="model">edge-server</data>
+            <data key="width">11</data>
+            <data key="x">-275</data>
+            <data key="y">-350</data>
+        </node>
+        <node id="N11">
+            <data key="height">11</data>
+            <data key="model">edge-server</data>
+            <data key="width">11</data>
+            <data key="x">350</data>
+            <data key="y">-275</data>
+        </node>
+        <node id="N7">
+            <data key="height">11</data>
+            <data key="model">edge-server</data>
+            <data key="width">11</data>
+            <data key="x">250</data>
+            <data key="y">300</data>
+        </node>
+        <node id="N6">
+            <data key="height">11</data>
+            <data key="model">edge-server</data>
+            <data key="width">11</data>
+            <data key="x">-175</data>
+            <data key="y">300</data>
+        </node>
+        <node id="N8">
+            <data key="height">11</data>
+            <data key="model">edge-server</data>
+            <data key="width">11</data>
+            <data key="x">350</data>
+            <data key="y">200</data>
+        </node>
+        <node id="N9">
+            <data key="height">11</data>
+            <data key="model">edge-server</data>
+            <data key="width">11</data>
+            <data key="x">375</data>
+            <data key="y">300</data>
+        </node>
+        <node id="N10">
+            <data key="height">11</data>
+            <data key="model">edge-server</data>
+            <data key="width">11</data>
+            <data key="x">275</data>
+            <data key="y">-350</data>
+        </node>
+        <edge id="E14" source="N13" target="N16" sourceport="Port 1" endport="Port 1">
+            <data key="latency">5</data>
+        </edge>
+        <edge id="E1" source="N13" target="N4" sourceport="Port 1">
+            <data key="latency">1</data>
+        </edge>
+        <edge id="E17" source="N13" target="N17" sourceport="Port 1">
+            <data key="latency">15</data>
+        </edge>
+        <edge id="E18" source="N14" target="N17" sourceport="Port 1">
+            <data key="latency">15</data>
+        </edge>
+        <edge id="E7" source="N16" target="N10" sourceport="Port 1">
+            <data key="latency">1</data>
+        </edge>
+        <edge id="E2" source="N13" target="N3" sourceport="Port 1">
+            <data key="latency">1</data>
+        </edge>
+        <edge id="E6" source="N14" target="N6" sourceport="Port 1">
+            <data key="latency">1</data>
+        </edge>
+        <edge id="E3" source="N13" target="N2" sourceport="Port 1">
+            <data key="latency">1</data>
+        </edge>
+        <edge id="E5" source="N14" target="N5" sourceport="Port 1">
+            <data key="latency">1</data>
+        </edge>
+        <edge id="E9" source="N16" target="N12" sourceport="Port 1">
+            <data key="latency">1</data>
+        </edge>
+        <edge id="E19" source="N16" target="N17" sourceport="Port 1">
+            <data key="latency">15</data>
+        </edge>
+        <edge id="E11" source="N15" target="N8" sourceport="Port 1">
+            <data key="latency">1</data>
+        </edge>
+        <edge id="E8" source="N16" target="N11" sourceport="Port 1">
+            <data key="latency">1</data>
+        </edge>
+        <edge id="E20" source="N15" target="N17" sourceport="Port 1">
+            <data key="latency">15</data>
+        </edge>
+        <edge id="E16" source="N14" target="N15" sourceport="Port 1" endport="Port 1">
+            <data key="latency">5</data>
+        </edge>
+        <edge id="E10" source="N15" target="N7" sourceport="Port 1">
+            <data key="latency">1</data>
+        </edge>
+        <edge id="E13" source="N13" target="N14" sourceport="Port 1" endport="Port 1">
+            <data key="latency">5</data>
+        </edge>
+        <edge id="E12" source="N15" target="N9" sourceport="Port 1">
+            <data key="latency">1</data>
+        </edge>
+        <edge id="E15" source="N16" target="N15" sourceport="Port 1" endport="Port 1">
+            <data key="latency">5</data>
+        </edge>
+        <edge id="E4" source="N14" target="N1" sourceport="Port 1">
+            <data key="latency">1</data>
+        </edge>
+    </graph>
+</graphml>
