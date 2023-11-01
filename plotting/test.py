@@ -23,55 +23,58 @@ class Oct29Plots:
         self.proportional_fair_non_radio_aware_files = []
         self.num_of_users = [50]
 
-        res_dir = RESULTS_DIR + "reproduction/test/"
+        res_dir = RESULTS_DIR + "reproduction/"
         print("RES DIR")
         print(res_dir)
 
-        radio_scheduling_algorithms = ["Proportional_Fair", "Random", "Round_Robin", "Max_Rate"]
+        radio_scheduling_algorithms = ["Proportional_Fair", "Round_Robin", "Max_Rate"]
         radio_aware_status = ["FCFS", "Radio-Aware"]
+        seeds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        # seeds = [1]
 
         for i in self.num_of_users:
             for j in radio_scheduling_algorithms:
                 for k in radio_aware_status:
-                    if j == "Proportional_Fair":
-                        if k == "Radio-Aware":
-                            self.proportional_fair_radio_aware_files.append(
-                                res_dir +
-                                str(i) + '_' + str(j) + '_' + str(k) + '_1.csv')
-                        else:
-                            self.proportional_fair_non_radio_aware_files.append(
-                                res_dir +
-                                str(i) + '_' + str(j) + '_' + str(k) + '_1.csv')
+                    for seed in seeds:
+                        if j == "Proportional_Fair":
+                            if k == "Radio-Aware":
+                                self.proportional_fair_radio_aware_files.append(
+                                    res_dir +
+                                    str(i) + '_' + str(j) + '_' + str(k) + '_' + str(seed) + '.csv')
+                            else:
+                                self.proportional_fair_non_radio_aware_files.append(
+                                    res_dir +
+                                    str(i) + '_' + str(j) + '_' + str(k) + '_' + str(seed) + '.csv')
 
-                    if j == "Random":
-                        if k == "Radio-Aware":
-                            self.random_radio_aware_files.append(
-                                res_dir +
-                                str(i) + '_' + str(j) + '_' + str(k) + '_1.csv')
-                        else:
-                            self.random_non_radio_aware_files.append(
-                                res_dir +
-                                str(i) + '_' + str(j) + '_' + str(k) + '_1.csv')
+                        if j == "Random":
+                            if k == "Radio-Aware":
+                                self.random_radio_aware_files.append(
+                                    res_dir +
+                                    str(i) + '_' + str(j) + '_' + str(k) + '_' + str(seed) + '.csv')
+                            else:
+                                self.random_non_radio_aware_files.append(
+                                    res_dir +
+                                    str(i) + '_' + str(j) + '_' + str(k) + '_' + str(seed) + '.csv')
 
-                    if j == "Max_Rate":
-                        if k == "Radio-Aware":
-                            self.max_rate_radio_aware_files.append(
-                                res_dir +
-                                str(i) + '_' + str(j) + '_' + str(k) + '_1.csv')
-                        else:
-                            self.max_rate_non_radio_aware_files.append(
-                                res_dir +
-                                str(i) + '_' + str(j) + '_' + str(k) + '_1.csv')
+                        if j == "Max_Rate":
+                            if k == "Radio-Aware":
+                                self.max_rate_radio_aware_files.append(
+                                    res_dir +
+                                    str(i) + '_' + str(j) + '_' + str(k) + '_' + str(seed) + '.csv')
+                            else:
+                                self.max_rate_non_radio_aware_files.append(
+                                    res_dir +
+                                    str(i) + '_' + str(j) + '_' + str(k) + '_' + str(seed) + '.csv')
 
-                    if j == "Round_Robin":
-                        if k == "Radio-Aware":
-                            self.round_robin_radio_aware_files.append(
-                                res_dir +
-                                str(i) + '_' + str(j) + '_' + str(k) + '_1.csv')
-                        else:
-                            self.round_robin_non_radio_aware_files.append(
-                                res_dir +
-                                str(i) + '_' + str(j) + '_' + str(k) + '_1.csv')
+                        if j == "Round_Robin":
+                            if k == "Radio-Aware":
+                                self.round_robin_radio_aware_files.append(
+                                    res_dir +
+                                    str(i) + '_' + str(j) + '_' + str(k) + '_' + str(seed) + '.csv')
+                            else:
+                                self.round_robin_non_radio_aware_files.append(
+                                    res_dir +
+                                    str(i) + '_' + str(j) + '_' + str(k) + '_' + str(seed) + '.csv')
 
     def plot_TotalLatencyVsAlgorithm_desired_latency100(self):
         pf_radio_aware_latencies = []
@@ -99,6 +102,8 @@ class Oct29Plots:
         for file in self.proportional_fair_radio_aware_files:
             data = pd.read_csv(file)
             pf_radio_aware_latencies.append(np.mean(data["Total Latency"]))
+            print("len successful packets")
+            print(len(data["Total Latency"] < desired_latency))
             pf_radio_aware_completion_rate.append(len(data["Total Latency"] < desired_latency))
 
         print("pf ra before")
@@ -130,7 +135,6 @@ class Oct29Plots:
         print(self.round_robin_radio_aware_files)
 
         for file in self.round_robin_radio_aware_files:
-
             data = pd.read_csv(file)
             rr_radio_aware_latencies.append(np.mean(data["Total Latency"]))
             rr_radio_aware_completion_rate.append(len(data[data["Total Latency"] < desired_latency]))
@@ -139,6 +143,9 @@ class Oct29Plots:
         print(rr_radio_aware_completion_rate)
         rr_radio_aware_completion_rate = np.divide(rr_radio_aware_completion_rate, total_sent_packets)
 
+        print("RR NON RADIO AWARE FILES")
+        print(self.round_robin_non_radio_aware_files)
+
         for file in self.round_robin_non_radio_aware_files:
             data = pd.read_csv(file)
             rr_non_radio_aware_latencies.append(np.mean(data["Total Latency"]))
@@ -146,11 +153,17 @@ class Oct29Plots:
 
         rr_non_radio_aware_completion_rate = np.divide(rr_non_radio_aware_completion_rate, total_sent_packets)
 
+        print("RANDOM RADIO AWARE FILES")
+        print(self.random_radio_aware_files)
+
         for file in self.random_radio_aware_files:
             data = pd.read_csv(file)
             random_radio_aware_latencies.append(np.mean(data["Total Latency"]))
             random_radio_aware_completion_rate.append(len(data[data["Total Latency"] < desired_latency]))
         random_radio_aware_completion_rate = np.divide(random_radio_aware_completion_rate, total_sent_packets)
+
+        print("RANDOM NON RADIO AWARE FILES")
+        print(self.random_non_radio_aware_files)
 
         for file in self.random_non_radio_aware_files:
             data = pd.read_csv(file)
@@ -213,5 +226,6 @@ class Oct29Plots:
         # fig.set_size_inches(18.5, 10.5)
         # # plt.show()
         # tikzplotlib.save("completion_rate_vs_num_users.tex")
+
 
 Oct29Plots().plot_TotalLatencyVsAlgorithm_desired_latency100()

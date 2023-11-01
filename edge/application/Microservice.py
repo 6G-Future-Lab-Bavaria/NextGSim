@@ -64,7 +64,6 @@ class Microservice(Entity):
         self.process_id = get_process_id()
         self.required_cpu_share = required_cpu_share
         self.cpu_share_limit = cpu_share_limit
-        self.required_gpu_share = required_gpu_share
         self.required_memory = required_memory
         self.destination_service = destination_service
         self.sequence_number = 0

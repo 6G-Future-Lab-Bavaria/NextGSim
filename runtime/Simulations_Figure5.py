@@ -65,8 +65,8 @@ class Simulation:
         self.logging_level = "CRITICAL"
         logging.basicConfig(level=self.logging_level)
 
-        random.seed(1)
-        np.random.seed(1)
+        random.seed(0)
+        np.random.seed(int(sys.argv[4]))
 
         self.user_coordinates = None
         self.devices_per_scenario = None
@@ -74,9 +74,9 @@ class Simulation:
         self.edge_servers_per_scenario = []
         self.routers_per_scenario = []
         self.sim_params.scenario.max_num_devices_per_scenario = int(sys.argv[1])
-        self.sim_params.scenario.scheduler_type = sys.argv[2]
-        self.results_folder = 'reproduction/test/' + sys.argv[1] + '_' + \
-                              sys.argv[2] + '_' + sys.argv[3] + '_1.csv'
+        self.sim_params.scheduler_type = sys.argv[2]
+        self.results_folder = 'reproduction/' + sys.argv[1] + '_' + \
+                              sys.argv[2] + '_' + sys.argv[3] + '_' + sys.argv[4] +'.csv'
 
         self.traffic_generator = TrafficGenerator(self)
         self.event_chain = EventChain()

@@ -14,7 +14,6 @@ class LatencyAwareMicroservice(Microservice):
                  distribution=None,
                  required_cpu_share=1,
                  cpu_share_limit=None,
-                 required_gpu_share=0,
                  required_memory=0,
                  destination_service=None,
                  is_deployed_at_edge=False,
@@ -45,7 +44,6 @@ class LatencyAwareMicroservice(Microservice):
             distribution=distribution,
             required_cpu_share=required_cpu_share,
             cpu_share_limit=cpu_share_limit,
-            required_gpu_share=required_gpu_share,
             required_memory=required_memory,
             destination_service=destination_service,
             is_deployed_at_edge=is_deployed_at_edge,
@@ -59,7 +57,6 @@ class LatencyAwareMicroservice(Microservice):
         process_id = self.process_id
         while not sim.stop:
             received_message = yield self.message_receive_queue.get()
-            # if self.get_average_radio_latency()[received_message.user_id] > self.desired_latency:
             if received_message.ul_latency > self.desired_latency:
                 sim.messages_in_the_backhaul.remove(received_message)
                 pass
@@ -79,5 +76,3 @@ class LatencyAwareMicroservice(Microservice):
                     self.processing_queue.append(received_message)
 
             self.host_entity.orchestrator.collect_message_for_analytics(received_message)
-            # if self.host_entity.__class__.__name__ == 'EdgeServer':
-            #     self.app.start_time_of_edge_processing = mec_simulation.env.now

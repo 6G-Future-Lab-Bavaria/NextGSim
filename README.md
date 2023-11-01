@@ -73,5 +73,10 @@ shortest path algorithm for routing.
 <ins>Network</ins>: This module implements the topology between entities and microservices. Physical entities 
 are connected to each other with links that are defined by their bandwidth and latency.
 
+# Examples
+Figure 5 in our paper is a result of an experiment to assess the effect of various combinations of radio resource allocation and 
+edge application queueing approaches. In order to reproduce the results, run "experiments/experiments_figure5.sh" in your terminal.
+To generate the plot out of the results, run "plotting/figure5.py".
+
 
 

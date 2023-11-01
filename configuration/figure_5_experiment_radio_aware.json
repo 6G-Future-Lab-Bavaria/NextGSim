@@ -25,15 +25,27 @@
   "model": "edge_server",
   "location" : [10,15]
 },
-"3": {
+"3" : {
+  "model": "edge_server",
+  "location" : [10,15]
+},
+"4" : {
+  "model": "edge_server",
+  "location" : [10,15]
+},
+"5" : {
+  "model": "edge_server",
+  "location" : [10,15]
+},
+"6": {
   "model": "router",
   "location": [25,25]
 },
-  "4": {
+"7": {
     "model": "router",
     "location": [65,35]
   },
-  "5": {
+"8": {
     "model": "router",
     "location": [35,40]
   }
@@ -41,31 +53,43 @@
 "mec_links": {
   "1": {
     "src": 1,
-    "dst": 3,
+    "dst": 6,
     "latency": 0.01,
     "bandwidth": 10000
   },
   "2": {
     "src": 2,
-    "dst": 3,
+    "dst": 6,
     "latency": 0.01,
     "bandwidth": 10000
   },
   "3": {
     "src": 3,
-    "dst": 4,
+    "dst": 6,
     "latency": 0.01,
     "bandwidth": 10000
   },
   "4": {
-    "src": 3,
-    "dst": 5,
+    "src": 4,
+    "dst": 6,
     "latency": 0.01,
     "bandwidth": 10000
   },
   "5": {
-    "src": 4,
-    "dst": 5,
+    "src": 5,
+    "dst": 6,
+    "latency": 0.01,
+    "bandwidth": 10000
+  },
+  "6": {
+    "src": 6,
+    "dst": 7,
+    "latency": 0.01,
+    "bandwidth": 10000
+  },
+  "7": {
+    "src": 6,
+    "dst": 8,
     "latency": 0.01,
     "bandwidth": 10000
   }
@@ -74,7 +98,7 @@
     "edge_servers": {
       "1": {
       "from": 1,
-      "to": 2,
+      "to": 5,
       "application": "RANApplicationPublicRadioAware",
       "num_of_instances": 10
 }},

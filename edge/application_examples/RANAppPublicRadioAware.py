@@ -63,10 +63,10 @@ class RANApplicationPublicRadioAware(Application):
     name = "RANApplicationPublicRadioAware"
     services = [DataGeneration, DataProcessing]
     number_of_service_instances = {"Data_Processing": 10}
-    cycles_per_bit_min = 25
-    cycles_per_bit_max = 45
-    delay_min = 30
-    delay_max = 31
+    cycles_per_bit_min = 45
+    cycles_per_bit_max = 55
+    delay_min = 100
+    delay_max = 101
     data_size_min = 30
     data_size_max = 31
 

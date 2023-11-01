@@ -55,12 +55,6 @@ class ComputeNode(Entity):
         if service.is_shared is False:
             if service.required_cpu_share <= self.available_cpu_share and service.required_memory <= self.memory:
                 service.user = user
-                print("SERVICE")
-                print(service)
-                print("self1")
-                print(self)
-                print("user")
-                print(user)
                 service.deploy(self, user)
                 self.add_to_service_list(service)
                 self.cpu.deploy_service(service)

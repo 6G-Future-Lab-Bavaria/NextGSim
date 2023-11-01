@@ -433,7 +433,8 @@ class MECSimulation(threading.Thread):
             arriving_base_station = row[0]
             throughput = row[1]
             latency = row[2]
-            if latency == '' or throughput == '':
+
+            if (pd.isna(latency)) or (pd.isna(latency)):
                 continue
 
             packet_data_size = row[3]
