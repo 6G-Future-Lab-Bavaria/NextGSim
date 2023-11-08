@@ -2,9 +2,9 @@
 
 export PYTHONPATH=../
 
-radio_algorithms=("Max_Rate")
+radio_algorithms=("Proportional_Fair" "Max_Rate" "Round_Robin")
 edge_algorithms=("Radio-Aware" "FCFS")
-nums_of_users=(150)
+nums_of_users=(200 250 300)
 seeds=(1 2 3 4 5 6 7 8 9 10)
 
 for num_of_user in "${nums_of_users[@]}"; do
