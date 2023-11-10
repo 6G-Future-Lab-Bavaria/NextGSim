@@ -17,13 +17,14 @@ to the edge orchestrator and SD-RAN controller. Therefore, novel resource alloca
 # Radio Simulation
 The Radio Access Network (RAN) consists of the user plane and the control plane. 
 
-<ins>RAN user plane</ins>: The user plane is responsible for creating the scenario (<ins>Scenario<ins> module), depending on the parameters provided by the user in the 
+<ins>RAN user plane</ins>: The user plane is responsible for creating the scenario (</ins>Scenario</ins> module), depending on the parameters provided by the user in the 
 configuration file. The indoor factory scenario consists of a constant number and placement of gNBs, however, the indoor and outdoor scenarios are reconfigurable.
-gNBs placement is characterized by 3D coordinates (X,Y,Z), the coverage defined by the radios of macro or micro gNBs. The <ins>Channel model<ins> module is responsible for 
+gNBs placement is characterized by 3D coordinates (X,Y,Z), the coverage defined by the radios of macro or micro gNBs. The </ins>Channel model</ins> module is responsible for 
 generating the signal quality between the serving gNBs and the users roaming in the area covered by the gNBs. 
 Meanwhile, the users are placed randomly in the scenario space, characterized by the user's coordinates (x,y,z) and by the velocity v. The velocity value of a user stays constant
-during the simulation time after the initialization process. <ins>User<ins> module is responsible for the generation of the traffic patterns, user's mobility, and user radio resource
+during the simulation time after the initialization process. </ins>User</ins> module is responsible for the generation of the traffic patterns, user's mobility, and user radio resource
 control (RRC) states.
+
 <ins>RAN control plane</ins>:
 
 
