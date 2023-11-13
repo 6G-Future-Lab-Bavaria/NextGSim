@@ -4,11 +4,6 @@ from abc import ABC
 from shapely.geometry import Point
 from device.Device import Device
 from gnb.GnB import GnB
-from gnb.CreateHexagons import CreateHexagons
-from runtime.data_classes import MobilityModels
-from controller.Controller import Controller
-from matplotlib.patches import RegularPolygon
-import matplotlib.pyplot as plt
 
 
 class InitialSetUp(ABC):
@@ -29,13 +24,9 @@ class InitialSetUp(ABC):
         x_range = [self.room_limits[0][0], self.room_limits[0][1]]
         y_range = [self.room_limits[1][0], self.room_limits[1][1]]
         for user_id in range(self.sim_params.scenario.max_num_devices_per_scenario):
-            if self.simulation.sim_params.with_mobility and self.simulation.sim_params.mobility_model == MobilityModels.slaw:
-                x = self.simulation.X_mobility[user_id][0]
-                y = self.simulation.Y_mobility[user_id][0]
-            else:
-                radius = self.sim_params.scenario.cell_radius
-                x = np.random.uniform(low=x_range[0]+radius/4, high=x_range[1]-radius/4, size=1)
-                y = np.random.uniform(low=y_range[0]+radius/4, high=y_range[1]-radius/4, size=1)
+            radius = self.sim_params.scenario.cell_radius
+            x = np.random.uniform(low=x_range[0]+radius/4, high=x_range[1]-radius/4, size=1)
+            y = np.random.uniform(low=y_range[0]+radius/4, high=y_range[1]-radius/4, size=1)
             max_speed = np.random.uniform(0.1, 6)
             user = Device(user_id, x, y, self.room_limits[0][0], self.room_limits[0][1], self.room_limits[1][0],
                           self.room_limits[1][1], max_speed,  self.sim_params.scenario.device_transmit_power, self.simulation)
@@ -49,34 +40,6 @@ class InitialSetUp(ABC):
 
     def enlarge_room_limits_to_the_walls(self):
         pass
-
-    def create_controllers(self):
-        controllers_per_scenario = []
-        tmp_gnb_id = self.simulation.gNBs_per_scenario_ID.copy()
-        for controller_id in range(self.sim_params.num_controllers):
-            gnb_id = np.random.choice(tmp_gnb_id)
-            tmp_gnb_id.remove(gnb_id)
-            x, y = self.simulation.gNBs_per_scenario[gnb_id].x, self.simulation.gNBs_per_scenario[gnb_id].y
-            controller = Controller(self.simulation, controller_id, x, y)
-            controllers_per_scenario.append(controller)
-        return controllers_per_scenario
-
-    def calc_distance_gnbs_controllers_2d(self):
-        distance_gnbs_controllers_2d = np.zeros((len(self.simulation.gNBs_per_scenario),
-                                                 len(self.simulation.controllers_per_scenario)),
-                                                float)  # Anna changed here
-        for controller in self.simulation.controllers_per_scenario:
-            for gnb in self.simulation.gNBs_per_scenario:
-                distance_gnbs_controllers_2d[gnb.ID, controller.ID] = float(
-                    np.sqrt((gnb.x - controller.x) ** 2 + (gnb.y - controller.y) ** 2))
-        return distance_gnbs_controllers_2d
-
-    def select_controller(self):
-        distance_gnbs_controllers_2d = self.calc_distance_gnbs_controllers_2d()
-        best_controller = np.argmin(distance_gnbs_controllers_2d, axis=1)
-        for gnb in self.simulation.gNBs_per_scenario:
-            gnb.my_controller = self.simulation.controllers_per_scenario[best_controller[gnb.ID]]
-            self.simulation.controllers_per_scenario[best_controller[gnb.ID]].connect_gnb(gnb)
 
 
 class InitialSetUpIndoor(InitialSetUp):
@@ -185,89 +148,3 @@ class InitialSetUpOutdoor(InitialSetUp):
             gNB_obj.type = 'macro'
             gNBs_per_scenario.append(gNB_obj)
         return gNBs_per_scenario
-
-
-class InitialSetUpOutdoorSmall(InitialSetUp):
-
-    def create_gnbs(self):
-        gNBs_per_scenario = []
-        gnb_id = 0
-        # one macro cell in the center
-        x_macro = 500
-        y_macro = 500
-        gNB = GnB(gnb_id, x_macro, y_macro, self.simulation)
-        gNB.type = 'macro'
-        gNBs_per_scenario.append(gNB)
-
-        hexagon = RegularPolygon((x_macro, y_macro), numVertices=6, radius=self.sim_params.scenario.cell_radius,
-                                 alpha=0.2, edgecolor='k', orientation=np.pi / 2)
-        hexagon.set_color('red')
-        plt.plot(hexagon.xy)
-
-        gnb_id += 1
-
-        # 3 micro cells in every sector of the macro cell
-        # 1. get the center of the sector
-        h = self.sim_params.scenario.inter_site_dist_micro
-
-        # small cell top left
-        x = x_macro
-        y = y_macro
-        x -= np.sqrt(3) * h / 6
-        y += h / 2
-        gNB = GnB(gnb_id, x_macro, y_macro, self.simulation)
-        gNB.type = 'macro'
-        gNBs_per_scenario.append(gNB)
-        # small cell bottom left
-        x = x_macro
-        y = y_macro
-        x -= np.sqrt(3) * h / 6
-        y -= h / 2
-        gNB = GnB(gnb_id, x_macro, y_macro, self.simulation)
-        gNB.type = 'macro'
-        gNBs_per_scenario.append(gNB)
-        # small cell middle right
-        x = x_macro
-        y = y_macro
-        x += h / np.cos(30 * np.pi / 180) / 2
-        gNB = GnB(gnb_id, x_macro, y_macro, self.simulation)
-        gNB.type = 'macro'
-        gNBs_per_scenario.append(gNB)
-
-        self.room_limits = [[0, 1000], [0, 1000]]
-
-        import matplotlib.pyplot as plt
-        for gnb in gNBs_per_scenario:
-            plt.scatter(gnb.x, gnb.y)
-        plt.show()
-        print(len(gNBs_per_scenario))
-        assert 0
-        return gNBs_per_scenario
-
-
-class InitialSetUpHardCoded(InitialSetUp):
-    def __init__(self, simulation):
-        super().__init__(simulation)
-        self.move_right = True
-        self.room_limits = [[-20, 100], [0, 30]]
-
-    def create_gnbs(self):
-        x_pos = [0, 40, 40, 80]
-        y_pos = [10, 10, 15, 10]
-        gNBs_per_scenario = []
-        for gnb_id in range(len(x_pos)):
-            gNB = GnB(gnb_id, x_pos[gnb_id], y_pos[gnb_id], self.simulation)
-            gNBs_per_scenario.append(gNB)
-        self.simulation.sim_params.num_cells = len(gNBs_per_scenario)
-        return gNBs_per_scenario
-
-    def create_users(self):
-        devices_per_scenario = []
-        user = Device(0, 10, 12.5, self.sim_params.scenario.transmit_power, self.simulation)
-        devices_per_scenario.append(user)
-        self.simulation.sim_params.scenario.max_num_devices_per_scenario = len(devices_per_scenario)
-        # self.log(f"Created {len(devices_per_scenario)} users")
-        return devices_per_scenario
-
-    def generate_gnb_position(self, smth):
-        pass

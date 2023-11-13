@@ -4,7 +4,6 @@ import os
 import numpy as np
 # from runtime.SimulationParameters import SimulationParameters
 import seaborn
-import tikzplotlib
 
 from definitions import RESULTS_DIR
 

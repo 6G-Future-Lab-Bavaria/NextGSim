@@ -1,6 +1,3 @@
-# @Author: Alba Jano, Anna Prado
-# @Email: alba.jano@tum.de, anna.prado@tum.de
-
 from dataclasses import dataclass
 from runtime.data_classes import MobilityModels, HandoverAlgorithms
 from runtime.data_classes import Frequencies, AggregatedTraffic, MeasurementParams
@@ -12,7 +9,6 @@ import json
 import os
 
 
-
 @dataclass()
 class SimulationParameters(object):
     def __init__(self, config_file=None):
@@ -21,13 +17,11 @@ class SimulationParameters(object):
             self.config_file = CONFIGURATION_DIR + config_file
         else:
             self.config_file = None
-        self.hardcoded_initial_setup: bool = False  # the hardcoded mobility and positions of 3 gNBs and one user
         self.disable_print: bool = False
         self.num_TTI: int = 20205  # simulation time in ms
         self.initial_TTI: int = 0
         self.TTI_duration: int = 10
         '---------------------- Building simulation scenario --------------------------------------'
-        self.controllers_on: bool = False
         self.include_MEC: bool = True
         self.traffic_model: bool = False  # include 3GPP traffic models
         self.agreggated_traffic_model: str = AggregatedTraffic.model2
@@ -35,7 +29,6 @@ class SimulationParameters(object):
         self.generate_mobility_traces: bool = False  # generate traces or read a data set (path in Scenario)
         self.channel_metric_for_handover: str = 'RSRP'  # 'RSRP' 'SINR'
         self.scenario: object = IndoorFactorySL()  # IndoorFactorySL()  # Indoor() # Outdoor()
-        self.num_controllers: int = 1
         self.num_cells: int = 18
         self.max_cells_in_one_row = 10  # for plotting purpose
         self.communication_type: str = 'UL'

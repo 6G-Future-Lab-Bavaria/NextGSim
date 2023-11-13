@@ -1,5 +1,3 @@
-# @Author: Alba Jano
-# @Email: alba.jano@tum.de
 import csv
 import os
 import numpy as np
@@ -12,8 +10,7 @@ from pathlib import Path
 import logging.config
 from definitions import RESULTS_DIR, ROOT_DIR
 
-from runtime.InitialSetUp import InitialSetUpIndoor, InitialSetUpOutdoor, InitialSetUpHardCoded, \
-    InitialSetUpIndoorFactory
+from runtime.InitialSetUp import InitialSetUpIndoor, InitialSetUpOutdoor, InitialSetUpIndoorFactory
 from runtime.RANSimulation import RANSimulation
 from runtime.MECSimulation import MECSimulation
 from runtime.SimulationParameters import SimulationParameters
@@ -76,9 +73,7 @@ class Simulation:
     def initialize_physicalEnvironment(self):
         print("what a weird implementation")
         print(self.sim_params.scenario.scenario)
-        if self.sim_params.hardcoded_initial_setup:
-            self.setup = InitialSetUpHardCoded(self, )
-        elif self.sim_params.scenario.scenario == 'Indoor':
+        if self.sim_params.scenario.scenario == 'Indoor':
             self.setup = InitialSetUpIndoor(self)
         elif self.sim_params.scenario.scenario == 'Indoor factory':
             self.setup = InitialSetUpIndoorFactory(self)

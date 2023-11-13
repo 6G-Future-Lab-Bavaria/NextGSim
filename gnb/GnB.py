@@ -27,8 +27,6 @@ class GnB(Entity):
         self.num_serving_cells = 3  # for UMi might be 1 or 2;
         self.prepared_CHO_for_users = []  # fixme: set()
         self.remove_prep_cells_at = {}
-        self.my_controller = None
-
         # Added by Mert
         super().__init__()
 
@@ -84,8 +82,3 @@ class GnB(Entity):
             self.connected_devices.remove(device)
         elif device in self.inactive_devices:
             self.inactive_devices.remove(device)
-
-    def connect_to_controller(self, controller):
-        self.my_controller.disconnect_gnb(self)
-        self.my_controller = controller
-        self.my_controller.connect_gnb(self)

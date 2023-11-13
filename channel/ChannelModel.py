@@ -1,7 +1,3 @@
-# @Author: Alba Jano, Anna Prado
-# @Date: 2020-11-15
-# @Email: alba.jano@tum.de, anna.prado@tum.de
-# @Last modified by: Alba Jano
 from abc import ABC, abstractmethod
 import numpy as np
 from copy import deepcopy

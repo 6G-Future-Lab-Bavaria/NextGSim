@@ -1,6 +1,5 @@
 import simpy
 
-
 def process(fnc):
     if Env.INSTANCE is None:
         return None

@@ -1,14 +1,10 @@
-# @Author: Alba Jano
-# @Email: alba.jano@tum.de
 import numpy as np
 from channel.ChannelModel import ChannelUMiUMa, ChannelIndoor
 from channel.ChannelModelInF import ChannelModelInF
-from runtime.InitialSetUp import InitialSetUpIndoor, InitialSetUpOutdoor, InitialSetUpHardCoded, \
-    InitialSetUpIndoorFactory
+from runtime.InitialSetUp import InitialSetUpIndoor, InitialSetUpOutdoor, InitialSetUpIndoorFactory
 from runtime.RunTimeSetUp import RunTime
-from SD_RAN.Scheduler import Scheduler, RadioResourceSchedulers
+from SD_RAN.Scheduler import RadioResourceSchedulers
 from gnb.ThroughputCalculation import ThroughputCalculation
-from mobility.Mobility import Mobility
 from runtime.data_classes import HandoverAlgorithms
 from runtime.data_classes import MeasurementParams
 from runtime.EventChain import EventChain
@@ -21,8 +17,6 @@ from gnb.ConditionalHandover import ConditionalHandover
 from gnb.ConditionalHandoverEnhanced import ConditionalHandoverEnhanced
 import plotting.ScenarioVisualization
 from runtime.SaveSimResults import SaveSimResults
-from plotting.PostSimVisualization import PostSimVisualization
-
 from runtime.utilities import block_print, enable_print, utility
 import time
 import threading
@@ -35,7 +29,7 @@ import pandas as pd
 np.set_printoptions(threshold=np.inf)
 utility.format_figure()
 main_path = os.path.dirname(os.path.abspath('Simulation.py'))
-matplotlib.use('macosx')
+#matplotlib.use('macosx')
 
 
 # utility.set_path()
@@ -62,27 +56,20 @@ class RANSimulation(threading.Thread):
         self.all_active_devices_ID = []
         self.gNBs_per_scenario_ID = list(range(0, self.sim_params.num_cells))
         self.gNBs_per_scenario = main_simulation.gNBs_per_scenario
-        self.controllers_per_scenario_ID = list(range(0, self.sim_params.num_controllers))
-        self.controllers_per_scenario = []
         '--------------------- Generation of the RAN channel ---------------------------------------------'
         self.channel = None
         self.blockage_info = None
         # Generation of the scheduler at gNB side
         self.ctrl_scheduler = None
-        self.scheduler = None
         self.throughput_calc = None
         # Gneration of the mobility
         self.ctrl_handover = None
         self.handover = None
-        self.mobility = Mobility(self)
         self.handover_metrics = HandoverMetrics(self)
         self.monitor_rlf = MonitorRLF(self)
         # Generation of the results and plotting
-        # self.visualization = plotting.ScenarioVisualization.ScenarioVisualization(self, save_allocation_plots=False)
         self.visualization = plotting.ScenarioVisualization.scenario_visualization(self)
-        self.sim_visual = PostSimVisualization(self)
         self.plot_allocation_flag = False
-        self.save_results = SaveSimResults(self)
         self.setup = main_simulation.setup
         self.seed = None
         self.TTI = None
@@ -104,18 +91,13 @@ class RANSimulation(threading.Thread):
         # TODO: check this line if needed
         self.sim_params.scenario.print_sim_params()
         self.set_channel()
-        self.set_handover_alg()
         self.throughput_calc = ThroughputCalculation(self)
         # self.manage_devices = ManageDevices(self)
         # self.distance_2d =self.manage_devices.select_cell()  # initial association of users to gNBs in the idle state
-        # self.mobility.set_positions()
-        self.scheduler = Scheduler(self)
         self.manage_devices = ManageDevices(self)
         self.distance_2d = self.manage_devices.select_cell()
         # self.expected_num_device_arrivals = self.traffic_generator.traffic_per_cell_generation()
-        # if self.sim_params.controllers_on:
-        #     self.ctrl_handover = ControlHandover(self)
-        #     self.ctrl_handover.init_allocation()
+
 
     def radio_resource_allocation(self):
         """ We run the ran_simulation for a predefined period of time, where first we set up the static environment and
@@ -133,7 +115,6 @@ class RANSimulation(threading.Thread):
             self.visualization.visualize(predefined=self.sim_params.predefined_gNB_coord)
             plt.ion()
             plt.show()
-        # self.handover.print_handover_parameters()
         if self.sim_params.store_latency:
             file_path = os.path.join(self.result_path, self.sim_params.scheduler_type + '_latency.csv')
             data_file = open(file_path, 'a', newline='')
@@ -192,18 +173,12 @@ class RANSimulation(threading.Thread):
                                                          connection=self.sim_params.show_connections)
                     for user in self.devices_per_scenario:
                         if self.TTI % MeasurementParams.update_ue_position_gap == 0:
-                            # self.mobility.update_user_position(user)
                             user.update_location()
                     for gNB in self.gNBs_per_scenario:
                         gNB.reset_statistics()
                     self.distance_2d = self.manage_devices.select_cell()
 
                 yield self.env.timeout(next_tti)
-
-                # if self.sim_params.controllers_on and self.TTI % self.ctrl_scheduler.scheduling_periodicity == 0:
-                #     self.ctrl_scheduler.perform()
-                # self.scheduler.schedule(Schedulers.dummy)  # fixme: set to RR!
-                # self.scheduler.schedule(Schedulers.round_robin)
 
                 # if self.sim_params.traffic_model:
                 #     self.event_chain.remove_TTI_events(self.TTI)
@@ -212,14 +187,9 @@ class RANSimulation(threading.Thread):
             for user in self.devices_per_scenario:
                 self.monitor_rlf.sanity_check_user_connected_to_best_cell(user)
                 # self.throughput_calc.calculate_final_data_rate(user, self.channel.measured_SINR) # fixme: for RR
-                self.collect_stats_per_tti(user)
+                #self.collect_stats_per_tti(user)
 
-            if self.sim_params.controllers_on:
-                self.ctrl_handover.control_handover_function()
-
-            # self.sim_visualization()
-
-            self.collect_stats_at_tti_end()
+            #self.collect_stats_at_tti_end()
 
         # self.comm_client.close_socket()
         '---------------------------------- Storing data ----------------------------------------------------'
@@ -237,7 +207,6 @@ class RANSimulation(threading.Thread):
 
         # self.stop_thread()
         return
-        self.post_sim_visualization()
 
     def stop_thread(self):
         self._stop_event.set()
@@ -275,37 +244,10 @@ class RANSimulation(threading.Thread):
         del self.setup.hexagon_maker
         del self.setup
 
-    def collect_stats_per_tti(self, user):
-        self.save_results.collect_sum_throughput(user)
-
-    def collect_stats_at_tti_end(self):
-        self.save_results.collect_num_handovers()
-        self.save_results.collect_num_rlfs()
-
-        if self.TTI != 0 and self.TTI % 1000 == 0 or self.TTI == self.sim_params.num_TTI - 1:  # sum throughput per second is collected
-            self.save_results.sum_throughput_per_sec.append(self.save_results.current_throughput / 10 ** 6 / 10 ** 3)
-            self.save_results.current_throughput = 0
-
     def sim_visualization(self):
         # if self.TTI == 0:  # or self.plot_allocation_flag:
-        # self.visualization.plot_allocation(self.TTI, self.handover.who_made_handovers[self.TTI])
-        # self.visualization.plot_allocation(self.TTI, self.handover.who_made_handovers[self.TTI])
         self.plot_allocation_flag = True
-        # self.scheduler.visualize_scheduler_allocation(self.TTI)
 
-    def post_sim_visualization(self):
-        if self.sim_params.plot_snr_per_TTI:
-            for user in self.devices_per_scenario:
-                self.sim_visual.plot_user_sinrs(user)
-                # self.sim_visual.plot_user_rsrp(device)
-        # self.save_results.print_rlf_and_hof()
-        self.save_results.get_number_final_ping_pongs()
-        # self.save_results.print_handovers_per_tti()
-        print("Going to save results")
-        if self.sim_params.controllers_on:
-            self.save_results.get_average_delay()
-            self.save_results.get_drop_rate()
-        self.save_results.save_results()
 
     def set_at_tti(self, i):
         self.seed = i
