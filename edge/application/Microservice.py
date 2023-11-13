@@ -217,6 +217,7 @@ class Microservice(Entity):
                 received_message.start_of_processing = sim.env.now
                 self.host_entity.orchestrator.collect_message_for_analytics(received_message)
                 self.processing_queue.append(received_message)
+                # self.processing_queue.put(received_message)
 
     def process_messages(self):
         mec_sim = get_sim()

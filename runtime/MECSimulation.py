@@ -160,10 +160,6 @@ class MECSimulation(threading.Thread):
             if device_type == "edge_servers":
                 for application_deployment in self.mec_applications[device_type]:
                     application_deployment_information = self.mec_applications[device_type][application_deployment]
-                    print("ALL INFO")
-                    print(self.mec_applications[device_type])
-                    print("APP NAME")
-                    print(application_deployment_information["application"])
                     for i in range(int(application_deployment_information["from"]) - 1,
                                    int(application_deployment_information["to"])):
                         self.main_simulation.edge_servers_per_scenario[i].bind_to_orchestrator(orchestrator)

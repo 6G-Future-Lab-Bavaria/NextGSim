@@ -1,6 +1,6 @@
 {
 "disable_printing": true,
-"simulation_time": 10001,
+"simulation_time": 101,
 "area_length": 40,
 "area_width": 40,
 "num_of_bs": 18,

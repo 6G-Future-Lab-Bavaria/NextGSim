@@ -79,7 +79,8 @@ class RANSimulation(threading.Thread):
         self.monitor_rlf = MonitorRLF(self)
         # Generation of the results and plotting
         # self.visualization = plotting.ScenarioVisualization.ScenarioVisualization(self, save_allocation_plots=False)
-        self.visualization = plotting.ScenarioVisualization.scenario_visualization(self)
+        # self.visualization = plotting.ScenarioVisualization.scenario_visualization(self)
+        self.visualization = main_simulation.visualization
         self.sim_visual = PostSimVisualization(self)
         self.plot_allocation_flag = False
         self.save_results = SaveSimResults(self)
@@ -129,10 +130,10 @@ class RANSimulation(threading.Thread):
 
         enable_print()
         t1 = time.time()
-        if self.sim_params.visualise_scenario:
-            self.visualization.visualize(predefined=self.sim_params.predefined_gNB_coord)
-            plt.ion()
-            plt.show()
+        # if self.sim_params.visualise_scenario:
+        #     self.visualization.visualize(predefined=self.sim_params.predefined_gNB_coord)
+        #     plt.ion()
+        #     plt.show()
         # self.handover.print_handover_parameters()
         if self.sim_params.store_latency:
             file_path = os.path.join(self.result_path, self.sim_params.scheduler_type + '_latency.csv')

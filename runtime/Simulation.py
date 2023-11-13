@@ -11,6 +11,9 @@ import pandas as pd
 from pathlib import Path
 import logging.config
 from definitions import RESULTS_DIR, ROOT_DIR
+import plotting
+
+import matplotlib.pyplot as plt
 
 from runtime.InitialSetUp import InitialSetUpIndoor, InitialSetUpOutdoor, InitialSetUpHardCoded, \
     InitialSetUpIndoorFactory
@@ -49,6 +52,8 @@ class Simulation:
                                                                   starting_time=self.sim_params.TTI_duration,
                                                                   period=self.sim_params.TTI_duration)
 
+
+
         self.user_coordinates = None
         self.devices_per_scenario = None
         self.gNBs_per_scenario = None
@@ -56,13 +61,22 @@ class Simulation:
         self.routers_per_scenario = []
         self.event_chain = EventChain()
         self.stop = False
+        self.visualization = plotting.ScenarioVisualization.scenario_visualization(self)
         self.initialize_physicalEnvironment()
         self.ran_data = pd.DataFrame()
         self.ran_simulation = RANSimulation(self)
         self.mec_data = pd.DataFrame()
         self.mec_simulation = MECSimulation(self)
-        self.results_folder = "fnwf/test.csv"
+        self.results_folder = "test.csv"
         self.initialize_results_folder()
+
+        if self.sim_params.visualise_scenario:
+            self.visualization.visualize(predefined=self.sim_params.predefined_gNB_coord)
+            plt.ion()
+            plt.show()
+            self.visualization.visualize_UEs(RRC_states=self.sim_params.traffic_model,
+                                             connection=self.sim_params.show_connections)
+
 
     def initialize_results_folder(self):
         self.results_folder = RESULTS_DIR + self.results_folder
@@ -86,6 +100,8 @@ class Simulation:
             self.setup = InitialSetUpOutdoor(self)
         self.gNBs_per_scenario = self.setup.create_gnbs(self.sim_params.scenario.cell_radius)
         self.devices_per_scenario, self.user_coordinates = self.setup.create_users()
+
+
 
     def run(self):
         self.mec_simulation.start()
