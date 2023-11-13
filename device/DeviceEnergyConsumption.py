@@ -1,7 +1,3 @@
-# @Author: Alba Jano
-# @Date: 2020-11-15
-# @Email: alba.jano@tum.de
-# @Last modified by: Alba Jano
 
 class DeviceEnergyConsumption:
     # Paper-On the Flexible and Performance-Enhanced Radio Resource Control for 5G NR networks

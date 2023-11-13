@@ -1,8 +1,3 @@
-# @Author: Alba Jano
-# @Date: 2021-08-05
-# @Email: alba.jano@tum.de, anna.prado@tum.de
-# @Last modified by: Anna Prado
-
 import matplotlib.pyplot as plt
 from abc import ABC
 
@@ -17,7 +12,7 @@ from abc import ABC
     """
 
 
-class AntennaPatterns(ABC):/home/anna/5g-and-beyond-simulator-2020
+class AntennaPatterns(ABC):
 
     def __init__(self):
         self.elevation_antenna_orientation = None  # degree

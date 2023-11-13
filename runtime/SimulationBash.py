@@ -1,12 +1,10 @@
-# @Author: Alba Jano
-# @Email: alba.jano@tum.de
 import csv
 import os
 import sys
 
 # import numpy as np
 
-from InitialSetUp import InitialSetUpIndoor, InitialSetUpOutdoor, InitialSetUpHardCoded, InitialSetUpIndoorFactory
+from InitialSetUp import InitialSetUpIndoor, InitialSetUpOutdoor, InitialSetUpIndoorFactory
 from utilities import utility
 from pathlib import Path
 import threading
@@ -75,9 +73,7 @@ class Simulation:
         return
 
     def initialize_physicalEnvironment(self):
-        if self.sim_params.hardcoded_initial_setup:
-            self.setup = InitialSetUpHardCoded(self, )
-        elif self.sim_params.scenario.scenario == 'Indoor':
+        if self.sim_params.scenario.scenario == 'Indoor':
             self.setup = InitialSetUpIndoor(self)
         elif self.sim_params.scenario.scenario == 'Indoor factory':
             self.setup = InitialSetUpIndoorFactory(self)

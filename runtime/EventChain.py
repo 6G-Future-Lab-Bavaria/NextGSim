@@ -1,8 +1,6 @@
-# @Author: Alba Jano
-# @Date: 2020-11-15
-# @Email: alba.jano@tum.de
-# @Last modified by: Alba Jano
-
+"""
+Event chain class for the events created in the simulator.
+"""
 import heapq
 
 
@@ -39,9 +37,3 @@ class SimEvent(object):
             return self.packet_timestamp < other.packet_timestamp
         else:
             return self.packet_timestamp
-        # TODO: solve the problem:     return self.priority < other.priority - Alba
-        # TypeError: '<' not supported between instances of 'NoneType' and 'NoneType'
-        # elif self.priority != other.priority:
-        #     return self.priority < other.priority
-        # else:
-        #     return self.priority < other.priority

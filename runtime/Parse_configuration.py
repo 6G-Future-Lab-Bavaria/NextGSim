@@ -1,6 +1,3 @@
-# Author: Alba Jano
-# Last Modified: 08.06.2022 13:34
-
 # importing the Python modules
 from termcolor import colored
 from runtime.Scenarios import *
@@ -51,14 +48,5 @@ class SimulationParameters(object):
         self.SimParams.scheduler_type = config['scheduler_type']
         self.SimParams.service_placement_algorithm = config['service_placement_algorithm']
         self.SimParams.service_replacement_algorithm = config['service_replacement_algorithm']
-        # self.default_Applications.data_size_min = config["data_size_min"]
-        # self.default_Applications.data_size_max = config["data_size_max"]
-        # self.default_Applications.delay_min = config["delay_min"]
-        # self.default_Applications.delay_max = config["delay_max"]
-        # self.default_Applications.cycles_per_bit_min = config["cycles_per_bit_min"]
-        # self.default_Applications.cycles_per_bit_max = config["cycles_per_bit_max"]
-
-
-        #Added by Mert
 
 
