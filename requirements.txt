@@ -13,3 +13,4 @@ shapely~=2.0.1
 dash~=2.7.0
 selenium~=3.141.0
 tikzplotlib~=0.10.1
+simpy~=4.0.2

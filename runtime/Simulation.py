@@ -58,7 +58,7 @@ class Simulation:
         self.ran_simulation = RANSimulation(self)
         self.mec_data = pd.DataFrame()
         self.mec_simulation = MECSimulation(self)
-        self.results_folder = "fnwf/test/test.csv"
+        self.results_folder = "fnwf/test.csv"
         self.initialize_results_folder()
 
     def initialize_results_folder(self):
