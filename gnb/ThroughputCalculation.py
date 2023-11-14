@@ -1,8 +1,3 @@
-# @Author: Alba Jano, Anna Prado
-# @Date: 2020-11-15
-# @Email: alba.jano@tum.de, anna.prado@tum.de
-# @Last modified by: Alba Jano
-
 import numpy as np
 from runtime.data_classes import States
 

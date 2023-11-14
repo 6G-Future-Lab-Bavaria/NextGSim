@@ -1,8 +1,3 @@
-# @Author: Alba Jano, Anna Prado
-# @Date: 2020-11-15
-# @Email: alba.jano@tum.de, anna.prado@tum.de
-# @Last modified by: Alba Jano
-
 from edge.entities.Entity import Entity
 
 
@@ -27,7 +22,6 @@ class GnB(Entity):
         self.num_serving_cells = 3  # for UMi might be 1 or 2;
         self.prepared_CHO_for_users = []  # fixme: set()
         self.remove_prep_cells_at = {}
-        # Added by Mert
         super().__init__()
 
     def reset_statistics(self):

@@ -1,6 +1,3 @@
-# Author: Alba Jano
-# Last Modified: 23.02.2022
-
 import socket
 import tqdm
 import os
