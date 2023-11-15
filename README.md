@@ -11,7 +11,7 @@ to the edge orchestrator and SD-RAN controller. Therefore, novel resource alloca
 <p align="center">
   <img src="doc/Simulated_Architecture.png" width="55%">
   <p align="center">
-    Figure 1: Relationship between EdgeCloudSim modules.
+    Figure 1: Relationship between NextGSim modules.
   </p>
 
 # Radio Simulation
