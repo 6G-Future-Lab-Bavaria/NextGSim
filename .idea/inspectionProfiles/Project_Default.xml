@@ -1,6 +1,7 @@
 <component name="InspectionProjectProfileManager">
   <profile version="1.0">
     <option name="myName" value="Project Default" />
+<<<<<<< HEAD
     <inspection_tool class="DuplicatedCode" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <Languages>
         <language minSize="1119" name="Python" />
@@ -43,6 +44,15 @@
           <option value="bool.all" />
           <option value="dict.__getitem__" />
           <option value="running_time" />
+=======
+    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="N806" />
+          <option value="N803" />
+          <option value="N801" />
+          <option value="N802" />
+>>>>>>> 4a9d4fc8b37483357d7b1b9c63791d1af8ded285
         </list>
       </option>
     </inspection_tool>

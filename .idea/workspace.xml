@@ -4,11 +4,77 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a6b10cdf-8ef6-4622-a8aa-aee504648bb1" name="Changes" comment="" />
+    <list default="true" id="a6b10cdf-8ef6-4622-a8aa-aee504648bb1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/configuration/figure_6_experiment_non_radio_aware.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiments/experiments_figure6.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/configuration/..MEC_Client.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/configuration/MEC.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/configuration/MEC_Server.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/configuration/RAN.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/configuration/RAN_MEC.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/configuration/RAN_MEC.npy" beforeDir="false" afterPath="$PROJECT_DIR$/plotting/figure6.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/configuration/config_demonstrative 2.tex" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/configuration/config_demonstrative.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/configuration/config_demonstrative.tex" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/configuration/config_test_2.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/configuration/config_test_3.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/configuration/config_test_4.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/configuration/config_test_mr_la.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/configuration/config_test_mr_random.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/configuration/config_test_new.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/configuration/config_test_random_la.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/configuration/config_test_random_random.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/configuration/config_test_rr_la.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/configuration/config_test_rr_random.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/experiments_figure5.sh" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/experiments_figure5.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/experiments_june2.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/experiments_june3.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/experiments_june4.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/experiments_june5.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/experiments_june6-2.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/experiments_june6.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/experiments_june7.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/experiments_june8-2.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/experiments_june9.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/experiments_oct9.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/experiments_test.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plotting/completion_rate_vs_num_instances 2.tex" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plotting/completion_rate_vs_num_instances.tex" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plotting/completion_rate_vs_num_instances_boxplot.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plotting/completion_rate_vs_num_instances_boxplot.tex" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plotting/completion_rate_vs_num_of_instances.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plotting/completion_rate_vs_num_of_instances_boxplot.tex" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plotting/completion_rate_vs_num_of_instances_boxplot_rectangle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plotting/completion_rate_vs_num_of_instances_boxplot_rectangle.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plotting/completion_rate_vs_num_of_instances_boxplot_rectangle.tex" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plotting/completion_rate_vs_num_of_users_boxplot_rectangle.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plotting/completion_rate_vs_num_users.tex" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plotting/completion_rate_vs_num_users_boxplot.tex" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plotting/completion_rate_vs_num_users_boxplot_rectangle.tex" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plotting/report.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plotting/results_post_processing.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plotting/results_post_processing_structured.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/reproduction/figure6/150_Round_Robin_Radio-Aware_10_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/runtime/Simulation.py" beforeDir="false" afterPath="$PROJECT_DIR$/runtime/Simulation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/runtime/SimulationParameters.py" beforeDir="false" afterPath="$PROJECT_DIR$/runtime/SimulationParameters.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/runtime/Simulations_Figure5.py" beforeDir="false" afterPath="$PROJECT_DIR$/runtime/Simulations_Figure5.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/runtime/Simulations_Figure6.py" beforeDir="false" afterPath="$PROJECT_DIR$/runtime/Simulations_Figure6.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="FlaskConsoleOptions" custom-start-script="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))">
     <envs>
@@ -39,7 +105,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/mehmetmertbese/Desktop/NextGSim.nosync/experiments",
+    "last_opened_file_path": "/Users/mehmetmertbese/Desktop/NextGSim.nosync/configuration",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -49,8 +115,8 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/experiments" />
       <recent name="$PROJECT_DIR$/configuration" />
+      <recent name="$PROJECT_DIR$/experiments" />
       <recent name="$PROJECT_DIR$/runtime" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -78,7 +144,8 @@
       <workItem from="1699845310672" duration="754000" />
       <workItem from="1699846348230" duration="7438000" />
       <workItem from="1699886253836" duration="309000" />
-      <workItem from="1699886570839" duration="2608000" />
+      <workItem from="1699886570839" duration="3365000" />
+      <workItem from="1699889952971" duration="20943000" />
     </task>
     <servers />
   </component>
@@ -98,9 +165,11 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/NextGSim_nosync$plot_figure5.coverage" NAME="plot_figure5 Coverage Results" MODIFIED="1699849469888" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/plotting" />
+    <SUITE FILE_PATH="coverage/NextGSim_nosync$Simulations_Figure6.coverage" NAME="Simulations_Figure6 Coverage Results" MODIFIED="1699901635533" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/runtime" />
     <SUITE FILE_PATH="coverage/NextGsim$test.coverage" NAME="test Coverage Results" MODIFIED="1699845944829" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/plotting" />
-    <SUITE FILE_PATH="coverage/NextGSim_nosync$Simulation.coverage" NAME="Simulation Coverage Results" MODIFIED="1699888546460" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/runtime" />
+    <SUITE FILE_PATH="coverage/NextGSim_nosync$Simulation.coverage" NAME="Simulation Coverage Results" MODIFIED="1699890172202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/runtime" />
     <SUITE FILE_PATH="coverage/NextGsim$Simulation.coverage" NAME="Simulation Coverage Results" MODIFIED="1699532734882" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/runtime" />
+    <SUITE FILE_PATH="coverage/NextGSim_nosync$figure6.coverage" NAME="figure6 Coverage Results" MODIFIED="1700013465600" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/plotting" />
     <SUITE FILE_PATH="coverage/NextGsim$MECSimulation.coverage" NAME="MECSimulation Coverage Results" MODIFIED="1698852735165" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/runtime" />
   </component>
 </project>

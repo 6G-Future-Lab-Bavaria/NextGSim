@@ -14,7 +14,7 @@ from pathlib import Path
 import threading
 import logging.config
 from runtime.RANSimulation import RANSimulation
-from definitions import RESULTS_DIR
+from definitions import RESULTS_DIR, CONFIGURATION_DIR
 from attic.Application import *
 from runtime.SimulationParameters import SimulationParameters
 from runtime.EventChain import EventChain
@@ -23,6 +23,7 @@ import numpy as np
 import pandas as pd
 import simpy
 import random
+import json
 
 from edge.util.DistributionFunctions import DeterministicDistributionWithStartingTime
 
@@ -30,7 +31,6 @@ from edge.util.DistributionFunctions import DeterministicDistributionWithStartin
 utility.format_figure()
 
 EPSILON = 0.001
-
 
 
 class Simulation:
@@ -45,10 +45,17 @@ class Simulation:
         self.record_results = False
         config_file = None
         if sys.argv[3] == "FCFS":
-            config_file = "figure_5_experiment_non_radio_aware.json"
+            config_file = "figure_6_experiment_non_radio_aware.json"
 
         elif sys.argv[3] == "Radio-Aware":
-            config_file = "figure_5_experiment_radio_aware.json"
+            config_file = "figure_6_experiment_radio_aware.json"
+
+        with open(CONFIGURATION_DIR + config_file, 'r') as file:
+            data = json.load(file)
+            data["mec_applications"]["edge_servers"]["1"]["num_of_instances"] = sys.argv[5]
+
+        with open(CONFIGURATION_DIR+ config_file, 'w') as file:
+            json.dump(data, file)
 
         self.sim_params = SimulationParameters(config_file)
 
@@ -72,8 +79,8 @@ class Simulation:
         self.routers_per_scenario = []
         self.sim_params.scenario.max_num_devices_per_scenario = int(sys.argv[1])
         self.sim_params.scheduler_type = sys.argv[2]
-        self.results_folder = 'reproduction/' + sys.argv[1] + '_' + \
-                              sys.argv[2] + '_' + sys.argv[3] + '_' + sys.argv[4] +'.csv'
+        self.results_folder = 'reproduction/figure6/' + sys.argv[1] + '_' + \
+                              sys.argv[2] + '_' + sys.argv[3] + '_' + sys.argv[5] + '_' + sys.argv[4] + '.csv'
 
         self.traffic_generator = TrafficGenerator(self)
         self.event_chain = EventChain()
@@ -97,9 +104,6 @@ class Simulation:
             writer.writerow(header)
 
     def initialize_physicalEnvironment(self):
-        print("what a weird implementation")
-        print(self.sim_params.scenario.scenario)
-
         if self.sim_params.scenario.scenario == 'Indoor':
             self.setup = InitialSetUpIndoor(self)
         elif self.sim_params.scenario.scenario == 'Indoor factory':
@@ -113,6 +117,7 @@ class Simulation:
         self.mec_simulation.start()
         self.ran_simulation.start()
         return
+
 
 if __name__ == '__main__':
     simulation = Simulation()

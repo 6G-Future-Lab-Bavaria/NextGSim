@@ -85,7 +85,6 @@ class Simulation:
             writer.writerow(header)
 
     def initialize_physicalEnvironment(self):
-        print("what a weird implementation")
         print(self.sim_params.scenario.scenario)
         if self.sim_params.scenario.scenario == 'Indoor':
             self.setup = InitialSetUpIndoor(self)

@@ -41,7 +41,7 @@ class SimulationParameters(object):
         self.store_throughput = False
         self.store_latency = False
         '------------------------ Plotting the interactive GUI --------------------------------------'
-        self.visualise_scenario: bool = True
+        self.visualise_scenario: bool = False
         if self.scenario.scenario == 'Indoor factory':
             self.predefined_gNB_coord: bool = True
         else:

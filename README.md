@@ -47,7 +47,7 @@ module. As a proof-of-concept example a latency aware processing algorithm is im
 higher radio link latency is prioritized, in order to increase the chance of meeting the deadline of the task.
 
 Router is a simple entity that routes messages between entities like edge servers and base stations. Currently, it only implements
-shortest path algorithm for routing.
+the shortest path algorithm for routing.
 
 <ins>Network</ins>: This module implements the topology between entities and microservices. Physical entities 
 are connected to each other with links that are defined by their bandwidth and latency.
@@ -56,6 +56,11 @@ are connected to each other with links that are defined by their bandwidth and l
 Figure 5 in our paper is a result of an experiment to assess the effect of various combinations of radio resource allocation and 
 edge application queueing approaches. In order to reproduce the results, run "experiments/experiments_figure5.sh" in your terminal.
 To generate the plot out of the results, run "plotting/figure5.py".
+
+Figure 6 in our paper is a result of an experiment to assess the effect of increasing the number of application instances 
+and number of users on completion rate of a task. 
+In order to reproduce the results, run "experiments/experiments_figure6.sh" in your terminal.
+To generate the plot out of the results, run "plotting/figure6.py".
 
 
 
