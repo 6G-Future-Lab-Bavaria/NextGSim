@@ -1,7 +1,3 @@
-# @Author: Alba Jano, Anna Prado
-# @Date: 2020-11-15
-# @Email: alba.jano@tum.de, anna.prado@tum.de
-# @Last modified by: Alba Jano
 import pandas as pd
 import numpy as np
 from abc import ABC
@@ -262,7 +258,6 @@ class IndoorFactory(ScenarioBase):
     device_transmit_power = 0  # dBm
     gNB_coordinates = None
 
-    # Added by Mert
     num_of_edge_servers = 'colocated'
 
     def _set_gNB_placement(self, hall_length, hall_width, gNB_height, gNB_distance):

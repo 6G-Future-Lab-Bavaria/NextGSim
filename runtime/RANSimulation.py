@@ -5,23 +5,15 @@ from runtime.InitialSetUp import InitialSetUpIndoor, InitialSetUpOutdoor, Initia
 from runtime.RunTimeSetUp import RunTime
 from SD_RAN.Scheduler import RadioResourceSchedulers
 from gnb.ThroughputCalculation import ThroughputCalculation
-from runtime.data_classes import HandoverAlgorithms
 from runtime.data_classes import MeasurementParams
 from runtime.EventChain import EventChain
 from device.TrafficGenerator import TrafficGenerator
 from device.ManageDevices import ManageDevices
-from gnb.HandoverMetrics import HandoverMetrics
-from gnb.NormalHandover import NormalHandover
-from gnb.MonitorRLF import MonitorRLF
-from gnb.ConditionalHandover import ConditionalHandover
-from gnb.ConditionalHandoverEnhanced import ConditionalHandoverEnhanced
 import plotting.ScenarioVisualization
-from runtime.SaveSimResults import SaveSimResults
 from runtime.utilities import block_print, enable_print, utility
 import time
 import threading
 import matplotlib.pyplot as plt
-import matplotlib
 import os
 import csv
 import pandas as pd
@@ -63,10 +55,6 @@ class RANSimulation(threading.Thread):
         self.ctrl_scheduler = None
         self.throughput_calc = None
         # Gneration of the mobility
-        self.ctrl_handover = None
-        self.handover = None
-        self.handover_metrics = HandoverMetrics(self)
-        self.monitor_rlf = MonitorRLF(self)
         # Generation of the results and plotting
         self.visualization = plotting.ScenarioVisualization.scenario_visualization(self)
         self.plot_allocation_flag = False
@@ -184,14 +172,6 @@ class RANSimulation(threading.Thread):
                 #     self.event_chain.remove_TTI_events(self.TTI)
                 #     self.upd_buffers()
 
-            for user in self.devices_per_scenario:
-                self.monitor_rlf.sanity_check_user_connected_to_best_cell(user)
-                # self.throughput_calc.calculate_final_data_rate(user, self.channel.measured_SINR) # fixme: for RR
-                #self.collect_stats_per_tti(user)
-
-            #self.collect_stats_at_tti_end()
-
-        # self.comm_client.close_socket()
         '---------------------------------- Storing data ----------------------------------------------------'
         if self.sim_params.store_throughput:
             df = pd.DataFrame(self.throughput_history)
@@ -200,8 +180,6 @@ class RANSimulation(threading.Thread):
         enable_print()
         t2 = time.time()
         print(f"Finished. Simulation of {self.sim_params.num_TTI} TTIs took {round((t2 - t1) / 60, 1)} min.")
-        if not 'normal' in self.sim_params.handover_algorithm.lower():
-            print(self.handover.handover_events_stats)
 
         self.delete_objects()
 
@@ -210,24 +188,6 @@ class RANSimulation(threading.Thread):
 
     def stop_thread(self):
         self._stop_event.set()
-
-
-    def set_handover_alg(self):
-        if self.sim_params.handover_algorithm == HandoverAlgorithms.normal_5g_mbb:
-            self.handover = NormalHandover(self)
-        elif self.sim_params.handover_algorithm == HandoverAlgorithms.conditional_5g:
-            self.handover = ConditionalHandover(self)
-        elif self.sim_params.handover_algorithm in \
-                [HandoverAlgorithms.echo_with_known_tr, HandoverAlgorithms.echo_with_current_pos]:
-            self.handover = ConditionalHandoverEnhanced(self)
-            self.handover.known_trajectory = True
-        elif self.sim_params.handover_algorithm in \
-                [HandoverAlgorithms.echo_with_pred_tr, HandoverAlgorithms.echo_with_look_ahead,
-                 HandoverAlgorithms.echo_with_current_look_ahead]:
-            self.handover = ConditionalHandoverEnhanced(self)
-            self.handover.known_trajectory = False
-        else:
-            raise NotImplementedError(f"No algorithm {self.sim_params.handover_algorithm}")
 
     def set_channel(self):
         if self.sim_params.scenario.scenario == "UMi":

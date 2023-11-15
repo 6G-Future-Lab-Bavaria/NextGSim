@@ -55,7 +55,6 @@ class ManageDevices:
         for device in self.devices_per_scenario:
             print(device.ID, "-->", device.state, "my gNB = ", device.my_gnb.ID)
 
-    # functions added from Alba - change them is needed
     def calc_distance_users_gnbs_2d(self):
         distance_users_gnbs_2d = np.zeros((len(self.devices_per_scenario_ID),
                                            len(self.simulation.gNBs_per_scenario)), float)

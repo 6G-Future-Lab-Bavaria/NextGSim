@@ -1,12 +1,8 @@
-from dataclasses import dataclass
-from runtime.data_classes import MobilityModels, HandoverAlgorithms
 from runtime.data_classes import Frequencies, AggregatedTraffic, MeasurementParams
-from runtime.data_classes import HandoverParameters, ConditionalHandoverParameters
 from termcolor import colored
 from runtime.Scenarios import *
 from definitions import CONFIGURATION_DIR
 import json
-import os
 
 
 @dataclass()
@@ -54,13 +50,8 @@ class SimulationParameters(object):
         self.with_sanity_checks = False  # slows down the simulation
 
         # Mobility-related
-        self.handover_algorithm = HandoverAlgorithms.normal_5g_mbb
-        self.mobility_model = MobilityModels.random_waypoint
-        if self.scenario == 'Indoor':
-            self.mobility_model = MobilityModels.random_waypoint
         self.slaw_range = 1000
         self.t_gap_slaw = 10 ** 3  # ms
-        self.instantaneous_handover = False
         self.num_top_gnbs = None
         self.user_id = 0  # 13
         self.look_ahead = None
@@ -70,7 +61,7 @@ class SimulationParameters(object):
         self.results_name = ''
         self.scheduler_type = "Round_Robin"
 
-        # Edge Related - Added by Mert
+        # Edge Related
         self.computing_period = 2
         self.service_update_period = 25
         self.service_placement_algorithm = "Random"  # LatencyAware, Random or RoundRobin
@@ -105,10 +96,7 @@ class SimulationParameters(object):
     def set_simulation_parameters(self):
         self.results_name += '_'
         for param, val in self.config.items():
-            if param == 'handover_algorithm':
-                self.handover_algorithm = val
-                self.results_name = f"{val}" + self.results_name
-            elif param == 'always_los_flag':
+            if param == 'always_los_flag':
                 self.always_los_flag = val
             elif param == 'los_update_periodicity':
                 self.los_update_periodicity = val
@@ -116,10 +104,7 @@ class SimulationParameters(object):
                 self.num_top_gnbs = val
             elif param == 'center_freq_micro':
                 self.scenario.center_freq_micro = val
-            elif param == 'with_TTT':
-                ConditionalHandoverParameters.with_ttt_exec = val
-            elif param == 'TTT':
-                HandoverParameters.ttt_exec = val
+
 
     def parse_ConfigFile(self):
         # path = os.chdir(os.pardir + '/../configuration')

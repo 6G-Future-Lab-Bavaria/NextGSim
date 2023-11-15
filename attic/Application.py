@@ -1,5 +1,3 @@
-# Author: Alba Jano
-# Last Modified: 27.09.2022 17:20
 from abc import ABC
 from dataclasses import dataclass
 

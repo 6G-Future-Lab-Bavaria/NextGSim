@@ -1,6 +1,3 @@
-# Author: Alba Jano
-# Last Modified: 23.02.2022
-
 import socket
 import tqdm
 import os
@@ -18,7 +15,6 @@ class Client(object):
         self.server_socket = None
         self.server_IP = host  # the ip address or hostname of the server, the receiver
         self.server_port = port  # the port, let'server_socket use 5001
-        # self.filename = '/Users/mehmetmertbese/Desktop/NextGSim/results/RAN.csv'
         # fixme: relative directories are unstable
         self.filename = 'RAN_Client.csv'
         # the name of file we want to send, make sure it exists

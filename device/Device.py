@@ -1,14 +1,11 @@
-import numpy as np
 from device.DeviceEnergyConsumption import DeviceEnergyConsumption
 from runtime.data_classes import States
 from runtime.EventChain import *
 from edge.entities.ComputeNode import ComputeNode
 from edge.entities.cpu.Cpu import Cpu
 from edge.application.ApplicationRepository import get_app
+import numpy as np
 import random
-
-
-# TODO: create a data class with the device type ex. REdCap - -Alba
 
 
 class Device(ComputeNode):
@@ -41,12 +38,9 @@ class Device(ComputeNode):
         # handover-related
         self.next_gnb = None
         self.hit_finish = None  # ms
-        self.handover_prep_time_finish = None  # ms
-        self.handover_prep_is_ongoing = False  # fixme: not needed; use handover_prep_time_finish instead
         self.ttt_finish = None  # ms
         self.rlf_finish_timer = None  # ms
         self.connected_to_gnbs = [None] * simulation.sim_params.num_TTI  # fixme: make it memory-efficient
-        self.handover_t304_finish = None  # ms
         # CHO-related
         self.prepared_gnbs = {}
         self.currently_being_prep_cells_finish_time = {}
@@ -55,7 +49,6 @@ class Device(ComputeNode):
         self.ttt_MR_finish = {}  # ms
         # ECHO-related
         self.best_next_gnb_ids = None
-        # self.handover_finish_time = None
         self._buffer = []
         self.delays = []
         self._buffer_len = 0
@@ -66,7 +59,6 @@ class Device(ComputeNode):
         self.transmitted_packets = 0
         self.dropped_packets = 0
 
-        # Edge Related Attributes (Added by Mert)
         self.clock_speed = 3 * 10 ** 9
         self.num_of_cpus = 1
         super().__init__(num_of_cpus=self.num_of_cpus, cpu_clock_speed=self.clock_speed)
@@ -162,8 +154,6 @@ class Device(ComputeNode):
 
     def get_buffer_stats(self):
         return self._buffer_len
-
-    # Added by Mert
 
     def bind_to_orchestrator(self, orchestrator):
         self.orchestrator = orchestrator
