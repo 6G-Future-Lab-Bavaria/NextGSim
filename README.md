@@ -25,7 +25,12 @@ Meanwhile, the users are placed randomly in the scenario space, characterized by
 during the simulation time after the initialization process. </ins>User</ins> module is responsible for the generation of the traffic patterns, user's mobility, and user radio resource
 control (RRC) states.
 
-<ins>RAN control plane</ins>:
+<ins>RAN control plane</ins>: RAN control plane simulates the behaviour of SD-RAN controller.
+The module includes the radio resource management algorithms, such as resource allocation via
+state-of-the-art algorithms: round-robin, throughput proportional fair, max-CQI.
+Further, through the handovers, the module assures the connectivity of the end-users to the 
+best serving gNB. The RRC state transitions of the users between RRC Idle, RRC Connected and 
+RRC Inactive sets the bases for the sustainability studies for the end-usr devices.
 
 
 # Edge Computing Simulation
@@ -61,6 +66,24 @@ Figure 6 in our paper is a result of an experiment to assess the effect of incre
 and number of users on completion rate of a task. 
 In order to reproduce the results, run "experiments/experiments_figure6.sh" in your terminal.
 To generate the plot out of the results, run "plotting/figure6.py".
+
+# Publication
+nextGSIM: Towards Simulating Network Resource Management for Beyond 5G Networks
+
+If you use this software, please cite it as below.
+
+@inproceedings{jano2023nextgsim,
+  title={nextGSIM: Towards Simulating Network Resource Management for Beyond 5G Networks},
+  author={Jano, Alba and Mert Bese, Mehmet and Mohan, Nitinder and Kellerer, Wolfgang and Ott, J{\"o}rg},
+  booktitle={IEEE Future Networks World Forum},
+  year={2023}
+}
+
+# Contact Authors
+
+RAN modules - Alba Jano (email: alba.jano@tum.de)
+
+Edge computing modules - Mehmet Mert Bese (mehmetmert.bese@tum.de)
 
 
 
