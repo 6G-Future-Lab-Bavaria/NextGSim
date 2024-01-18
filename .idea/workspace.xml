@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6b10cdf-8ef6-4622-a8aa-aee504648bb1" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/runtime/SimulationParameters.py" beforeDir="false" afterPath="$PROJECT_DIR$/runtime/SimulationParameters.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,6 +35,11 @@
     <option name="BRANCH" value="origin/main" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="energy-aware" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -56,12 +62,14 @@
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/configuration" />
+      <recent name="$PROJECT_DIR$/edge/application" />
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/experiments" />
       <recent name="$PROJECT_DIR$/runtime" />
     </key>
@@ -70,6 +78,36 @@
       <recent name="$PROJECT_DIR$/attic" />
       <recent name="$PROJECT_DIR$/attic" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Simulation" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="NextGSim.nosync" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/runtime" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/runtime/Simulation.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.Simulation" />
+        <item itemvalue="Python.Simulation" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -92,7 +130,18 @@
       <workItem from="1699886253836" duration="309000" />
       <workItem from="1699886570839" duration="3365000" />
       <workItem from="1699889952971" duration="21550000" />
-      <workItem from="1700087370409" duration="251000" />
+      <workItem from="1700087370409" duration="880000" />
+      <workItem from="1701640008669" duration="2204000" />
+      <workItem from="1702904103910" duration="7288000" />
+      <workItem from="1702976460406" duration="47966000" />
+      <workItem from="1703583191260" duration="13178000" />
+      <workItem from="1703752887849" duration="15353000" />
+      <workItem from="1704289507974" duration="5696000" />
+      <workItem from="1704359321948" duration="8387000" />
+      <workItem from="1704443035320" duration="5738000" />
+      <workItem from="1704702082301" duration="6976000" />
+      <workItem from="1705412522784" duration="11172000" />
+      <workItem from="1705480882045" duration="8139000" />
     </task>
     <servers />
   </component>
@@ -113,9 +162,13 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/NextGSim_nosync$plot_figure5.coverage" NAME="plot_figure5 Coverage Results" MODIFIED="1699849469888" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/plotting" />
     <SUITE FILE_PATH="coverage/NextGSim_nosync$Simulations_Figure6.coverage" NAME="Simulations_Figure6 Coverage Results" MODIFIED="1699901635533" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/runtime" />
+    <SUITE FILE_PATH="coverage/NextGSim_nosync$EdgeOrchestrator.coverage" NAME="EdgeOrchestrator Coverage Results" MODIFIED="1703168930205" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/edge/entities/orchestrator" />
     <SUITE FILE_PATH="coverage/NextGsim$test.coverage" NAME="test Coverage Results" MODIFIED="1699845944829" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/plotting" />
-    <SUITE FILE_PATH="coverage/NextGSim_nosync$Simulation.coverage" NAME="Simulation Coverage Results" MODIFIED="1699890172202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/runtime" />
+    <SUITE FILE_PATH="coverage/NextGSim_nosync$Simulation.coverage" NAME="Simulation Coverage Results" MODIFIED="1703671634373" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/runtime" />
     <SUITE FILE_PATH="coverage/NextGsim$Simulation.coverage" NAME="Simulation Coverage Results" MODIFIED="1699532734882" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/runtime" />
+    <SUITE FILE_PATH="coverage/NextGSim_nosync$MECSimulation.coverage" NAME="MECSimulation Coverage Results" MODIFIED="1703583333467" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/runtime" />
+    <SUITE FILE_PATH="coverage/NextGSim_nosync$Simulation_EnergyAware.coverage" NAME="Simulation_EnergyAware Coverage Results" MODIFIED="1702914156548" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/NextGSim_nosync$LoadBalancerService.coverage" NAME="LoadBalancerService Coverage Results" MODIFIED="1703174032353" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/edge/application" />
     <SUITE FILE_PATH="coverage/NextGSim_nosync$figure6.coverage" NAME="figure6 Coverage Results" MODIFIED="1700013465600" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/plotting" />
     <SUITE FILE_PATH="coverage/NextGsim$MECSimulation.coverage" NAME="MECSimulation Coverage Results" MODIFIED="1698852735165" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/runtime" />
   </component>
