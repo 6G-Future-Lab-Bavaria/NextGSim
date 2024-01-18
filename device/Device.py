@@ -59,6 +59,7 @@ class Device(ComputeNode):
         self.transmitted_packets = 0
         self.dropped_packets = 0
 
+        # Edge - Related
         self.clock_speed = 3 * 10 ** 9
         self.num_of_cpus = 1
         super().__init__(num_of_cpus=self.num_of_cpus, cpu_clock_speed=self.clock_speed)
@@ -176,8 +177,8 @@ class Device(ComputeNode):
                 self.deploy_service({"service": service_instance, "user": self.ID})
 
     def get_service_information(self):
-        app_name = list(self.services.keys())[0]
-        service_name = list(self.services[app_name].keys())[0]
-        user_id = list(self.services[app_name][service_name].keys())[0]
-        service = self.services[app_name][service_name][user_id][0]
+        app_name = list(self.hosted_services.keys())[0]
+        service_name = list(self.hosted_services[app_name].keys())[0]
+        user_id = list(self.hosted_services[app_name][service_name].keys())[0]
+        service = self.hosted_services[app_name][service_name][user_id][0]
         return {"app_name": app_name, "service_name": service_name, "service": service}

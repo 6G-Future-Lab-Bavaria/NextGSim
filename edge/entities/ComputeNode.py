@@ -2,6 +2,7 @@ from edge.entities.Entity import Entity
 from edge.entities.cpu.Cpu import Cpu
 from edge.entities.vm.Vm import Vm
 from edge.network.Link import add_link
+from edge.application.LoadBalancerService import LoadBalancerService
 import random
 
 
@@ -14,8 +15,10 @@ class ComputeNode(Entity):
         self.memory = memory
         self.orchestrator = None
         self.service_map = {}
-        self.services = {}
+        self.hosted_services = {}
+        self.public_services = {}
         self.assigned_services = {}
+        self.load_balancers = {}
         self.hosted_vms = []
         super().__init__(location=location)
 
@@ -29,16 +32,18 @@ class ComputeNode(Entity):
 
     def find_services(self, app_name, service_name, user_id):
         services = []
-        if app_name in self.service_map:
-            if service_name in self.service_map[app_name]:
-                if user_id in self.service_map[app_name][service_name]:
-                    services.append(self.service_map[app_name][service_name][user_id])
-                if "public" in self.service_map[app_name][service_name]:
-                    services.append(self.service_map[app_name][service_name]["public"])
+        if app_name in self.hosted_services:
+            if service_name in self.hosted_services[app_name]:
+                if "public" in self.hosted_services[app_name][service_name]:
+                    services.extend(self.hosted_services[app_name][service_name]["public"])
+                if user_id is not "public":
+                    if user_id in self.hosted_services[app_name][service_name]:
+                        services.extend(self.hosted_services[app_name][service_name][user_id])
+
         return services
 
     def has_enough_capacity_for_the_service(self, service):
-        if service.required_cpu_share <= self.available_cpu_share and service.required_memory <= self.memory:
+        if service.request_cpu_share <= self.available_cpu_share and service.required_memory <= self.memory:
             return True
         else:
             return False
@@ -53,10 +58,10 @@ class ComputeNode(Entity):
         service = request["service"]
         user = request["user"]
         if service.is_shared is False:
-            if service.required_cpu_share <= self.available_cpu_share and service.required_memory <= self.memory:
+            if service.request_cpu_share <= self.available_cpu_share and service.required_memory <= self.memory:
                 service.user = user
                 service.deploy(self, user)
-                self.add_to_service_list(service)
+                self.add_to_hosted_services(service)
                 self.cpu.deploy_service(service)
                 self.memory -= service.required_memory
                 return True
@@ -65,12 +70,12 @@ class ComputeNode(Entity):
                 return False
         else:
             if user == "public":
-                if service.required_cpu_share <= self.available_cpu_share and service.required_memory <= self.memory:
+                if service.request_cpu_share <= self.available_cpu_share and service.required_memory <= self.memory:
+                    service.user = "public"
+                    service.deploy(self, user)
+                    self.add_to_hosted_services(service)
                     self.cpu.deploy_service(service)
                     self.memory -= service.required_memory
-                    service.user = "public"
-                    self.add_to_service_list(service)
-                    service.deploy(self, user)
                     return True
                 else:
                     print("Service %s could not be deployed at Entity : %d" % (service.name, self.entity_id))
@@ -79,10 +84,10 @@ class ComputeNode(Entity):
                 if self.does_service_exist(service):
                     self.get_service_instance(service).register_user(user)
                 else:
-                    if service.required_cpu_share <= self.available_cpu_share and service.required_memory <= self.memory:
+                    if service.request_cpu_share <= self.available_cpu_share and service.required_memory <= self.memory:
                         self.cpu.deploy_service(service)
                         self.memory -= service.required_memory
-                        self.add_to_service_list(service)
+                        self.add_to_hosted_services(service)
                         service.deploy(self, user)
                         return True
                     else:
@@ -90,39 +95,75 @@ class ComputeNode(Entity):
                         return False
 
     def migrate_service(self, service):
-        if service.required_cpu_share <= self.available_cpu_share and service.required_memory <= self.memory:
+        if service.request_cpu_share <= self.available_cpu_share and service.required_memory <= self.memory:
             self.cpu.deploy_service(service)
             self.memory -= service.required_memory
-            self.add_to_service_list(service)
+            self.add_to_hosted_services(service)
             service.migrate(self)
             return True
         else:
             print("Service %s could not be migrated at Entity : %d" % (service.name, self.entity_id))
             return False
 
+
     def get_service_instance(self, service, public=False):
         if self.does_service_exist(service):
             if public:
-                return random.choice(self.services[service.app.name][service.name]["public"])
+                return random.choice(self.hosted_services[service.app.name][service.name]["public"])
             else:
-                return random.choice(self.services[service.app.name][service.name][service.user])
+                return random.choice(self.hosted_services[service.app.name][service.name][service.user])
         else:
             return False
 
-    def add_to_service_list(self, service):
-        if service.app_name not in self.services:
-            self.services[service.app_name] = {}
-        if service.name not in self.services[service.app_name]:
-            self.services[service.app_name][service.name] = {}
-        if service.user in self.services[service.app_name][service.name]:
-            self.services[service.app_name][service.name][service.user].append(service)
-        else:
-            self.services[service.app_name][service.name][service.user] = [service]
+    def add_to_hosted_services(self, service_list):
+        if not isinstance(service_list, list):
+            service_list = [service_list]
+        for service in service_list:
+            if service.app_name not in self.hosted_services:
+                self.hosted_services[service.app_name] = {}
+            if service.name not in self.hosted_services[service.app_name]:
+                self.hosted_services[service.app_name][service.name] = {}
+            if service.user in self.hosted_services[service.app_name][service.name]:
+                self.hosted_services[service.app_name][service.name][service.user].append(service)
+            else:
+                self.hosted_services[service.app_name][service.name][service.user] = [service]
 
-    def add_assigned_service(self, service):
+    def add_to_assigned_services(self, service):
         if service.app_name not in self.assigned_services:
             self.assigned_services[service.app_name] = {}
-        self.assigned_services[service.app_name][service.name] = service
+        if service.name not in self.assigned_services[service.app_name]:
+            self.assigned_services[service.app_name][service.name] = service
+
+    def get_public_services(self):
+        public_services = []
+        for app_name in self.hosted_services:
+            for service_name in self.hosted_services[app_name]:
+                if "public" in self.hosted_services[app_name][service_name]:
+                    for service in self.hosted_services[app_name][service_name]["public"]:
+                        public_services.append(service)
+
+        return public_services
+
+    def get_public_load_balancers(self):
+        public_load_balancers = []
+        for app_name in self.load_balancers:
+            for service_name in self.load_balancers[app_name]:
+                if "public" in self.load_balancers[app_name][service_name]:
+                    for service in self.load_balancers[app_name][service_name]["public"]:
+                        public_load_balancers.append(service)
+
+        return public_load_balancers
+
+    def add_public_services(self, services):
+        if not isinstance(services, list):
+            services = [services]
+        for service in services:
+            if service.app_name not in self.public_services:
+                self.public_services[service.app_name] = {}
+            if service.name not in self.public_services[service.app_name]:
+                self.public_services[service.app_name][service.name] = [service]
+            else:
+                self.public_services[service.app_name][service.name].append(service)
 
     def get_assigned_service(self, service):
         if service.app_name not in self.assigned_services:
@@ -139,15 +180,15 @@ class ComputeNode(Entity):
             self.assigned_services[service.app_name][service.name] = service
 
     def does_service_exist(self, service):
-        if service.app_name not in self.services:
+        if service.app_name not in self.hosted_services:
             return False
-        elif service.name not in self.services[service.app_name]:
+        elif service.name not in self.hosted_services[service.app_name]:
             return False
         else:
             return True
 
     def remove_from_service_list(self, service):
-        self.services[service.app_name][service.name][service.user].remove(service)
+        self.hosted_services[service.app_name][service.name][service.user].remove(service)
 
     def deploy_app(self, app):
         raise NotImplementedError("App deployment not implemented!")

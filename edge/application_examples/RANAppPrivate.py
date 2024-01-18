@@ -17,7 +17,7 @@ class DataProcessingPrivate(Microservice):
     name = "Data_Processing"
     app_name = "RANApplicationPrivate"
     user = "public"
-    required_cpu_share = 1
+    request_cpu_share = 1
     required_memory = 1
     is_deployed_at_edge = True
     input_messages = OffloadedData
@@ -27,7 +27,7 @@ class DataProcessingPrivate(Microservice):
     def __init__(self):
         super().__init__(name=DataProcessingPrivate.name,
                          app_name=DataProcessingPrivate.app_name,
-                         required_cpu_share=DataProcessingPrivate.required_cpu_share,
+                         request_cpu_share=DataProcessingPrivate.required_cpu_share,
                          required_memory=DataProcessingPrivate.required_memory,
                          is_deployed_at_edge=DataProcessingPrivate.is_deployed_at_edge,
                          input_messages=DataProcessingPrivate.input_messages,
@@ -40,7 +40,7 @@ class DataGenerationPrivate(Microservice):
     name = "Data_Generation"
     app_name = "RANApplicationPrivate"
     user = None
-    required_cpu_share = 0.1
+    request_cpu_share = 0.1
     required_memory = 0.1
     is_deployed_at_edge = False
     output_message = OffloadedData
@@ -49,7 +49,7 @@ class DataGenerationPrivate(Microservice):
     def __init__(self):
         super().__init__(name=DataGenerationPrivate.name,
                          app_name=DataGenerationPrivate.app_name,
-                         required_cpu_share=DataGenerationPrivate.required_cpu_share,
+                         request_cpu_share=DataGenerationPrivate.required_cpu_share,
                          required_memory=DataGenerationPrivate.required_memory,
                          is_deployed_at_edge=DataGenerationPrivate.is_deployed_at_edge,
                          output_messages=DataGenerationPrivate.output_message,

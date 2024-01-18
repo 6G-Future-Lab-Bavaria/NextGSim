@@ -3,6 +3,7 @@ import copy
 from edge.entities.ComputeNode import ComputeNode
 from edge.entities.cpu.Cpu import Cpu
 from edge.application.ApplicationRepository import get_app
+from edge.application.LoadBalancerService import LoadBalancerService
 
 
 class EdgeServer(ComputeNode):
@@ -19,10 +20,24 @@ class EdgeServer(ComputeNode):
         self.orchestrator = orchestrator
         orchestrator.add_server(self)
 
+    def deploy_load_balancer(self, app_name, service_name, balanced_servers):
+        load_balancer_service = LoadBalancerService(app_name=app_name, balanced_service=service_name,
+                                                    balanced_servers=balanced_servers)
+        load_balancer_service.deploy(self, "public")
+        self.add_to_load_balancer_list(load_balancer_service)
+
+    def add_to_load_balancer_list(self, load_balancer):
+        if load_balancer.app_name not in self.load_balancers:
+            self.load_balancers[load_balancer.app_name] = {}
+        if load_balancer.name not in self.load_balancers[load_balancer.app_name]:
+            self.load_balancers[load_balancer.app_name][load_balancer.name] = {}
+        if load_balancer.user in self.load_balancers[load_balancer.app_name][load_balancer.name]:
+            self.load_balancers[load_balancer.app_name][load_balancer.name][load_balancer.user].append(load_balancer)
+        else:
+            self.load_balancers[load_balancer.app_name][load_balancer.name][load_balancer.user] = [load_balancer]
+
     def deploy_app(self, app_name, num_of_instances=None):
         app = get_app(app_name)
-        print("SERVER APP NAME")
-        print(app.name)
         for service in app.services:
             if service.is_deployed_at_edge:
                 if num_of_instances is not None:
@@ -36,6 +51,7 @@ class EdgeServer(ComputeNode):
                         self.deploy_service({"service": service_instance, "user": "public"})
                     else:
                         self.deploy_service({"service": service_instance, "user": None})
+
 
 
 

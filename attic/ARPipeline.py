@@ -70,7 +70,7 @@ class ARPipeline(Application):
                                required_memory=1000,
                                service_type="COMPUTE",
                                is_deployed_at_edge=True,
-                               required_cpu_share=1,
+                               request_cpu_share=1,
                                input_messages=m_camera_frame,
                                output_messages=m_processed_frame,
                                app=self)
@@ -79,7 +79,7 @@ class ARPipeline(Application):
                             required_memory=1000,
                             service_type="COMPUTE",
                             is_deployed_at_edge=True,
-                            required_cpu_share=1,
+                            request_cpu_share=1,
                             input_messages=m_processed_frame,
                             output_messages=m_orig_descp,
                             app=self)
@@ -88,7 +88,7 @@ class ARPipeline(Application):
                                 required_memory=1000,
                                 service_type="COMPUTE",
                                 is_deployed_at_edge=True,
-                                required_cpu_share=1,
+                                request_cpu_share=1,
                                 input_messages=m_orig_descp,
                                 output_messages=m_fisher_vec,
                                 app=self)
@@ -97,7 +97,7 @@ class ARPipeline(Application):
                            required_memory=1000,
                            service_type="COMPUTE",
                            is_deployed_at_edge=True,
-                           required_cpu_share=1,
+                           request_cpu_share=1,
                            input_messages=m_fisher_vec,
                            output_messages=m_nearest_neighbours,
                            app=self)
@@ -106,7 +106,7 @@ class ARPipeline(Application):
                                 required_memory=1000,
                                 service_type="COMPUTE",
                                 is_deployed_at_edge=True,
-                                required_cpu_share=1,
+                                request_cpu_share=1,
                                 input_messages=m_fisher_vec,
                                 output_messages=m_result,
                                 app=self)

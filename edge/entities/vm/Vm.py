@@ -28,7 +28,7 @@ class Vm(Entity):
         Current service deployment model is to offload it to a random available cpu
         """
         service.process_id = process_id
-        if service.required_cpu_share < self.available_cpu_share and service.required_memory < self.storage:
+        if service.request_cpu_share < self.available_cpu_share and service.required_memory < self.storage:
             self.services[service.name] = process_id
             self.cpu.deploy_service(service)
             self.storage -= service.required_memory

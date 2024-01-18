@@ -14,6 +14,7 @@ ProcessID_to_Service_Map = {}
 
 process_id_counter = 0
 logger = logging.getLogger(__name__)
+AVERAGING_COEFFICIENT = 0.5
 
 
 def get_process_id():
@@ -31,8 +32,8 @@ class Microservice(Entity):
                  output_messages=None,
                  generated_message=None,
                  distribution=None,
-                 required_cpu_share=0.1,
-                 cpu_share_limit=None,
+                 request_cpu_share=0.1,
+                 limit_cpu_share=None,
                  required_gpu_share=0,
                  required_memory=0,
                  destination_service=None,
@@ -60,10 +61,10 @@ class Microservice(Entity):
         self.app_name = app_name
         self.host_entity = None
         self.user = None
-        self.user_list = []  # Only used for public services
+        self.user_list = []  # Only used for public hosted_services
         self.process_id = get_process_id()
-        self.required_cpu_share = required_cpu_share
-        self.cpu_share_limit = cpu_share_limit
+        self.request_cpu_share = request_cpu_share
+        self.limit_cpu_share = limit_cpu_share
         self.required_memory = required_memory
         self.destination_service = destination_service
         self.sequence_number = 0
@@ -75,8 +76,9 @@ class Microservice(Entity):
         self.processing_queue = None
         self.generated_message = generated_message
         self.generation_distribution = distribution
-        self.average_latency = 0
+        self.avg_processing_time = 0
         self.user_information_from_orchestrator = {}
+        self.avg_processing_time_per_user = {}
         self.desired_latency = desired_latency
         self.radio_aware = radio_aware
 
@@ -90,6 +92,9 @@ class Microservice(Entity):
         else:
             self.output_messages = output_messages
 
+        self.rr_counter = 0
+        self.num_threads = 1
+
     def set_user(self, user):
         self.user = user
 
@@ -99,13 +104,27 @@ class Microservice(Entity):
         """
         self.message_receive_queue = simpy.Store(env)
         self.message_send_queue = simpy.Store(env)
-        self.processing_queue = []
+        self.processing_queue = [[] for _ in range(self.num_threads)]
+        # self.processing_queue = []
 
-    def update_average_processing_latency(self, processing_time):
-        if self.average_latency is not None:
-            self.average_latency = 0.5 * self.average_latency + 0.5 * processing_time
+    def update_average_processing_latency(self, processing_time, user_id):
+        if user_id in self.avg_processing_time_per_user:
+            self.avg_processing_time_per_user[user_id] = AVERAGING_COEFFICIENT * processing_time + \
+                                                         (1 - AVERAGING_COEFFICIENT) * processing_time
         else:
-            self.average_latency = processing_time
+            self.avg_processing_time_per_user[user_id] = processing_time
+
+        if self.avg_processing_time is not None:
+            self.avg_processing_time = AVERAGING_COEFFICIENT * self.avg_processing_time + \
+                                       (1 - AVERAGING_COEFFICIENT) * processing_time
+        else:
+            self.avg_processing_time = processing_time
+
+    def get_average_processing_time_per_user(self):
+        return self.avg_processing_time_per_user
+
+    def get_average_processing_time(self):
+        return self.avg_processing_time
 
     def update_user_information_from_orchestrator(self, information):
         self.user_information_from_orchestrator = information
@@ -204,20 +223,15 @@ class Microservice(Entity):
         process_id = self.process_id
         while not sim.stop:
             received_message = yield self.message_receive_queue.get()
-            if received_message.msg_type == "SINK":
-                sim.logger.debug("(App:%s #Process:%i #%s) Received Message: %s at time T : %s\n" % (
-                    self.app.name, self.process_id, self.name, received_message.name, sim.env.now))
-                get_AppName_to_AppInst_Map()[self.app.name][self.app.user_id].latest_ending_time = sim.env.now
-            else:
-                sim.logger.debug(
-                    "(App:%s #Process:%i #%s) Processing Message: %s with Sequence Number : %d at T: %s \n" % (
-                        self.app_name, process_id, self.name, received_message.name,
-                        received_message.sequence_number,
-                        sim.env.now))
-                received_message.start_of_processing = sim.env.now
-                self.host_entity.orchestrator.collect_message_for_analytics(received_message)
-                self.processing_queue.append(received_message)
-                # self.processing_queue.put(received_message)
+            sim.logger.debug(
+                "(App:%s #Process:%i #%s) Processing Message: %s with Sequence Number : %d at T: %s \n" % (
+                    self.app_name, process_id, self.name, received_message.name,
+                    received_message.sequence_number,
+                    sim.env.now))
+            received_message.start_of_processing = sim.env.now
+            self.host_entity.orchestrator.collect_message_for_analytics(received_message)
+            self.processing_queue[self.rr_counter].append(received_message)
+            self.rr_counter = (self.rr_counter + 1) % self.num_threads
 
     def process_messages(self):
         mec_sim = get_sim()

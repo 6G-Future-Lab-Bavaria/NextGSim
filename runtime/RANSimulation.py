@@ -54,7 +54,7 @@ class RANSimulation(threading.Thread):
         # Generation of the scheduler at gNB side
         self.ctrl_scheduler = None
         self.throughput_calc = None
-        # Gneration of the mobility
+        # Generation of the mobility
         # Generation of the results and plotting
         self.visualization = plotting.ScenarioVisualization.scenario_visualization(self)
         self.plot_allocation_flag = False

@@ -89,7 +89,7 @@ def report_backhaul_status(sim):
                 else:
                     user_id = sim.processId_to_nodeId[message.destination_service_id]
                     process_ids.append(message.destination_service_id)
-                    process_names.append(get_entity_by_id(server_id).services[message.destination_service_id].name)
+                    process_names.append(get_entity_by_id(server_id).hosted_services[message.destination_service_id].name)
                     user_ids.append(user_id)
                     server_ids.append(server_id)
 

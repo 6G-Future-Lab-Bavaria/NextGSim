@@ -70,3 +70,4 @@ class Constants:
 class EntityClass:
     physical_entities = ["Device", "EdgeServer", "GnB", "Router"]
     application_entities = ["Microservice"]
+

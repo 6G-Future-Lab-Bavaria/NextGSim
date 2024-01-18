@@ -7,13 +7,15 @@ import os
 
 import numpy as np
 import pandas as pd
-
+import random
 
 from edge.network.NetworkTopology import NetworkTopology
 from edge.network.Routing import get_path
 from edge.network.Link import add_bidirectional_link
-from edge.entities.Entity import get_entity_by_id, get_edge_servers, get_cpus, getDeviceID_to_EntityID_Map, getBaseStationID_to_EntityID_Map, \
+from edge.entities.Entity import get_entity_by_id, get_edge_servers, get_cpus, getDeviceID_to_EntityID_Map, \
+    getBaseStationID_to_EntityID_Map, \
     map_entity_id_to_device_id, set_sim, get_routers, get_orchestrators, map_user_id_to_entity
+from edge.entities.entity_classes import get_entity_class, get_entity_type
 from edge.application.Microservice import getProcessID_to_NodeID_Map, \
     getProcessID_to_Service_Map
 from edge.entities.EdgeServer import EdgeServer
@@ -21,6 +23,7 @@ from edge.entities.Router import Router
 from edge.entities.orchestrator.EdgeOrchestrator import EdgeOrchestrator
 from edge.util.DistributionFunctions import DeterministicDistributionWithStartingTime
 from edge.util.Util import closest_node
+from edge.entities.entity_classes import get_entity_class
 
 from definitions import CONFIGURATION_DIR
 
@@ -29,15 +32,15 @@ EPSILON_SCALING = 0.001
 SEQ_NUM = 0
 
 
-def get_sim():
+def get_mec_sim():
     return MECSimulation.INSTANCE
 
 
 class MECSimulation(threading.Thread):
     """
 
-    This class contains the discrete-event ran_simulation environment that is responsible for orchestration of the
-    ran_simulation.
+    This class contains the discrete-event mec_simulation environment that is responsible for orchestration of the
+    mec_simulation.
 
         Args:
            logger (Logger) : Logger settings for the ran_simulation log.
@@ -98,7 +101,7 @@ class MECSimulation(threading.Thread):
         # self.env.process(self.__update_service_locations(self.sim_params.service_replacement_algorithm))
         self.logger.debug('Starting Simulation')
         # self.topology.show_topology()
-        self.env.run(self.simulation_time)  # fixme: hardcoded running time
+        self.env.run(self.simulation_time)
         return
         # self.topology.show_topology()
 
@@ -129,10 +132,11 @@ class MECSimulation(threading.Thread):
         entity_tags = {}
 
         for entity in self.mec_entities:
+            entity_class = get_entity_class(entity)
+            entity_type = get_entity_type(entity)
             if self.mec_entities[entity]["model"] == "edge_server":
                 entity_tags[entity] = EdgeServer(location=self.mec_entities[entity]["location"])
                 self.main_simulation.edge_servers_per_scenario.append(entity_tags[entity])
-                entity_tags[entity].bind_to_orchestrator(orchestrator)
             if self.mec_entities[entity]["model"] == "router":
                 entity_tags[entity] = Router(location=self.mec_entities[entity]["location"])
                 self.main_simulation.routers_per_scenario.append(entity_tags[entity])
@@ -157,15 +161,28 @@ class MECSimulation(threading.Thread):
             add_bidirectional_link(closest_router, base_station)
 
         for device_type in self.mec_applications:
-            if device_type == "edge_servers":
+            device_class = ge
+            if device_type == "edge_server_types":
                 for application_deployment in self.mec_applications[device_type]:
                     application_deployment_information = self.mec_applications[device_type][application_deployment]
-                    for i in range(int(application_deployment_information["from"]) - 1,
-                                   int(application_deployment_information["to"])):
-                        self.main_simulation.edge_servers_per_scenario[i].bind_to_orchestrator(orchestrator)
-                        self.main_simulation.edge_servers_per_scenario[i].deploy_app(
-                            application_deployment_information["application"],
-                            int(application_deployment_information["num_of_instances"]))
+                    deployed_servers = [self.main_simulation.edge_servers_per_scenario[j] for j in
+                                        range(int(application_deployment_information["from"]) - 1,
+                                              int(application_deployment_information["to"]))]
+
+                    for server in deployed_servers:
+                        server.bind_to_orchestrator(orchestrator)
+                        server.deploy_app(application_deployment_information["application"],
+                                          int(application_deployment_information["num_of_instances"]))
+
+                    if "load_balanced_services" in application_deployment_information:
+                        for j in range(len(application_deployment_information["load_balanced_services"])):
+                            self.main_simulation.edge_servers_per_scenario[
+                                application_deployment_information["load_balancer_locations"][j]]. \
+                                deploy_load_balancer(app_name=application_deployment_information["application"],
+                                                     service_name=application_deployment_information["load_balanced_services"][j],
+                                                     balanced_servers=deployed_servers)
+
+
             if device_type == "mobile_devices":
                 for application_deployment in self.mec_applications[device_type]:
                     application_deployment_information = self.mec_applications[device_type][application_deployment]
@@ -178,6 +195,7 @@ class MECSimulation(threading.Thread):
                             application_deployment_information["application"])
 
         orchestrator.place_services(self.sim_params.service_placement_algorithm)
+        orchestrator.expose_public_services()
 
     def __transfer_message(self, message, latency):
         """
@@ -197,7 +215,6 @@ class MECSimulation(threading.Thread):
 
         while not self.stop:
             message = yield self.network_message_queue.get()
-
             if message.sender_id == message.receiver_id:
                 if message.destination_service_id in getProcessID_to_Service_Map():
                     message.location = message.receiver_id
@@ -246,7 +263,7 @@ class MECSimulation(threading.Thread):
 
     def send_message(self, message):
         """
-        Any exchange of source messages between all services is done in this function and metrics are updated when the output_message
+        Any exchange of source messages between all hosted_services is done in this function and metrics are updated when the output_message
         arrives at the receiver.
         """
         path = get_path(self.topology, int(message.sender_id),
@@ -353,7 +370,8 @@ class MECSimulation(threading.Thread):
                             processing_percentages.append(tmp_processing_percentage)
                             scheduling_status.append("N/A")
                             packet_data_sizes.append(message.bits)
-                            latencies.append(round(message.ul_latency + self.env.now - message.entry_time_to_backhaul, 2))
+                            latencies.append(
+                                round(message.ul_latency + self.env.now - message.entry_time_to_backhaul, 2))
 
             for message in messages_to_remove:
                 self.messages_in_the_backhaul.remove(message)
@@ -384,7 +402,7 @@ class MECSimulation(threading.Thread):
                     scheduling_status.append(None)
                     packet_data_sizes.append(None)
 
-            for i in range(max(len(edge_server_list), len(process_ids))-1):
+            for i in range(max(len(edge_server_list), len(process_ids)) - 1):
                 reporting_time.append(0)
 
             self.logger.debug(edge_server_list)
@@ -404,12 +422,15 @@ class MECSimulation(threading.Thread):
             self.logger.debug("\n")
 
             MEC_to_RAN_column = np.column_stack((edge_server_list, edge_servers_available_cpu_shares,
-                                                edge_servers_available_storage,
-                                                process_ids, process_names, user_ids, server_ids, processing_percentages,
-                                                latencies, scheduling_status, packet_data_sizes, reporting_time))
-            df = pd.DataFrame(MEC_to_RAN_column, columns=["Edge Server List", "Available CPU Shares", "Available Storage",
-                                                          "Process IDs", "Process Names", "User IDs", "Server IDs", "Processing Percentages",
-                                                          "Latencies", "Scheduling Status", "Packet Data Sizes", "Reporting Time"])
+                                                 edge_servers_available_storage,
+                                                 process_ids, process_names, user_ids, server_ids,
+                                                 processing_percentages,
+                                                 latencies, scheduling_status, packet_data_sizes, reporting_time))
+            df = pd.DataFrame(MEC_to_RAN_column,
+                              columns=["Edge Server List", "Available CPU Shares", "Available Storage",
+                                       "Process IDs", "Process Names", "User IDs", "Server IDs",
+                                       "Processing Percentages",
+                                       "Latencies", "Scheduling Status", "Packet Data Sizes", "Reporting Time"])
             self.main_simulation.mec_data = df
 
     def receive_ran_data(self):
@@ -418,7 +439,6 @@ class MECSimulation(threading.Thread):
             next_tti = self.main_simulation.tti_dist.next()
             self.parse_RAN_data(sim.ran_data)
             yield self.env.timeout(next_tti)
-
 
     def parse_RAN_data(self, ran_data):
         global SEQ_NUM
@@ -442,8 +462,8 @@ class MECSimulation(threading.Thread):
 
         while arrived_packets:
             packet = arrived_packets[0]
-            source_entity = get_entity_by_id(self.DeviceID_to_EntityID_Map()[int(packet.user_id)])
-            service_information = source_entity.get_service_information()
+            sender = get_entity_by_id(self.DeviceID_to_EntityID_Map()[int(packet.user_id)])
+            service_information = sender.get_service_information()
             app_name = service_information["app_name"]
             service = service_information["service"]
             ran_message = service.output_message()
@@ -451,20 +471,38 @@ class MECSimulation(threading.Thread):
             ran_message.set_bits(packet.size * 10 ** 3)
             ran_message.set_delay_budget(packet.delay_budget)
             ran_message.sequence_number = SEQ_NUM
-            ran_message.timestamp = self.env.now
+            ran_message.timestamp = self.env.now - packet.latency
+            ran_message.ul_latency = packet.latency
+            ran_message.entry_time_to_backhaul = self.env.now
             ran_message.sender_id = self.BaseStationID_to_EntityID_Map()[int(packet.received_bs)]
             ran_message.source_service = service.name
             ran_message.source_service_id = service.process_id
-            ran_message.source_id = source_entity.entity_id
+            ran_message.source_id = sender.entity_id
             ran_message.user_id = packet.user_id
             ran_message.location = ran_message.sender_id
             ran_message.app_name = app_name
-            ran_message.destination_service_instance = \
-                map_user_id_to_entity(packet.user_id).assigned_services[ran_message.app_name][ran_message.destination_service]
+            if app_name in sender.assigned_services:
+                if ran_message.destination_service in sender.assigned_services[app_name]:
+                    ran_message.destination_service_instance = sender.assigned_services[app_name][ran_message.destination_service]
+                else:
+                    if app_name in sender.public_services:
+                        if ran_message.destination_service in sender.public_services[app_name]:
+                            ran_message.destination_service_instance = \
+                                random.choice(sender.public_services[app_name][ran_message.destination_service])
+                    else:
+                        arrived_packets.remove(packet)
+                        continue
+            else:
+                if app_name in sender.public_services:
+                    if ran_message.destination_service in sender.public_services[app_name]:
+                        ran_message.destination_service_instance = \
+                            random.choice(sender.public_services[app_name][ran_message.destination_service])
+                    else:
+                        arrived_packets.remove(packet)
+                        continue
+
             ran_message.destination_service_id = ran_message.destination_service_instance.process_id
             ran_message.destination_id = getProcessID_to_NodeID_Map()[ran_message.destination_service_id]
-            ran_message.ul_latency = packet.latency
-            ran_message.entry_time_to_backhaul = self.env.now
             self.messages_in_the_backhaul.append(ran_message)
             self.send_message(ran_message)
             arrived_packets.remove(packet)

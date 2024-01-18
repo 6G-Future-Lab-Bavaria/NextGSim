@@ -12,8 +12,8 @@ class LatencyAwareMicroservice(Microservice):
                  output_messages=None,
                  generated_message=None,
                  distribution=None,
-                 required_cpu_share=1,
-                 cpu_share_limit=None,
+                 request_cpu_share=1,
+                 limit_cpu_share=None,
                  required_memory=0,
                  destination_service=None,
                  is_deployed_at_edge=False,
@@ -42,8 +42,8 @@ class LatencyAwareMicroservice(Microservice):
             output_messages=output_messages,
             generated_message=generated_message,
             distribution=distribution,
-            required_cpu_share=required_cpu_share,
-            cpu_share_limit=cpu_share_limit,
+            request_cpu_share=request_cpu_share,
+            limit_cpu_share=limit_cpu_share,
             required_memory=required_memory,
             destination_service=destination_service,
             is_deployed_at_edge=is_deployed_at_edge,
@@ -73,6 +73,7 @@ class LatencyAwareMicroservice(Microservice):
                             sim.env.now))
                     received_message.start_of_processing = sim.env.now
 
-                    self.processing_queue.append(received_message)
+                    self.processing_queue[self.rr_counter].append(received_message)
+                    self.rr_counter = (self.rr_counter + 1) % self.num_threads
 
             self.host_entity.orchestrator.collect_message_for_analytics(received_message)

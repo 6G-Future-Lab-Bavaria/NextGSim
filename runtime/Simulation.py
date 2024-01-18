@@ -22,6 +22,7 @@ from runtime.EventChain import EventChain
 from runtime.utilities import utility
 # from runtime.Parse_configuration import SimulationParameters
 from edge.util.DistributionFunctions import DeterministicDistributionWithStartingTime
+from edge.entities.Entity import ENTITY_LIST
 
 np.set_printoptions(threshold=np.inf)
 utility.format_figure()
@@ -39,7 +40,7 @@ class Simulation:
         logging.getLogger("PIL.PngImagePlugin").setLevel(logging.WARNING)
         random.seed(0)
         self.record_results = False
-        self.sim_params = SimulationParameters("config_test.json")
+        self.sim_params = SimulationParameters("config_energy_aware.json")
         self.env = simpy.Environment()
         self.setup = None
         self.stop = False

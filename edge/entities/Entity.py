@@ -28,10 +28,11 @@ class Entity(object):
         for each entity_id service_type.
     """
 
-    def __init__(self, name=None, entity_id=None, location=None):
+    def __init__(self, name=None, model=None, entity_id=None, location=None):
         global ENTITY_COUNTER
         global ENTITY_LIST
         self.name = name
+        self.model = model
         if entity_id is not None:
             self.entity_id = int(entity_id)
             ENTITY_COUNTER += 1
@@ -181,3 +182,5 @@ def add_bs(bs):
     BASE_STATIONS.append(bs)
     BaseStationID_to_EntityID_Map[bs.ID] = bs.entity_id
     EntityID_to_BaseStationID_Map[bs.entity_id] = bs.ID
+
+

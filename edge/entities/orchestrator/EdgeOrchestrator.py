@@ -1,10 +1,10 @@
-from edge.entities.Entity import Entity, get_entity_by_id, get_base_stations, map_user_id_to_entity
+from edge.entities.Entity import Entity, get_entity_by_id, get_base_stations, map_user_id_to_entity, get_sim
 from edge.network.NetworkTopology import get_topology
 from edge.util.Util import closest_node
 from networkx import shortest_path_length
 from numpy import random, argmin, ceil
 
-AVERAGING_COEFFICIENT = 0.8
+AVERAGING_COEFFICIENT = 0.5
 
 
 class EdgeOrchestrator(Entity):
@@ -28,7 +28,7 @@ class EdgeOrchestrator(Entity):
         if assigned_service.name not in self.service_assignment_map:
             self.service_assignment_map[assigned_service.name] = {}
         self.service_assignment_map[assigned_service.name][user] = assigned_service
-        map_user_id_to_entity(user).add_assigned_service(assigned_service)
+        map_user_id_to_entity(user).add_to_assigned_services(assigned_service)
 
     def update_service_map(self):
         def add_service_to_service_map(service):
@@ -45,10 +45,10 @@ class EdgeOrchestrator(Entity):
                 self.service_map[service.app][service.name][service.user].append(service)
 
         def update_node_services(node):
-            for app in node.services.keys():
-                for service in node.services[app]:
-                    for user in node.services[app][service]:
-                        for service_instance in node.services[app][service][user]:
+            for app in node.hosted_services.keys():
+                for service in node.hosted_services[app]:
+                    for user in node.hosted_services[app][service]:
+                        for service_instance in node.hosted_services[app][service][user]:
                             add_service_to_service_map(service_instance)
 
         self.service_map = {}
@@ -89,10 +89,10 @@ class EdgeOrchestrator(Entity):
     def search_for_the_service(self, service):
         suitable_services = []
         for server in self.nodes_managed:
-            if service.app_name in server.services:
-                if service.name in server.services[service.app_name]:
-                    if service.user in server.services[service.app_name][service.name]:
-                        for service in server.services[service.app_name][service.name]["public"]:
+            if service.app_name in server.hosted_services:
+                if service.name in server.hosted_services[service.app_name]:
+                    if service.user in server.hosted_services[service.app_name][service.name]:
+                        for service in server.hosted_services[service.app_name][service.name][service.user]:
                             suitable_services.append(service)
 
         return suitable_services
@@ -130,9 +130,9 @@ class EdgeOrchestrator(Entity):
         self.average_user_radio_latency = {}
         for message in self.analytic_packets:
             if message.user_id in self.average_user_radio_latency:
-                self.average_user_radio_latency[message.user_id] += message.ul_latency
+                self.average_user_radio_latency[message.user_id] += get_sim().env.now - message.timestamp
             else:
-                self.average_user_radio_latency[message.user_id] = message.ul_latency
+                self.average_user_radio_latency[message.user_id] = get_sim().env.now - message.timestamp
 
             if message.user_id in num_of_packets_per_user:
                 num_of_packets_per_user[message.user_id] += 1
@@ -166,7 +166,7 @@ class EdgeOrchestrator(Entity):
 
     def place_services(self, algorithm=None):
         """
-        Deploys services or assigns users to services according to Round Robin, Random
+        Deploys hosted_services or assigns users to hosted_services according to Round Robin, Random
         and LatencyAware algorithms.
         """
         if algorithm == "Round_Robin":
@@ -184,7 +184,11 @@ class EdgeOrchestrator(Entity):
                     {"user": request["user"], "service": request["service"], "deployed_node": deployed_node})
 
             for request in self.assignment_requests:
+                print("service")
+                print(request["service"])
                 services = self.search_for_the_service(request["service"])
+                print("services")
+                print(services)
                 assigned_service = services[rr_assignment_cnt % len(services)]
                 assigned_service.register_user(request["user"])
                 self.add_assignment(assigned_service, request["user"])
@@ -203,7 +207,7 @@ class EdgeOrchestrator(Entity):
                 assigned_service = random.choice(services)
                 assigned_service.register_user(request["user"])
                 self.add_assignment(assigned_service, request["user"])
-                map_user_id_to_entity(request["user"]).add_to_service_list(assigned_service)
+                map_user_id_to_entity(request["user"]).add_to_hosted_services(assigned_service)
 
         if algorithm == "LatencyAware":
             for request in self.deployment_requests:
@@ -246,6 +250,14 @@ class EdgeOrchestrator(Entity):
                 assigned_service.register_user(request["user"])
                 self.add_assignment(assigned_service, request["user"])
 
+    def expose_public_services(self):
+        for node in self.nodes_managed:
+            public_services = node.get_public_services()
+            public_load_balancers = node.get_public_load_balancers()
+            for device in self.connected_devices:
+                device.add_public_services(public_services)
+                device.add_public_services(public_load_balancers)
+
     def replace_services(self, algorithm=None):
         if algorithm == "autoscaling":
             self.update_service_map()
@@ -254,7 +266,7 @@ class EdgeOrchestrator(Entity):
                     sum_latencies = 0
                     sum_queue_length = 0
                     for service in self.service_map[app][service_name]["public"]:
-                        sum_latencies += service.average_latency
+                        sum_latencies += service.avg_processing_time
                         sum_queue_length += len(service.processing_queue)
                     desired_latency = get_service(service_name).desired_latency
                     num_replicas = len(self.service_map[app][service_name]["public"])

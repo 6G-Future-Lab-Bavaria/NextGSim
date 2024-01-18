@@ -75,7 +75,7 @@
       "1": {
       "from": 1,
       "to": 2,
-      "application": "RANApplicationPublicRadioAware",
+      "application": "RANApplicationPublic",
       "num_of_instances": 5
 }},
     "mobile_devices":{
@@ -83,7 +83,7 @@
     {
         "from": 1,
         "to" : 10,
-        "application": "RANApplicationPublicRadioAware"
+        "application": "RANApplicationPublic"
     }
   }
   }

@@ -1,5 +1,6 @@
 from edge.application_examples.RANAppPublic import RANApplicationPublic
 from edge.application_examples.RANAppPublicRadioAware import RANApplicationPublicRadioAware
+from edge.application_examples.RANAppPublicEnergy import RANApplicationPublicEnergy
 from edge.application_examples.RANAppPrivate import RANApplicationPrivate
 
 
@@ -8,6 +9,8 @@ def get_app(app_name):
         return RANApplicationPublic
     if app_name == "RANApplicationPublicRadioAware":
         return RANApplicationPublicRadioAware
+    if app_name == "RANApplicationPublicEnergy":
+        return RANApplicationPublicEnergy
     if app_name == "RANApplicationPrivate":
         return RANApplicationPrivate
 

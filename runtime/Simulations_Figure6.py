@@ -52,7 +52,7 @@ class Simulation:
 
         with open(CONFIGURATION_DIR + config_file, 'r') as file:
             data = json.load(file)
-            data["mec_applications"]["edge_servers"]["1"]["num_of_instances"] = sys.argv[5]
+            data["mec_applications"]["edge_server_types"]["1"]["num_of_instances"] = sys.argv[5]
 
         with open(CONFIGURATION_DIR+ config_file, 'w') as file:
             json.dump(data, file)

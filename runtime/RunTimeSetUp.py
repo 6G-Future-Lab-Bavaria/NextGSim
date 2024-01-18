@@ -12,6 +12,7 @@ class RunTime:
         user_packet_data = []
         user_packet_cycles = []
         user_packet_delay = []
+        packet_timestamps = []
         for device in devices:
             user_packet_data.append(np.random.randint(low=device.app.data_size_min, high=device.app.data_size_max))
             user_packet_cycles.append(np.random.uniform(low=device.app.cycles_per_bit_min, high=device.app.cycles_per_bit_max))

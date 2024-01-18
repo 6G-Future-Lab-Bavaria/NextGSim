@@ -31,7 +31,7 @@ def app_deployment_1(user_id=None):
                              distribution=deterministic_distribution, app=app)
     sensor_1_acq = Microservice(name='Sensor_1_Acquisition_APP1', app=app, required_memory=5000,
                                 service_type="COMPUTE",
-                                required_cpu_share=0.3, input_messages=m_sensor_1_acq, output_messages=m_sensor_1)
+                                request_cpu_share=0.3, input_messages=m_sensor_1_acq, output_messages=m_sensor_1)
     sensor_data_processing = Microservice(name='Sensor_Data_Processing_APP1', app=app, required_memory=5000,
                                           service_type="COMPUTE",
                                           input_messages=m_sensor_1, output_messages=m_processed_data,
@@ -75,7 +75,7 @@ def offloading_app(user_id=None):
                              distribution=deterministic_distribution, app=app)
     data_processing = Microservice(name='Data Processing', app=app, required_memory=5000,
                                    service_type="COMPUTE",
-                                   required_cpu_share=0.3, input_messages=m_offloaded, output_messages=m_processed)
+                                   request_cpu_share=0.3, input_messages=m_offloaded, output_messages=m_processed)
     data_sink = SinkService("Data Sink", host_entity_type='actuator', input_message=m_processed,
                             app=app)
 

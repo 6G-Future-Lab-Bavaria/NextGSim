@@ -79,7 +79,7 @@ class MobileDevice(ComputeNode):
     def deploy_app_to_vm_and_device(self, app):
         sim = get_sim()
         app.set_user_id(self.user_id)
-        for service in app.services:
+        for service in app.hosted_services:
             if service.is_deployed_at_edge:
                 service.deploy_service(sim, self.bound_vm)
             else:
@@ -89,7 +89,7 @@ class MobileDevice(ComputeNode):
         sim = get_sim()
         app.set_user_id(self.user_id)
 
-        for service in app.services:
+        for service in app.hosted_services:
             if not service.is_deployed_at_edge:
                 service.deploy_service(sim, self)
 

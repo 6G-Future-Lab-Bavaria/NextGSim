@@ -23,7 +23,8 @@ class Message:
     """
 
     def __init__(self, name=None, source_service=None, destination_service=None,
-                 instructions=0, bytes=0, msg_type='COMPUTE', delay_budget=None):
+                 instructions=0, bytes=0, msg_type='COMPUTE', delay_budget=None,
+                 timestamp=None):
         self.name = name
         self.user_id = None
         self.source_id = None
@@ -41,9 +42,8 @@ class Message:
         self.remaining_instructions_to_compute = instructions
         self.bits = bytes
         self.remaining_bytes_to_send = bytes
-        self.delay_budget = None
         self.msg_type = msg_type
-        self.timestamp = 0
+        self.timestamp = timestamp
         self.path = []
         self.app_name = None
         self.is_scheduled_by_ran = False
