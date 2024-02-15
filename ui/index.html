@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="static/style.css">
+    <script src="static/index.js"></script>
+</head>
+<body>
+<div id="modal">
+    <div id="new-project-btn-wrapper">
+        <button id="new-project-btn">New Project</button>
+    </div>
+    <ul id="projects">
+
+    </ul>
+</div>
+</body>
+<style>
+    body, html {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: sans-serif;
+    }
+
+    #modal {
+        width: 70%;
+        height: 80%;
+        background-color: #1abc9c;
+        border-radius: 1%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #new-project-btn-wrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: right;
+        align-items: center;
+        padding: 1em;
+    }
+
+    #new-project-btn {
+        width: initial;
+        border: none;
+        font-size: 1.3em;
+        background: none;
+        cursor: pointer;
+        color: white;
+        font-weight: bold;
+    }
+
+    #projects {
+        color: white;
+        font-weight: bold;
+        font-size: 1.1em;
+        list-style: none;
+        padding: 2em;
+        flex: auto;
+    }
+
+    #projects li {
+        margin-bottom: .8em;
+    }
+
+    #projects a {
+        color: white;
+        text-decoration: none;
+        background-color: rgba(255, 255, 255, 0.24);
+        padding: .5em;
+        display: block;
+    }
+</style>
+<script>
+    window.onload = async () => {
+        let res = await fetch("/api/projects");
+        let projects = await res.json();
+        let ul = document.getElementById("projects");
+        for (let proj of projects) {
+            let li = ul.appendChild(document.createElement("li"));
+            let a = li.appendChild(document.createElement("a"));
+            a.href = "/projects/" + proj;
+            a.innerText = proj;
+        }
+    }
+</script>
+</html>

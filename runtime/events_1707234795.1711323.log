@@ -1,0 +1,369 @@
+1,Device,{"type": "movement", "pos": [115.25188494675294, 22.26402185516163], "dir": [0.6888437030500962, 0.515908805880605]}
+1,Device,{"type": "movement", "pos": [12.99519149694964, 14.735190866158858], "dir": [-0.4821664994140733, 0.02254944273721704]}
+1,Device,{"type": "movement", "pos": [19.014255938378795, 45.9937532766553], "dir": [0.5675971780695452, -0.3933745478421451]}
+1,Device,{"type": "movement", "pos": [24.221699562360275, 56.39769945988006], "dir": [0.1667640789100624, 0.8162257703906703]}
+1,Device,{"type": "movement", "pos": [75.69690765927433, 9.042850480914517], "dir": [-0.43632431120059234, 0.5116084083144479]}
+1,Device,{"type": "movement", "pos": [21.003755958555082, 30.25677803238921], "dir": [-0.4989873172751189, 0.8194925119364802]}
+1,Device,{"type": "movement", "pos": [5.766025970004126, 46.490289091818916], "dir": [0.6204344719931791, 0.8043319008791654]}
+1,Device,{"type": "movement", "pos": [16.269659041887877, 32.048001638907365], "dir": [0.4596634965202573, 0.797676575935987]}
+1,Device,{"type": "movement", "pos": [20.8235043379363, 11.93291467855932], "dir": [-0.055714569094573285, -0.7985975838632684]}
+1,Device,{"type": "movement", "pos": [32.88011674940525, 40.55670453976032], "dir": [0.2217739468876032, 0.8260221064757964]}
+10,MECSimulation,{"type": "mec_msg", "from": 16, "to": 54}
+10,MECSimulation,{"type": "mec_msg", "from": 0, "to": 53}
+10,MECSimulation,{"type": "mec_msg", "from": 2, "to": 55}
+10,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+10,MECSimulation,{"type": "mec_msg", "from": 9, "to": 54}
+10,MECSimulation,{"type": "mec_msg", "from": 4, "to": 53}
+10,MECSimulation,{"type": "mec_msg", "from": 2, "to": 55}
+10,MECSimulation,{"type": "mec_msg", "from": 1, "to": 53}
+10,MECSimulation,{"type": "mec_msg", "from": 3, "to": 53}
+10,MECSimulation,{"type": "mec_msg", "from": 4, "to": 53}
+10.023546656053512,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+10.023546656053512,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+10.037230532065372,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+10.047254532065372,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+10.052651923281804,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+10.052651923281804,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+10.070639967680536,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+10.08489867514132,MECSimulation,{"type": "mec_msg", "from": 54, "to": 53}
+10.08966299427879,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+10.08966299427879,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+10.09492267514132,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+10.09968699427879,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+10.09968699427879,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+10.150772162789988,MECSimulation,{"type": "mec_msg", "from": 54, "to": 53}
+10.160796162789987,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+11,Device,{"type": "movement", "pos": [116.0460283599551, 22.85879477416918], "dir": [0.6888437030500962, 0.515908805880605]}
+11,Device,{"type": "movement", "pos": [12.713704487011258, 14.7483551470029], "dir": [-0.4821664994140733, 0.02254944273721704]}
+11,Device,{"type": "movement", "pos": [19.67654508168119, 45.534752241496136], "dir": [0.5675971780695452, -0.3933745478421451]}
+11,Device,{"type": "movement", "pos": [24.306103726142823, 56.81081512638246], "dir": [0.1667640789100624, 0.8162257703906703]}
+11,Device,{"type": "movement", "pos": [74.81312649496849, 10.079120666100078], "dir": [-0.43632431120059234, 0.5116084083144479]}
+11,Device,{"type": "movement", "pos": [18.168914681634178, 34.91246990778865], "dir": [-0.4989873172751189, 0.8194925119364802]}
+11,Device,{"type": "movement", "pos": [6.48067379718241, 47.4167592852736], "dir": [0.6204344719931791, 0.8043319008791654]}
+11,Device,{"type": "movement", "pos": [17.214868087731954, 33.688269184493066], "dir": [0.4596634965202573, 0.797676575935987]}
+11,Device,{"type": "movement", "pos": [20.71127280215032, 10.324218160422241], "dir": [-0.055714569094573285, -0.7985975838632684]}
+11,Device,{"type": "movement", "pos": [34.06674265919906, 44.97642672698099], "dir": [0.2217739468876032, 0.8260221064757964]}
+20,MECSimulation,{"type": "mec_msg", "from": 16, "to": 54}
+20,MECSimulation,{"type": "mec_msg", "from": 0, "to": 53}
+20,MECSimulation,{"type": "mec_msg", "from": 2, "to": 55}
+20,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+20,MECSimulation,{"type": "mec_msg", "from": 9, "to": 54}
+20,MECSimulation,{"type": "mec_msg", "from": 4, "to": 53}
+20,MECSimulation,{"type": "mec_msg", "from": 2, "to": 55}
+20,MECSimulation,{"type": "mec_msg", "from": 1, "to": 53}
+20,MECSimulation,{"type": "mec_msg", "from": 3, "to": 53}
+20,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+20.02354665605351,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+20.037230532065372,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+20.037230532065372,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+20.047254532065374,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+20.047254532065374,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+20.052651923281804,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+20.052651923281804,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+20.070639967680535,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+20.08489867514132,MECSimulation,{"type": "mec_msg", "from": 54, "to": 53}
+20.08966299427879,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+20.08966299427879,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+20.094922675141323,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+20.09968699427879,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+20.09968699427879,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+20.150772162789988,MECSimulation,{"type": "mec_msg", "from": 54, "to": 53}
+20.16079616278999,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+21,Device,{"type": "movement", "pos": [116.84017177315727, 23.45356769317673], "dir": [0.6888437030500962, 0.515908805880605]}
+21,Device,{"type": "movement", "pos": [12.432217477072875, 14.761519427846943], "dir": [-0.4821664994140733, 0.02254944273721704]}
+21,Device,{"type": "movement", "pos": [20.338834224983586, 45.075751206336975], "dir": [0.5675971780695452, -0.3933745478421451]}
+21,Device,{"type": "movement", "pos": [24.39050788992537, 57.22393079288486], "dir": [0.1667640789100624, 0.8162257703906703]}
+21,Device,{"type": "movement", "pos": [73.92934533066264, 11.115390851285639], "dir": [-0.43632431120059234, 0.5116084083144479]}
+21,Device,{"type": "movement", "pos": [15.334073404713271, 39.56816178318809], "dir": [-0.4989873172751189, 0.8194925119364802]}
+21,Device,{"type": "movement", "pos": [7.195321624360695, 48.34322947872828], "dir": [0.6204344719931791, 0.8043319008791654]}
+21,Device,{"type": "movement", "pos": [18.16007713357603, 35.32853673007877], "dir": [0.4596634965202573, 0.797676575935987]}
+21,Device,{"type": "movement", "pos": [20.59904126636434, 8.715521642285163], "dir": [-0.055714569094573285, -0.7985975838632684]}
+21,Device,{"type": "movement", "pos": [35.25336856899286, 49.39614891420166], "dir": [0.2217739468876032, 0.8260221064757964]}
+30,MECSimulation,{"type": "mec_msg", "from": 16, "to": 54}
+30,MECSimulation,{"type": "mec_msg", "from": 0, "to": 53}
+30,MECSimulation,{"type": "mec_msg", "from": 2, "to": 55}
+30,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+30,MECSimulation,{"type": "mec_msg", "from": 9, "to": 54}
+30,MECSimulation,{"type": "mec_msg", "from": 1, "to": 53}
+30,MECSimulation,{"type": "mec_msg", "from": 2, "to": 55}
+30,MECSimulation,{"type": "mec_msg", "from": 1, "to": 53}
+30,MECSimulation,{"type": "mec_msg", "from": 3, "to": 53}
+30,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+30.037230532065372,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+30.037230532065372,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+30.047254532065374,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+30.047254532065374,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+30.052651923281804,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+30.052651923281804,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+30.052651923281804,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+30.070639967680535,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+30.08489867514132,MECSimulation,{"type": "mec_msg", "from": 54, "to": 53}
+30.08966299427879,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+30.08966299427879,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+30.094922675141323,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+30.09968699427879,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+30.09968699427879,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+30.150772162789988,MECSimulation,{"type": "mec_msg", "from": 54, "to": 53}
+30.16079616278999,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+31,Device,{"type": "movement", "pos": [117.63431518635943, 24.04834061218428], "dir": [0.6888437030500962, 0.515908805880605]}
+31,Device,{"type": "movement", "pos": [12.150730467134492, 14.774683708690986], "dir": [-0.4821664994140733, 0.02254944273721704]}
+31,Device,{"type": "movement", "pos": [21.00112336828598, 44.61675017117781], "dir": [0.5675971780695452, -0.3933745478421451]}
+31,Device,{"type": "movement", "pos": [24.474912053707918, 57.63704645938726], "dir": [0.1667640789100624, 0.8162257703906703]}
+31,Device,{"type": "movement", "pos": [73.0455641663568, 12.1516610364712], "dir": [-0.43632431120059234, 0.5116084083144479]}
+31,Device,{"type": "movement", "pos": [12.499232127792364, 44.22385365858753], "dir": [-0.4989873172751189, 0.8194925119364802]}
+31,Device,{"type": "movement", "pos": [7.909969451538979, 49.269699672182966], "dir": [0.6204344719931791, 0.8043319008791654]}
+31,Device,{"type": "movement", "pos": [19.10528617942011, 36.96880427566447], "dir": [0.4596634965202573, 0.797676575935987]}
+31,Device,{"type": "movement", "pos": [20.486809730578358, 7.106825124148085], "dir": [-0.055714569094573285, -0.7985975838632684]}
+31,Device,{"type": "movement", "pos": [36.439994478786666, 53.81587110142233], "dir": [0.2217739468876032, 0.8260221064757964]}
+40,MECSimulation,{"type": "mec_msg", "from": 16, "to": 54}
+40,MECSimulation,{"type": "mec_msg", "from": 0, "to": 53}
+40,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+40,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+40,MECSimulation,{"type": "mec_msg", "from": 9, "to": 54}
+40,MECSimulation,{"type": "mec_msg", "from": 1, "to": 53}
+40,MECSimulation,{"type": "mec_msg", "from": 2, "to": 55}
+40,MECSimulation,{"type": "mec_msg", "from": 1, "to": 53}
+40,MECSimulation,{"type": "mec_msg", "from": 3, "to": 53}
+40,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+40.03723053206537,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+40.03723053206537,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+40.03723053206537,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+40.047254532065374,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+40.047254532065374,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+40.047254532065374,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+40.0526519232818,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+40.0526519232818,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+40.0526519232818,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+40.070639967680535,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+40.08489867514132,MECSimulation,{"type": "mec_msg", "from": 54, "to": 53}
+40.08966299427879,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+40.09492267514132,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+40.09968699427879,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+40.15077216278999,MECSimulation,{"type": "mec_msg", "from": 54, "to": 53}
+40.16079616278999,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+41,Device,{"type": "movement", "pos": [118.4284585995616, 24.64311353119183], "dir": [0.6888437030500962, 0.515908805880605]}
+41,Device,{"type": "movement", "pos": [11.86924345719611, 14.78784798953503], "dir": [-0.4821664994140733, 0.02254944273721704]}
+41,Device,{"type": "movement", "pos": [21.663412511588376, 44.15774913601865], "dir": [0.5675971780695452, -0.3933745478421451]}
+41,Device,{"type": "movement", "pos": [24.559316217490466, 58.050162125889656], "dir": [0.1667640789100624, 0.8162257703906703]}
+41,Device,{"type": "movement", "pos": [72.16178300205095, 13.187931221656761], "dir": [-0.43632431120059234, 0.5116084083144479]}
+41,Device,{"type": "movement", "pos": [9.664390850871458, 48.87954553398697], "dir": [-0.4989873172751189, 0.8194925119364802]}
+41,Device,{"type": "movement", "pos": [8.624617278717263, 50.19616986563765], "dir": [0.6204344719931791, 0.8043319008791654]}
+41,Device,{"type": "movement", "pos": [20.050495225264186, 38.60907182125017], "dir": [0.4596634965202573, 0.797676575935987]}
+41,Device,{"type": "movement", "pos": [20.374578194792377, 5.498128606011008], "dir": [-0.055714569094573285, -0.7985975838632684]}
+41,Device,{"type": "movement", "pos": [37.62662038858047, 58.235593288643], "dir": [0.2217739468876032, 0.8260221064757964]}
+50,MECSimulation,{"type": "mec_msg", "from": 16, "to": 54}
+50,MECSimulation,{"type": "mec_msg", "from": 0, "to": 53}
+50,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+50,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+50,MECSimulation,{"type": "mec_msg", "from": 9, "to": 54}
+50,MECSimulation,{"type": "mec_msg", "from": 2, "to": 55}
+50,MECSimulation,{"type": "mec_msg", "from": 2, "to": 55}
+50,MECSimulation,{"type": "mec_msg", "from": 1, "to": 53}
+50,MECSimulation,{"type": "mec_msg", "from": 3, "to": 53}
+50,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+50.03723053206537,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+50.03723053206537,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+50.03723053206537,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+50.047254532065374,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+50.047254532065374,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+50.047254532065374,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+50.0526519232818,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+50.0526519232818,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+50.070639967680535,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+50.08489867514132,MECSimulation,{"type": "mec_msg", "from": 54, "to": 53}
+50.08966299427879,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+50.08966299427879,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+50.09492267514132,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+50.09968699427879,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+50.09968699427879,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+50.15077216278999,MECSimulation,{"type": "mec_msg", "from": 54, "to": 53}
+50.16079616278999,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+51,Device,{"type": "movement", "pos": [119.22260201276376, 25.23788645019938], "dir": [0.6888437030500962, 0.515908805880605]}
+51,Device,{"type": "movement", "pos": [11.587756447257727, 14.801012270379072], "dir": [-0.4821664994140733, 0.02254944273721704]}
+51,Device,{"type": "movement", "pos": [22.32570165489077, 43.69874810085949], "dir": [0.5675971780695452, -0.3933745478421451]}
+51,Device,{"type": "movement", "pos": [24.643720381273013, 58.463277792392056], "dir": [0.1667640789100624, 0.8162257703906703]}
+51,Device,{"type": "movement", "pos": [71.27800183774511, 14.224201406842322], "dir": [-0.43632431120059234, 0.5116084083144479]}
+51,Device,{"type": "movement", "pos": [6.829549573950551, 53.53523740938641], "dir": [-0.4989873172751189, 0.8194925119364802]}
+51,Device,{"type": "movement", "pos": [9.339265105895548, 51.12264005909233], "dir": [0.6204344719931791, 0.8043319008791654]}
+51,Device,{"type": "movement", "pos": [20.995704271108263, 40.24933936683587], "dir": [0.4596634965202573, 0.797676575935987]}
+51,Device,{"type": "movement", "pos": [20.262346659006397, 3.8894320878739306], "dir": [-0.055714569094573285, -0.7985975838632684]}
+51,Device,{"type": "movement", "pos": [38.813246298374274, 58.235593288643], "dir": [0.2217739468876032, -0.8260221064757964]}
+60,MECSimulation,{"type": "mec_msg", "from": 16, "to": 54}
+60,MECSimulation,{"type": "mec_msg", "from": 0, "to": 53}
+60,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+60,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+60,MECSimulation,{"type": "mec_msg", "from": 9, "to": 54}
+60,MECSimulation,{"type": "mec_msg", "from": 2, "to": 55}
+60,MECSimulation,{"type": "mec_msg", "from": 2, "to": 55}
+60,MECSimulation,{"type": "mec_msg", "from": 4, "to": 53}
+60,MECSimulation,{"type": "mec_msg", "from": 3, "to": 53}
+60,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+60.02354665605351,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+60.03723053206537,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+60.03723053206537,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+60.03723053206537,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+60.047254532065374,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+60.047254532065374,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+60.047254532065374,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+60.0526519232818,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+60.070639967680535,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+60.08489867514132,MECSimulation,{"type": "mec_msg", "from": 54, "to": 53}
+60.08966299427879,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+60.08966299427879,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+60.09492267514132,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+60.09968699427879,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+60.09968699427879,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+60.15077216278999,MECSimulation,{"type": "mec_msg", "from": 54, "to": 53}
+60.16079616278999,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+61,Device,{"type": "movement", "pos": [119.22260201276376, 25.83265936920693], "dir": [-0.6888437030500962, 0.515908805880605]}
+61,Device,{"type": "movement", "pos": [11.306269437319344, 14.814176551223115], "dir": [-0.4821664994140733, 0.02254944273721704]}
+61,Device,{"type": "movement", "pos": [22.987990798193167, 43.23974706570033], "dir": [0.5675971780695452, -0.3933745478421451]}
+61,Device,{"type": "movement", "pos": [24.72812454505556, 58.876393458894455], "dir": [0.1667640789100624, 0.8162257703906703]}
+61,Device,{"type": "movement", "pos": [70.39422067343926, 15.260471592027884], "dir": [-0.43632431120059234, 0.5116084083144479]}
+61,Device,{"type": "movement", "pos": [3.9947082970296446, 58.19092928478585], "dir": [-0.4989873172751189, 0.8194925119364802]}
+61,Device,{"type": "movement", "pos": [10.053912933073832, 52.04911025254702], "dir": [0.6204344719931791, 0.8043319008791654]}
+61,Device,{"type": "movement", "pos": [21.94091331695234, 41.88960691242157], "dir": [0.4596634965202573, 0.797676575935987]}
+61,Device,{"type": "movement", "pos": [20.150115123220417, 2.280735569736853], "dir": [-0.055714569094573285, -0.7985975838632684]}
+61,Device,{"type": "movement", "pos": [39.99987220816808, 53.81587110142233], "dir": [0.2217739468876032, -0.8260221064757964]}
+70,MECSimulation,{"type": "mec_msg", "from": 16, "to": 54}
+70,MECSimulation,{"type": "mec_msg", "from": 0, "to": 53}
+70,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+70,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+70,MECSimulation,{"type": "mec_msg", "from": 9, "to": 54}
+70,MECSimulation,{"type": "mec_msg", "from": 2, "to": 55}
+70,MECSimulation,{"type": "mec_msg", "from": 2, "to": 55}
+70,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+70,MECSimulation,{"type": "mec_msg", "from": 3, "to": 53}
+70,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+70.03723053206537,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+70.03723053206537,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+70.03723053206537,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+70.03723053206537,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+70.04725453206537,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+70.04725453206537,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+70.04725453206537,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+70.04725453206537,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+70.0526519232818,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+70.07063996768053,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+70.08489867514132,MECSimulation,{"type": "mec_msg", "from": 54, "to": 53}
+70.08966299427878,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+70.08966299427878,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+70.09492267514132,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+70.09968699427878,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+70.09968699427878,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+70.15077216278999,MECSimulation,{"type": "mec_msg", "from": 54, "to": 53}
+70.16079616278999,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+71,Device,{"type": "movement", "pos": [118.4284585995616, 26.42743228821448], "dir": [-0.6888437030500962, 0.515908805880605]}
+71,Device,{"type": "movement", "pos": [11.024782427380961, 14.827340832067158], "dir": [-0.4821664994140733, 0.02254944273721704]}
+71,Device,{"type": "movement", "pos": [23.650279941495562, 42.78074603054117], "dir": [0.5675971780695452, -0.3933745478421451]}
+71,Device,{"type": "movement", "pos": [24.81252870883811, 59.289509125396854], "dir": [0.1667640789100624, 0.8162257703906703]}
+71,Device,{"type": "movement", "pos": [69.51043950913342, 16.296741777213445], "dir": [-0.43632431120059234, 0.5116084083144479]}
+71,Device,{"type": "movement", "pos": [1.159867020108738, 58.19092928478585], "dir": [-0.4989873172751189, -0.8194925119364802]}
+71,Device,{"type": "movement", "pos": [10.768560760252116, 52.9755804460017], "dir": [0.6204344719931791, 0.8043319008791654]}
+71,Device,{"type": "movement", "pos": [22.886122362796417, 43.52987445800727], "dir": [0.4596634965202573, 0.797676575935987]}
+71,Device,{"type": "movement", "pos": [20.037883587434436, 0.6720390515997756], "dir": [-0.055714569094573285, -0.7985975838632684]}
+71,Device,{"type": "movement", "pos": [41.18649811796188, 49.39614891420166], "dir": [0.2217739468876032, -0.8260221064757964]}
+80,MECSimulation,{"type": "mec_msg", "from": 16, "to": 54}
+80,MECSimulation,{"type": "mec_msg", "from": 0, "to": 53}
+80,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+80,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+80,MECSimulation,{"type": "mec_msg", "from": 9, "to": 54}
+80,MECSimulation,{"type": "mec_msg", "from": 2, "to": 55}
+80,MECSimulation,{"type": "mec_msg", "from": 2, "to": 55}
+80,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+80,MECSimulation,{"type": "mec_msg", "from": 3, "to": 53}
+80,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+80.03723053206537,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+80.03723053206537,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+80.03723053206537,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+80.03723053206537,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+80.04725453206537,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+80.04725453206537,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+80.04725453206537,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+80.04725453206537,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+80.0526519232818,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+80.07063996768053,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+80.08489867514132,MECSimulation,{"type": "mec_msg", "from": 54, "to": 53}
+80.08966299427878,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+80.08966299427878,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+80.09492267514132,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+80.09968699427878,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+80.09968699427878,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+80.15077216278999,MECSimulation,{"type": "mec_msg", "from": 54, "to": 53}
+80.16079616278999,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+81,Device,{"type": "movement", "pos": [117.63431518635943, 27.02220520722203], "dir": [-0.6888437030500962, 0.515908805880605]}
+81,Device,{"type": "movement", "pos": [10.743295417442578, 14.8405051129112], "dir": [-0.4821664994140733, 0.02254944273721704]}
+81,Device,{"type": "movement", "pos": [24.312569084797957, 42.321744995382005], "dir": [0.5675971780695452, -0.3933745478421451]}
+81,Device,{"type": "movement", "pos": [24.896932872620656, 59.702624791899254], "dir": [0.1667640789100624, 0.8162257703906703]}
+81,Device,{"type": "movement", "pos": [68.62665834482758, 17.333011962399006], "dir": [-0.43632431120059234, 0.5116084083144479]}
+81,Device,{"type": "movement", "pos": [1.159867020108738, 53.53523740938641], "dir": [0.4989873172751189, -0.8194925119364802]}
+81,Device,{"type": "movement", "pos": [11.4832085874304, 53.902050639456384], "dir": [0.6204344719931791, 0.8043319008791654]}
+81,Device,{"type": "movement", "pos": [23.831331408640494, 45.17014200359297], "dir": [0.4596634965202573, 0.797676575935987]}
+81,Device,{"type": "movement", "pos": [19.925652051648456, 0.6720390515997756], "dir": [-0.055714569094573285, 0.7985975838632684]}
+81,Device,{"type": "movement", "pos": [42.373124027755686, 44.97642672698099], "dir": [0.2217739468876032, -0.8260221064757964]}
+90,MECSimulation,{"type": "mec_msg", "from": 16, "to": 54}
+90,MECSimulation,{"type": "mec_msg", "from": 0, "to": 53}
+90,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+90,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+90,MECSimulation,{"type": "mec_msg", "from": 9, "to": 54}
+90,MECSimulation,{"type": "mec_msg", "from": 2, "to": 55}
+90,MECSimulation,{"type": "mec_msg", "from": 2, "to": 55}
+90,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+90,MECSimulation,{"type": "mec_msg", "from": 3, "to": 53}
+90,MECSimulation,{"type": "mec_msg", "from": 8, "to": 55}
+90.03723053206537,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+90.03723053206537,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+90.03723053206537,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+90.04725453206537,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+90.04725453206537,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+90.04725453206537,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+90.0526519232818,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+90.06003242897647,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+90.07005642897647,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+90.07063996768053,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+90.08489867514132,MECSimulation,{"type": "mec_msg", "from": 54, "to": 53}
+90.08966299427878,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+90.08966299427878,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+90.09492267514132,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+90.09968699427878,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+90.09968699427878,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+90.15077216278999,MECSimulation,{"type": "mec_msg", "from": 54, "to": 53}
+90.16079616278999,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+91,Device,{"type": "movement", "pos": [116.84017177315727, 27.61697812622958], "dir": [-0.6888437030500962, 0.515908805880605]}
+91,Device,{"type": "movement", "pos": [10.461808407504195, 14.853669393755244], "dir": [-0.4821664994140733, 0.02254944273721704]}
+91,Device,{"type": "movement", "pos": [24.974858228100352, 41.86274396022284], "dir": [0.5675971780695452, -0.3933745478421451]}
+91,Device,{"type": "movement", "pos": [24.981337036403204, 59.702624791899254], "dir": [0.1667640789100624, -0.8162257703906703]}
+91,Device,{"type": "movement", "pos": [67.74287718052173, 18.369282147584567], "dir": [-0.43632431120059234, 0.5116084083144479]}
+91,Device,{"type": "movement", "pos": [3.9947082970296446, 48.87954553398697], "dir": [0.4989873172751189, -0.8194925119364802]}
+91,Device,{"type": "movement", "pos": [12.197856414608685, 54.82852083291107], "dir": [0.6204344719931791, 0.8043319008791654]}
+91,Device,{"type": "movement", "pos": [24.77654045448457, 46.81040954917867], "dir": [0.4596634965202573, 0.797676575935987]}
+91,Device,{"type": "movement", "pos": [19.813420515862475, 2.280735569736853], "dir": [-0.055714569094573285, 0.7985975838632684]}
+91,Device,{"type": "movement", "pos": [43.55974993754949, 40.55670453976032], "dir": [0.2217739468876032, -0.8260221064757964]}
+100,MECSimulation,{"type": "mec_msg", "from": 16, "to": 54}
+100,MECSimulation,{"type": "mec_msg", "from": 0, "to": 53}
+100,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+100,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+100,MECSimulation,{"type": "mec_msg", "from": 9, "to": 54}
+100,MECSimulation,{"type": "mec_msg", "from": 2, "to": 55}
+100,MECSimulation,{"type": "mec_msg", "from": 2, "to": 55}
+100,MECSimulation,{"type": "mec_msg", "from": 5, "to": 55}
+100,MECSimulation,{"type": "mec_msg", "from": 0, "to": 53}
+100,MECSimulation,{"type": "mec_msg", "from": 8, "to": 55}
+100.03723053206537,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+100.03723053206537,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+100.03723053206537,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+100.04725453206537,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+100.04725453206537,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+100.04725453206537,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+100.06003242897647,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+100.07005642897647,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+100.07063996768053,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+100.07063996768053,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+100.08489867514132,MECSimulation,{"type": "mec_msg", "from": 54, "to": 53}
+100.08966299427878,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+100.08966299427878,MECSimulation,{"type": "mec_msg", "from": 55, "to": 53}
+100.09492267514132,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}
+100.09968699427878,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+100.09968699427878,MECSimulation,{"type": "mec_msg", "from": 53, "to": 52}
+100.15077216278999,MECSimulation,{"type": "mec_msg", "from": 54, "to": 53}
+100.16079616278999,MECSimulation,{"type": "mec_msg", "from": 53, "to": 50}

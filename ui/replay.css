@@ -1,0 +1,50 @@
+body,html {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+#view {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.timeline {
+    height: 3em;
+    position: relative;
+    margin-bottom: 1em;
+    background-color: #eaeaea;
+    display: flex;
+    flex-direction: row;
+}
+
+.timeline::after {
+    background-color: black;
+    width: 100%;
+    height: 2px;
+    position: relative;
+    left: 0;
+    top:0;
+}
+
+.timeline .overlay {
+
+}
+
+.timeline .content {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 1px;
+}

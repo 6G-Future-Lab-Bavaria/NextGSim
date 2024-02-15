@@ -4,7 +4,7 @@ from abc import ABC
 """
     1. 3GPP: Channel model release 14
     2. Study of Realistic Antenna Patterns in 5G mmWave Cellular Scenarios.
-    3. ITU-R Report ITU-R M.2412 “Guidelines for Evaluation of Radio Interface Technologies for IMT-2020,” ITU-R WP 5D,
+    3. ITU-R Report ITU-R M.2412 “Guidelines for Evaluation of Radio interface.py Technologies for IMT-2020,” ITU-R WP 5D,
      Oct. 2017.
     Antenna pattern is needed to quantify antenna gain obtained due to the radiation pattern. A precise antenna pattern
     can be obtained combining together the array factor expression, which provides information on the directivity

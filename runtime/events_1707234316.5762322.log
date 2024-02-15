@@ -1,0 +1,200 @@
+2,Device,{"type": "movement", "pos": [97.26049969629382, 22.635292006786777], "dir": [0.6888437030500962, 0.515908805880605]}
+2,Device,{"type": "movement", "pos": [63.25560630657907, 16.806398858808663], "dir": [-0.4821664994140733, 0.02254944273721704]}
+2,Device,{"type": "movement", "pos": [116.28894374600888, 40.39244288901722], "dir": [0.5675971780695452, -0.3933745478421451]}
+2,Device,{"type": "movement", "pos": [112.87484267331192, 12.845264066878418], "dir": [0.1667640789100624, 0.8162257703906703]}
+2,Device,{"type": "movement", "pos": [54.10732693920629, 46.68859067810615], "dir": [-0.43632431120059234, 0.5116084083144479]}
+2,Device,{"type": "movement", "pos": [69.98408121599603, 29.035181473482222], "dir": [-0.4989873172751189, 0.8194925119364802]}
+2,Device,{"type": "movement", "pos": [86.45029319936964, 14.711831126236497], "dir": [0.6204344719931791, 0.8043319008791654]}
+2,Device,{"type": "movement", "pos": [47.58635782113254, 35.150579018766514], "dir": [0.4596634965202573, 0.797676575935987]}
+2,Device,{"type": "movement", "pos": [75.68182714739352, 36.314613283684935], "dir": [-0.055714569094573285, -0.7985975838632684]}
+2,Device,{"type": "movement", "pos": [61.54577297397719, 9.482954308654868], "dir": [0.2217739468876032, 0.8260221064757964]}
+10,MECSimulation,{"type": "mec_msg", "from": 13, "to": 54}
+10,MECSimulation,{"type": "mec_msg", "from": 9, "to": 54}
+10,MECSimulation,{"type": "mec_msg", "from": 17, "to": 54}
+10,MECSimulation,{"type": "mec_msg", "from": 15, "to": 54}
+10,MECSimulation,{"type": "mec_msg", "from": 8, "to": 55}
+10,MECSimulation,{"type": "mec_msg", "from": 10, "to": 54}
+10,MECSimulation,{"type": "mec_msg", "from": 12, "to": 54}
+10,MECSimulation,{"type": "mec_msg", "from": 7, "to": 54}
+10,MECSimulation,{"type": "mec_msg", "from": 10, "to": 54}
+10,MECSimulation,{"type": "mec_msg", "from": 9, "to": 54}
+12,Device,{"type": "movement", "pos": [97.8662577626457, 23.088973907746855], "dir": [0.6888437030500962, 0.515908805880605]}
+12,Device,{"type": "movement", "pos": [62.79821276865288, 16.82778974640532], "dir": [-0.4821664994140733, 0.02254944273721704]}
+12,Device,{"type": "movement", "pos": [116.69521347526437, 40.110876705775475], "dir": [0.5675971780695452, -0.3933745478421451]}
+12,Device,{"type": "movement", "pos": [113.04617735036777, 13.683860602106915], "dir": [0.1667640789100624, 0.8162257703906703]}
+12,Device,{"type": "movement", "pos": [52.55108155124214, 48.51335314364982], "dir": [-0.43632431120059234, 0.5116084083144479]}
+12,Device,{"type": "movement", "pos": [69.68421653446379, 29.52765262976695], "dir": [-0.4989873172751189, 0.8194925119364802]}
+12,Device,{"type": "movement", "pos": [87.45074578470717, 16.008818908232033], "dir": [0.6204344719931791, 0.8043319008791654]}
+12,Device,{"type": "movement", "pos": [48.72424764474815, 37.1252149538915], "dir": [0.4596634965202573, 0.797676575935987]}
+12,Device,{"type": "movement", "pos": [75.53882781180167, 34.26489943408375], "dir": [-0.055714569094573285, -0.7985975838632684]}
+12,Device,{"type": "movement", "pos": [62.818987454191536, 14.22518540343333], "dir": [0.2217739468876032, 0.8260221064757964]}
+20,MECSimulation,{"type": "mec_msg", "from": 13, "to": 54}
+20,MECSimulation,{"type": "mec_msg", "from": 9, "to": 54}
+20,MECSimulation,{"type": "mec_msg", "from": 17, "to": 54}
+20,MECSimulation,{"type": "mec_msg", "from": 15, "to": 54}
+20,MECSimulation,{"type": "mec_msg", "from": 8, "to": 55}
+20,MECSimulation,{"type": "mec_msg", "from": 10, "to": 54}
+20,MECSimulation,{"type": "mec_msg", "from": 12, "to": 54}
+20,MECSimulation,{"type": "mec_msg", "from": 7, "to": 54}
+20,MECSimulation,{"type": "mec_msg", "from": 10, "to": 54}
+20,MECSimulation,{"type": "mec_msg", "from": 9, "to": 54}
+22,Device,{"type": "movement", "pos": [98.47201582899758, 23.542655808706932], "dir": [0.6888437030500962, 0.515908805880605]}
+22,Device,{"type": "movement", "pos": [62.340819230726694, 16.849180634001975], "dir": [-0.4821664994140733, 0.02254944273721704]}
+22,Device,{"type": "movement", "pos": [117.10148320451985, 39.82931052253373], "dir": [0.5675971780695452, -0.3933745478421451]}
+22,Device,{"type": "movement", "pos": [113.21751202742362, 14.522457137335412], "dir": [0.1667640789100624, 0.8162257703906703]}
+22,Device,{"type": "movement", "pos": [50.994836163277995, 50.338115609193494], "dir": [-0.43632431120059234, 0.5116084083144479]}
+22,Device,{"type": "movement", "pos": [69.38435185293154, 30.02012378605168], "dir": [-0.4989873172751189, 0.8194925119364802]}
+22,Device,{"type": "movement", "pos": [88.4511983700447, 17.30580669022757], "dir": [0.6204344719931791, 0.8043319008791654]}
+22,Device,{"type": "movement", "pos": [49.862137468363755, 39.09985088901649], "dir": [0.4596634965202573, 0.797676575935987]}
+22,Device,{"type": "movement", "pos": [75.39582847620981, 32.21518558448257], "dir": [-0.055714569094573285, -0.7985975838632684]}
+22,Device,{"type": "movement", "pos": [64.09220193440588, 18.96741649821179], "dir": [0.2217739468876032, 0.8260221064757964]}
+30,MECSimulation,{"type": "mec_msg", "from": 13, "to": 54}
+30,MECSimulation,{"type": "mec_msg", "from": 9, "to": 54}
+30,MECSimulation,{"type": "mec_msg", "from": 17, "to": 54}
+30,MECSimulation,{"type": "mec_msg", "from": 15, "to": 54}
+30,MECSimulation,{"type": "mec_msg", "from": 8, "to": 55}
+30,MECSimulation,{"type": "mec_msg", "from": 10, "to": 54}
+30,MECSimulation,{"type": "mec_msg", "from": 12, "to": 54}
+30,MECSimulation,{"type": "mec_msg", "from": 7, "to": 54}
+30,MECSimulation,{"type": "mec_msg", "from": 10, "to": 54}
+30,MECSimulation,{"type": "mec_msg", "from": 9, "to": 54}
+32,Device,{"type": "movement", "pos": [99.07777389534947, 23.99633770966701], "dir": [0.6888437030500962, 0.515908805880605]}
+32,Device,{"type": "movement", "pos": [61.88342569280051, 16.87057152159863], "dir": [-0.4821664994140733, 0.02254944273721704]}
+32,Device,{"type": "movement", "pos": [117.50775293377534, 39.54774433929199], "dir": [0.5675971780695452, -0.3933745478421451]}
+32,Device,{"type": "movement", "pos": [113.38884670447948, 15.361053672563909], "dir": [0.1667640789100624, 0.8162257703906703]}
+32,Device,{"type": "movement", "pos": [49.43859077531385, 52.162878074737165], "dir": [-0.43632431120059234, 0.5116084083144479]}
+32,Device,{"type": "movement", "pos": [69.0844871713993, 30.51259494233641], "dir": [-0.4989873172751189, 0.8194925119364802]}
+32,Device,{"type": "movement", "pos": [89.45165095538222, 18.602794472223106], "dir": [0.6204344719931791, 0.8043319008791654]}
+32,Device,{"type": "movement", "pos": [51.000027291979364, 41.074486824141474], "dir": [0.4596634965202573, 0.797676575935987]}
+32,Device,{"type": "movement", "pos": [75.25282914061796, 30.165471734881383], "dir": [-0.055714569094573285, -0.7985975838632684]}
+32,Device,{"type": "movement", "pos": [65.36541641462023, 23.70964759299025], "dir": [0.2217739468876032, 0.8260221064757964]}
+40,MECSimulation,{"type": "mec_msg", "from": 13, "to": 54}
+40,MECSimulation,{"type": "mec_msg", "from": 9, "to": 54}
+40,MECSimulation,{"type": "mec_msg", "from": 16, "to": 54}
+40,MECSimulation,{"type": "mec_msg", "from": 15, "to": 54}
+40,MECSimulation,{"type": "mec_msg", "from": 8, "to": 55}
+40,MECSimulation,{"type": "mec_msg", "from": 10, "to": 54}
+40,MECSimulation,{"type": "mec_msg", "from": 12, "to": 54}
+40,MECSimulation,{"type": "mec_msg", "from": 7, "to": 54}
+40,MECSimulation,{"type": "mec_msg", "from": 10, "to": 54}
+40,MECSimulation,{"type": "mec_msg", "from": 9, "to": 54}
+42,Device,{"type": "movement", "pos": [99.68353196170135, 24.450019610627088], "dir": [0.6888437030500962, 0.515908805880605]}
+42,Device,{"type": "movement", "pos": [61.42603215487432, 16.891962409195287], "dir": [-0.4821664994140733, 0.02254944273721704]}
+42,Device,{"type": "movement", "pos": [117.91402266303082, 39.266178156050245], "dir": [0.5675971780695452, -0.3933745478421451]}
+42,Device,{"type": "movement", "pos": [113.56018138153533, 16.199650207792406], "dir": [0.1667640789100624, 0.8162257703906703]}
+42,Device,{"type": "movement", "pos": [47.8823453873497, 53.987640540280836], "dir": [-0.43632431120059234, 0.5116084083144479]}
+42,Device,{"type": "movement", "pos": [68.78462248986706, 31.00506609862114], "dir": [-0.4989873172751189, 0.8194925119364802]}
+42,Device,{"type": "movement", "pos": [90.45210354071975, 19.899782254218643], "dir": [0.6204344719931791, 0.8043319008791654]}
+42,Device,{"type": "movement", "pos": [52.13791711559497, 43.04912275926646], "dir": [0.4596634965202573, 0.797676575935987]}
+42,Device,{"type": "movement", "pos": [75.10982980502611, 28.115757885280196], "dir": [-0.055714569094573285, -0.7985975838632684]}
+42,Device,{"type": "movement", "pos": [66.63863089483458, 28.451878687768712], "dir": [0.2217739468876032, 0.8260221064757964]}
+50,MECSimulation,{"type": "mec_msg", "from": 13, "to": 54}
+50,MECSimulation,{"type": "mec_msg", "from": 9, "to": 54}
+50,MECSimulation,{"type": "mec_msg", "from": 16, "to": 54}
+50,MECSimulation,{"type": "mec_msg", "from": 15, "to": 54}
+50,MECSimulation,{"type": "mec_msg", "from": 8, "to": 55}
+50,MECSimulation,{"type": "mec_msg", "from": 10, "to": 54}
+50,MECSimulation,{"type": "mec_msg", "from": 12, "to": 54}
+50,MECSimulation,{"type": "mec_msg", "from": 8, "to": 55}
+50,MECSimulation,{"type": "mec_msg", "from": 10, "to": 54}
+50,MECSimulation,{"type": "mec_msg", "from": 10, "to": 54}
+52,Device,{"type": "movement", "pos": [100.28929002805323, 24.903701511587165], "dir": [0.6888437030500962, 0.515908805880605]}
+52,Device,{"type": "movement", "pos": [60.968638616948134, 16.913353296791943], "dir": [-0.4821664994140733, 0.02254944273721704]}
+52,Device,{"type": "movement", "pos": [118.3202923922863, 38.9846119728085], "dir": [0.5675971780695452, -0.3933745478421451]}
+52,Device,{"type": "movement", "pos": [113.73151605859118, 17.038246743020903], "dir": [0.1667640789100624, 0.8162257703906703]}
+52,Device,{"type": "movement", "pos": [46.326099999385555, 55.81240300582451], "dir": [-0.43632431120059234, 0.5116084083144479]}
+52,Device,{"type": "movement", "pos": [68.48475780833482, 31.49753725490587], "dir": [-0.4989873172751189, 0.8194925119364802]}
+52,Device,{"type": "movement", "pos": [91.45255612605727, 21.19677003621418], "dir": [0.6204344719931791, 0.8043319008791654]}
+52,Device,{"type": "movement", "pos": [53.27580693921058, 45.02375869439145], "dir": [0.4596634965202573, 0.797676575935987]}
+52,Device,{"type": "movement", "pos": [74.96683046943426, 26.06604403567901], "dir": [-0.055714569094573285, -0.7985975838632684]}
+52,Device,{"type": "movement", "pos": [67.91184537504893, 33.19410978254717], "dir": [0.2217739468876032, 0.8260221064757964]}
+60,MECSimulation,{"type": "mec_msg", "from": 13, "to": 54}
+60,MECSimulation,{"type": "mec_msg", "from": 9, "to": 54}
+60,MECSimulation,{"type": "mec_msg", "from": 16, "to": 54}
+60,MECSimulation,{"type": "mec_msg", "from": 15, "to": 54}
+60,MECSimulation,{"type": "mec_msg", "from": 8, "to": 55}
+60,MECSimulation,{"type": "mec_msg", "from": 10, "to": 54}
+60,MECSimulation,{"type": "mec_msg", "from": 12, "to": 54}
+60,MECSimulation,{"type": "mec_msg", "from": 8, "to": 55}
+60,MECSimulation,{"type": "mec_msg", "from": 10, "to": 54}
+60,MECSimulation,{"type": "mec_msg", "from": 10, "to": 54}
+62,Device,{"type": "movement", "pos": [100.89504809440511, 25.357383412547243], "dir": [0.6888437030500962, 0.515908805880605]}
+62,Device,{"type": "movement", "pos": [60.51124507902195, 16.9347441843886], "dir": [-0.4821664994140733, 0.02254944273721704]}
+62,Device,{"type": "movement", "pos": [118.72656212154179, 38.70304578956676], "dir": [0.5675971780695452, -0.3933745478421451]}
+62,Device,{"type": "movement", "pos": [113.90285073564704, 17.8768432782494], "dir": [0.1667640789100624, 0.8162257703906703]}
+62,Device,{"type": "movement", "pos": [44.76985461142141, 57.63716547136818], "dir": [-0.43632431120059234, 0.5116084083144479]}
+62,Device,{"type": "movement", "pos": [68.18489312680258, 31.990008411190598], "dir": [-0.4989873172751189, 0.8194925119364802]}
+62,Device,{"type": "movement", "pos": [92.4530087113948, 22.493757818209716], "dir": [0.6204344719931791, 0.8043319008791654]}
+62,Device,{"type": "movement", "pos": [54.41369676282619, 46.99839462951643], "dir": [0.4596634965202573, 0.797676575935987]}
+62,Device,{"type": "movement", "pos": [74.8238311338424, 24.016330186077823], "dir": [-0.055714569094573285, -0.7985975838632684]}
+62,Device,{"type": "movement", "pos": [69.18505985526328, 37.936340877325634], "dir": [0.2217739468876032, 0.8260221064757964]}
+70,MECSimulation,{"type": "mec_msg", "from": 16, "to": 54}
+70,MECSimulation,{"type": "mec_msg", "from": 9, "to": 54}
+70,MECSimulation,{"type": "mec_msg", "from": 16, "to": 54}
+70,MECSimulation,{"type": "mec_msg", "from": 15, "to": 54}
+70,MECSimulation,{"type": "mec_msg", "from": 8, "to": 55}
+70,MECSimulation,{"type": "mec_msg", "from": 10, "to": 54}
+70,MECSimulation,{"type": "mec_msg", "from": 13, "to": 54}
+70,MECSimulation,{"type": "mec_msg", "from": 8, "to": 55}
+70,MECSimulation,{"type": "mec_msg", "from": 10, "to": 54}
+70,MECSimulation,{"type": "mec_msg", "from": 10, "to": 54}
+72,Device,{"type": "movement", "pos": [101.500806160757, 25.81106531350732], "dir": [0.6888437030500962, 0.515908805880605]}
+72,Device,{"type": "movement", "pos": [60.05385154109576, 16.956135071985255], "dir": [-0.4821664994140733, 0.02254944273721704]}
+72,Device,{"type": "movement", "pos": [119.13283185079727, 38.421479606325015], "dir": [0.5675971780695452, -0.3933745478421451]}
+72,Device,{"type": "movement", "pos": [114.07418541270289, 18.715439813477897], "dir": [0.1667640789100624, 0.8162257703906703]}
+72,Device,{"type": "movement", "pos": [43.21360922345726, 59.46192793691185], "dir": [-0.43632431120059234, 0.5116084083144479]}
+72,Device,{"type": "movement", "pos": [67.88502844527034, 32.48247956747533], "dir": [-0.4989873172751189, 0.8194925119364802]}
+72,Device,{"type": "movement", "pos": [93.45346129673233, 23.790745600205252], "dir": [0.6204344719931791, 0.8043319008791654]}
+72,Device,{"type": "movement", "pos": [55.5515865864418, 48.97303056464142], "dir": [0.4596634965202573, 0.797676575935987]}
+72,Device,{"type": "movement", "pos": [74.68083179825055, 21.966616336476637], "dir": [-0.055714569094573285, -0.7985975838632684]}
+72,Device,{"type": "movement", "pos": [70.45827433547763, 42.678571972104095], "dir": [0.2217739468876032, 0.8260221064757964]}
+80,MECSimulation,{"type": "mec_msg", "from": 16, "to": 54}
+80,MECSimulation,{"type": "mec_msg", "from": 9, "to": 54}
+80,MECSimulation,{"type": "mec_msg", "from": 16, "to": 54}
+80,MECSimulation,{"type": "mec_msg", "from": 15, "to": 54}
+80,MECSimulation,{"type": "mec_msg", "from": 8, "to": 55}
+80,MECSimulation,{"type": "mec_msg", "from": 10, "to": 54}
+80,MECSimulation,{"type": "mec_msg", "from": 13, "to": 54}
+80,MECSimulation,{"type": "mec_msg", "from": 8, "to": 55}
+80,MECSimulation,{"type": "mec_msg", "from": 10, "to": 54}
+80,MECSimulation,{"type": "mec_msg", "from": 10, "to": 54}
+82,Device,{"type": "movement", "pos": [102.10656422710888, 26.2647472144674], "dir": [0.6888437030500962, 0.515908805880605]}
+82,Device,{"type": "movement", "pos": [59.59645800316957, 16.97752595958191], "dir": [-0.4821664994140733, 0.02254944273721704]}
+82,Device,{"type": "movement", "pos": [119.53910158005276, 38.13991342308327], "dir": [0.5675971780695452, -0.3933745478421451]}
+82,Device,{"type": "movement", "pos": [114.24552008975874, 19.554036348706394], "dir": [0.1667640789100624, 0.8162257703906703]}
+82,Device,{"type": "movement", "pos": [41.657363835493115, 59.46192793691185], "dir": [-0.43632431120059234, -0.5116084083144479]}
+82,Device,{"type": "movement", "pos": [67.5851637637381, 32.97495072376006], "dir": [-0.4989873172751189, 0.8194925119364802]}
+82,Device,{"type": "movement", "pos": [94.45391388206986, 25.08773338220079], "dir": [0.6204344719931791, 0.8043319008791654]}
+82,Device,{"type": "movement", "pos": [56.68947641005741, 50.947666499766406], "dir": [0.4596634965202573, 0.797676575935987]}
+82,Device,{"type": "movement", "pos": [74.5378324626587, 19.91690248687545], "dir": [-0.055714569094573285, -0.7985975838632684]}
+82,Device,{"type": "movement", "pos": [71.73148881569197, 47.420803066882556], "dir": [0.2217739468876032, 0.8260221064757964]}
+90,MECSimulation,{"type": "mec_msg", "from": 16, "to": 54}
+90,MECSimulation,{"type": "mec_msg", "from": 9, "to": 54}
+90,MECSimulation,{"type": "mec_msg", "from": 16, "to": 54}
+90,MECSimulation,{"type": "mec_msg", "from": 15, "to": 54}
+90,MECSimulation,{"type": "mec_msg", "from": 8, "to": 55}
+90,MECSimulation,{"type": "mec_msg", "from": 10, "to": 54}
+90,MECSimulation,{"type": "mec_msg", "from": 13, "to": 54}
+90,MECSimulation,{"type": "mec_msg", "from": 8, "to": 55}
+90,MECSimulation,{"type": "mec_msg", "from": 10, "to": 54}
+90,MECSimulation,{"type": "mec_msg", "from": 11, "to": 54}
+92,Device,{"type": "movement", "pos": [102.71232229346076, 26.718429115427476], "dir": [0.6888437030500962, 0.515908805880605]}
+92,Device,{"type": "movement", "pos": [59.139064465243386, 16.998916847178567], "dir": [-0.4821664994140733, 0.02254944273721704]}
+92,Device,{"type": "movement", "pos": [119.94537130930824, 37.85834723984153], "dir": [0.5675971780695452, -0.3933745478421451]}
+92,Device,{"type": "movement", "pos": [114.4168547668146, 20.39263288393489], "dir": [0.1667640789100624, 0.8162257703906703]}
+92,Device,{"type": "movement", "pos": [40.10111844752897, 57.63716547136818], "dir": [-0.43632431120059234, -0.5116084083144479]}
+92,Device,{"type": "movement", "pos": [67.28529908220585, 33.46742188004479], "dir": [-0.4989873172751189, 0.8194925119364802]}
+92,Device,{"type": "movement", "pos": [95.45436646740738, 26.384721164196325], "dir": [0.6204344719931791, 0.8043319008791654]}
+92,Device,{"type": "movement", "pos": [57.82736623367302, 52.92230243489139], "dir": [0.4596634965202573, 0.797676575935987]}
+92,Device,{"type": "movement", "pos": [74.39483312706685, 17.867188637274264], "dir": [-0.055714569094573285, -0.7985975838632684]}
+92,Device,{"type": "movement", "pos": [73.00470329590632, 52.16303416166102], "dir": [0.2217739468876032, 0.8260221064757964]}
+100,MECSimulation,{"type": "mec_msg", "from": 16, "to": 54}
+100,MECSimulation,{"type": "mec_msg", "from": 6, "to": 53}
+100,MECSimulation,{"type": "mec_msg", "from": 16, "to": 54}
+100,MECSimulation,{"type": "mec_msg", "from": 15, "to": 54}
+100,MECSimulation,{"type": "mec_msg", "from": 8, "to": 55}
+100,MECSimulation,{"type": "mec_msg", "from": 10, "to": 54}
+100,MECSimulation,{"type": "mec_msg", "from": 13, "to": 54}
+100,MECSimulation,{"type": "mec_msg", "from": 8, "to": 55}
+100,MECSimulation,{"type": "mec_msg", "from": 9, "to": 54}
+100,MECSimulation,{"type": "mec_msg", "from": 11, "to": 54}

@@ -23,6 +23,7 @@ from edge.util.DistributionFunctions import DeterministicDistributionWithStartin
 from edge.util.Util import closest_node
 
 from definitions import CONFIGURATION_DIR
+from eventlog import eventlog
 
 BACKHAUL_DEVICES = ['EdgeServer', 'Router', 'Vm', 'GnB']
 EPSILON_SCALING = 0.001
@@ -215,6 +216,8 @@ class MECSimulation(threading.Thread):
                     "(App:%s #Process:%i #%s) Sending Message : %s at time T : %f - (Sender: %s, Receiver: %s), Path : %s \n "
                     % (message.app_name, message.source_service_id, message.source_service, message.name,
                        self.env.now, message.sender_id, message.receiver_id, message.path))
+                eventlog.log("MECSimulation",
+                             {"type": "mec_msg", "from": message.sender_id, "to": message.receiver_id})
 
                 link = (message.sender_id, message.receiver_id)
                 message.is_scheduled_by_ran = False

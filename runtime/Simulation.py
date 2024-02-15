@@ -1,5 +1,7 @@
 import csv
 import os
+import time
+
 import numpy as np
 import simpy
 import sys
@@ -8,6 +10,9 @@ import random
 import pandas as pd
 from pathlib import Path
 import logging.config
+from eventlog import eventlog
+import edge.entities.Entity
+
 from definitions import RESULTS_DIR, ROOT_DIR
 import plotting
 
@@ -98,10 +103,14 @@ class Simulation:
 
 
     def run(self):
+        t = time.time()
+        eventlog.init(Path(__file__).parent / ("events_" + str(t) + ".log"), self)
+        print(edge.entities.Entity.ENTITY_LIST)
         self.mec_simulation.start()
         self.ran_simulation.start()
-        return
-
+        self.mec_simulation.join()
+        self.ran_simulation.join()
+        eventlog.close()
 
 def blockPrint():
     sys.stdout = open(os.devnull, 'w')
@@ -110,4 +119,5 @@ def blockPrint():
 if __name__ == "__main__":
     # blockPrint()
     simulation = Simulation()
+    #print(simulation.gNBs_per_scenario)
     simulation.run()

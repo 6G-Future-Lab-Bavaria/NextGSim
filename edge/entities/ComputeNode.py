@@ -119,6 +119,7 @@ class ComputeNode(Entity):
         else:
             self.services[service.app_name][service.name][service.user] = [service]
 
+    # this compute node should go to service to perform that service
     def add_assigned_service(self, service):
         if service.app_name not in self.assigned_services:
             self.assigned_services[service.app_name] = {}

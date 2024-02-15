@@ -8,7 +8,7 @@ import json
 @dataclass()
 class SimulationParameters(object):
     def __init__(self, config_file=None):
-        # self.use_configFile: bool = True
+        self.use_configFile: bool = True
         if config_file:
             self.config_file = CONFIGURATION_DIR + config_file
         else:

@@ -10,9 +10,9 @@ from pathlib import Path
 import threading
 import logging.config
 from RANSimulation import RANSimulation
-from edge.core.MECSimulation import MECSimulation
+from MECSimulation import MECSimulation
 from attic.Application import *
-from SimulationParameters import SimulationParameters
+from SimulationParameters import SimulationParameters as SimParams
 from EventChain import EventChain
 from device.TrafficGenerator import TrafficGenerator
 import logging.config
@@ -44,7 +44,7 @@ class Simulation:
         self.gNBs_per_scenario = None
         self.edge_servers_per_scenario = []
         self.routers_per_scenario = []
-        self.sim_params = SimulationParameters()
+        self.sim_params = SimParams()
         self.applications = redcap_application()
         self.file_sim_params = SimulationParameters(self, ConfigFile=self.sim_params.use_configFile,
                                                     ConfigFileName="figure_5_experiment_radio_aware.json")

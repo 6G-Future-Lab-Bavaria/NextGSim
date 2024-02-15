@@ -1,0 +1,53 @@
+choose if static(1), statically-configurable(2), dynamically-configurable(3)
+
+- antenna patterns 3
+- devices 2
+- applications 3
+- gnbs (no right?)
+- network traffic models (...)
+- movement models 3
+- scenarios
+
+logging / replaying -> the same
+
+every component must log its own functioning by sending events
+(further, a component must also provide functionality to replay an event previously issued)
+
+everything that has configurable properties:
+- provide help method explaining all properties and default values
+- reads/writes to global configuration => which is a config object lying in memory that can be saved to file
+- multiple instances can have different config parameters => namespacing
+- also randomly chosen values! (actually randomness is something we should think about ...)
+
+is AntennaPattern used? if not, how can we?
+
+Q:
+- antenna patterns usable? (eg SNIR modelling)
+- TTI? why generate app data only at self.TTI % MeasurementParams.channel_measurement_periodicity == 0:
+- RANSimulation/125: - calc_SNR is only defined for channelmodelinf?
+- ManageDevices/16: what does generate_traffic_devices do, isnt it broken? => Device.generate_device_traffic
+- MECSimulation/466: ran_message.destination_service doenst exist?
+- Device/182: get_service_information implies a device should only have a single app / service?
+- can an entity use a service that it can do itself?
+- can multiple apps depend on same services? ie are they separate? => right now seems to be 1:1
+- Microservice.input_messages purpose?
+
+---------
+
+> #why user id?
+> #app.number_of_service_instances: why does the app set this?
+> why can you deploy an app on the server? shouldnt only devices run apps?
+# in my mind: device runs an app => orchestrator must ensure all services for this app are running
+# over time, different devices start/shutdown apps, move within network => services must be spun up and down dynamically
+
+services can be identified by type or instance
+=> by type: all instances are treated equally valid by orchestrator when deciding
+alternative very different:
+by instance: instances are different => orchestrator must track instance use
+=> dependencies change dynamically
+=> must have some TTI in orchestrator that queries all dependencies and restructures accordingly
+=> WHICH ONE?
+while we're at it: extendt to cyclic dependencies? are there any complications?
+
+simulation should support multiple physical environments (eg. to model physically distant RANs)
+

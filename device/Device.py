@@ -1,3 +1,4 @@
+import eventlog.eventlog
 from device.DeviceEnergyConsumption import DeviceEnergyConsumption
 from runtime.data_classes import States
 from runtime.EventChain import *
@@ -80,6 +81,9 @@ class Device(ComputeNode):
             self.y = new_y
         else:
             self.direction_y = -self.direction_y  # Reverse direction if hitting the boundary
+
+        eventlog.eventlog.log("Device",
+                              {"type": "movement", "pos": [self.x[0], self.y[0]], "dir": [self.direction_x, self.direction_y]})
 
     def init_buffer(self, simulation):
         # see https://www.etsi.org/deliver/etsi_ts/138300_138399/138306/15.03.00_60/ts_138306v150300p.pdf

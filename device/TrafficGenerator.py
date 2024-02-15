@@ -1,5 +1,5 @@
 import numpy as np
-#from scipy.stats import beta, uniform
+from scipy.stats import beta, uniform
 from matplotlib import pyplot as plt
 import math
 from runtime.data_classes import AggregatedTraffic
