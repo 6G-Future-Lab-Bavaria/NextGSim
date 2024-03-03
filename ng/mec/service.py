@@ -34,26 +34,29 @@ from mec.message import Message
 
 class Service(ABC):
 
-    def __init__(self, sim: Simulation, id):
+    def __init__(self, sim: Simulation, id, name):
         self.id = id
         self.sim = sim
         self.proc_q: Store[Computation] = Store(sim.env)
         self.network_q: Store[Message] = Store(sim.env)
         self.context = Context(sim, self)
         self.process = sim.env.process(self.run())
+        self.name = name
 
+    # dependency can be either static => depend on a service type
+    # or dynamic: depend on a service state
     @abstractmethod
-    def get_dependencies(self) -> List[Type[Service]]:
+    def get_dependencies(self) -> List[Type[Service]]  :
         pass
 
     def send_message(self, msg):
-        yield self.context.send_message(msg)
+        return self.context.send_message(msg)
 
     def recv_message(self) -> Message:
-        yield self.context.recv_message()
+        return self.context.recv_message()
 
     def compute(self, comp: Computation):
-        yield self.context.compute(comp)
+        return self.context.compute(comp)
 
     # process that is this app
     @abstractmethod
@@ -69,9 +72,9 @@ class ExampleGen(Service):
     def run(self):
         while True:
             yield self.sim.wait_ms(50)
-            msg = Message(ExampleGen, GW, 10, "Hello")
+            msg = Message("ExampleGen", "ExampleProc", 10, "Hello")
             yield self.send_message(msg)
-            print("Example msg sent:", msg)
+            print(self.sim.env.now, "Example msg sent:", msg)
 
 
 class ExampleProc(Service):
@@ -84,12 +87,13 @@ class ExampleProc(Service):
             msg: Message = yield self.recv_message()
             print("Example msg recv:", msg)
             yield self.compute(Computation(100))
-            # yield self.send_message(Message(self.id, msg.sender, 10, "hello"))
+            #yield self.send_message(Message(self.id, msg.sender, 10, "hello"))
 
 class GW(Service):
 
-    def __init__(self):
-        self.mapping = {}
+    def __init__(self, sim, id, n):
+        super().__init__(sim, id, n)
+        self.mapping = {} # would be considered state
 
     def get_dependencies(self) -> List[Type[Service]]:
         return [ExampleProc]
@@ -97,6 +101,9 @@ class GW(Service):
     def run(self):
         while True:
             msg = yield self.recv_message()
-            newMsg = Message(msg.sender, istance, msg.data)
-
+            instance_names = self.mapping[msg.destination]
+            instance_name = instance_names[0] # here, we would perform load balancing
+            print("GW: rerouting", msg.destination, "to", instance_name)
+            newMsg = Message(msg.sender, instance_name, msg.size, msg.data)
+            yield self.send_message(newMsg)
 

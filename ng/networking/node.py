@@ -46,7 +46,7 @@ class Node:
 
     def _send_data(self, n1, data, size):   # actually, would need to split into multiple packets here
         packet = Packet(self.id, n1, size, 0, True, data)
-        yield self.env.process(self._send_packet(packet))
+        return self._send_packet(packet)
 
     def _send_packet(self, packet):
         n1  = packet.node1
@@ -57,7 +57,7 @@ class Node:
 
         [if0, if1] = link
         intf = self.intf(if0)
-        yield self.env.process(intf.send(packet, packet.size, if1))  # TODO: yield or not?
+        return self.env.process(intf.send(packet, packet.size, if1))  # TODO: yield or not?
 
     # this process receives l3 packets and either forwards them to the next node
     # or puts them in self.incoming_packets
@@ -80,7 +80,7 @@ class Node:
                 print("%d [%s] forwarding packet from %s to %s" %
                       (self.env.now, self.id, packet.node0, packet.node1))
                 try:
-                    yield self.env.process(self._send_packet(packet))
+                    yield self._send_packet(packet)
                 except RuntimeError as e:
                     print("Failed to forward packet")
 

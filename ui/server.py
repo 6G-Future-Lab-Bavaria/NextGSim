@@ -2,27 +2,29 @@ import flask
 from flask import Flask
 import typing
 import os
+from flask_cors import CORS, cross_origin
 
 from ng.simulation import Simulation
-from ng.main import dummy_sim
+from ng.main import dummy_sim, dummy_sim_mec
 
 projects_folder = os.path.join(os.getcwd(), "ui/projects")
 
 root = os.getcwd()
 
 app = Flask(__name__, static_url_path='/static/')
+CORS(app)
 
 sim: typing.Optional[Simulation] = None
 
 @app.route("/projects/<string:project>/api/create")
 def create_sim(project):
     global sim
-    sim = dummy_sim()
+    sim = dummy_sim_mec()
     return ('', 204)
 
 @app.route("/projects/<string:project>/api/start")
 def start_sim(project):
-    sim.run(100)
+    sim.run(200)
     return ('', 204)
 
 @app.route("/projects/<string:project>/api/physical")

@@ -12,7 +12,6 @@ from networking.node import Node
 
 # and entity has a CPU, and possibly other resources and is also part of the network
 
-
 class Entity(Node):
 
     def __init__(self, sim, id, cpu_t: Type[CPU]):
@@ -20,29 +19,36 @@ class Entity(Node):
         self.deployed_services: Dict[str, Service] = {}
         self.env.process(self._handle_incoming_msgs())
         self.cpu: CPU = cpu_t(self)
+        self.dns_cache: Dict[str, str] = {}
         self.sim.orchestrator.register_entity(self)
 
     def _handle_incoming_msgs(self):
         while True:
             msg: Message = yield self.env.process(self._recv_data())  # can i do this w/o .process() wrap?
+            self.sim.eventlog.register_event(self, "MSG_RECV", str(msg))
             self.deployed_services[msg.destination].context.recv_q.put(msg)
 
     def compute(self, computation: Computation):
-        yield self.cpu.compute(computation)
+        def d():
+            t = self.sim.env.now
+            yield self.cpu.compute(computation)
+            td = self.sim.env.now - t
+            self.sim.eventlog.register_event(self, "COMP", "[c=%s,t=%s]" % (computation, str(td)))
+        return self.env.process(d())
 
     def send_msg(self, msg: Message):
-        destination_sv = msg.destination
-        # todo: if service runs on this entity: should even ask orchestrator or directly give to that?
-        # contra: could be non-optimal under resource constraints
-
-        entity: Entity = yield self.sim.orchestrator.get_entity_for_service(self, destination_sv)
-        yield self._send_data(entity.id, msg, msg.size)
+        def d():
+            destination_sv = msg.destination
+            entity_id = self.dns_cache[destination_sv]
+            yield self._send_data(entity_id, msg, msg.size)
+            self.sim.eventlog.register_event(self, "MSG_SENT", str(msg))
+        return self.env.process(d())
 
     def deploy_service(self, service: Service):
-        self.deployed_services[service.id] = service
+        self.deployed_services[service.name] = service
         service.context.bind_to_entity(self)
 
-    def undeploy_service(self, service_id):
-        self.deployed_services[service_id].context.unbind()
-        del self.deployed_services[service_id]
+    def undeploy_service(self, service):
+        self.deployed_services[service.name].context.unbind()
+        del self.deployed_services[service.name]
 

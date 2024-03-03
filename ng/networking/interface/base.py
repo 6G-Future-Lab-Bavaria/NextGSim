@@ -55,6 +55,7 @@ class Interface(ABC):
     def connect(self, conn: Connection.End):
         self.conn = conn
         self.up_ev.succeed()
+        self.sim.eventlog.register_event(self, "UP")
 
     def wait_for_up(self):
         if self.conn is not None:
@@ -68,6 +69,7 @@ class Interface(ABC):
             self.recv_proc.interrupt()
             self.recv_proc = None
         self.up_ev = simpy.Event(self.env)
+        self.sim.eventlog.register_event(self, "DOWN")
 
     def disconnect(self):
         self.conn.down()
@@ -86,16 +88,18 @@ class Interface(ABC):
 
         self.recv_proc = self.env.process(receive_data())
         packet = yield self.recv_proc
-        self.sim.eventlog.register_event(self, "data_recvd", packet)
+        self.sim.eventlog.register_event(self, "PACKET_RECV", str(packet))
         return packet
 
-    def send(self, data, size, if1):
+    def send(self, packet, size, if1):
         if self.conn is None:
             raise ConnectionError("Interface down")
-        for frame in self._frames_from_packet(data, size, if1):
-            yield self.env.process(self.conn.send(frame))
-        self.sim.eventlog.register_event(self, "data_sent", data)
+        for frame in self._frames_from_packet(packet, size, if1):
+            self.env.process(self.conn.send(frame))
+        self.sim.eventlog.register_event(self, "PACKET_SENT", str(packet))
+        yield simpy.Event(self.env).succeed()
 
     # this method can be overwritten to use custom frames
+    # actually, does this even make sense? e.g. shouldn't the upstream make sure packet fits into single frame
     def _frames_from_packet(self, data, size, if1):
         return [Frame(self.id, if1, size, 0, True, data)]

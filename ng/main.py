@@ -1,5 +1,8 @@
 import simpy
 
+from mec.service import GW
+
+
 def dummy_sim():
     from ng.physical_node import PhysicalNode
     from ng.mec.message import Message
@@ -37,7 +40,7 @@ def dummy_sim():
 
     def t():
         for i in range(10):
-            sim.env.process(devs[0]._send_data(2, Message(-1, 2, 2, "hi" + str(i)), 2))
+            devs[0]._send_data(2, Message(-1, 2, 2, "hi" + str(i)), 2)
             yield sim.env.timeout(1)
             # devs[1].intf(0).disconnect()
 
@@ -105,7 +108,7 @@ def test3():
     env.process(main())
     env.run(100)
 
-def test4():
+def dummy_sim_mec():
     from ng.networking.interface.eth import EthernetInterface, FiberConnection
     from ng.physical import PhysicalEnvironment, Coords2D
     from ng.simulation import Simulation
@@ -119,7 +122,7 @@ def test4():
     sim = Simulation(phy_env, ShortestPathRouting, SimpleOrchestrator)
 
     entities = [
-        Entity(sim, 0, SimpleSingleThreadedCPU.create_type(100)),
+        Entity(sim, 0, SimpleSingleThreadedCPU.create_type(1000)),
         Entity(sim, 1, SimpleSingleThreadedCPU.create_type(100)),
         Entity(sim, 2, SimpleSingleThreadedCPU.create_type(100)),
     ]
@@ -136,9 +139,27 @@ def test4():
     FiberConnection(sim, 2, devs[0].intf(0), devs[1].intf(0))
     FiberConnection(sim, 3, devs[1].intf(1), devs[2].intf(0))
 
-    entities[0].deploy_service(ExampleProc(sim, 0))
-    entities[2].deploy_service(ExampleGen(sim, 1))
+    # static orchestration:
 
-    sim.run(100)
+    entities[0].deploy_service(ExampleProc(sim, 0, "ExampleProc_i0"))
+    gw = GW(sim, 0, "ExampleProc")
+    gw.mapping["ExampleProc"] = ["ExampleProc_i0"]
+    entities[1].deploy_service(gw)
+    entities[2].deploy_service(ExampleGen(sim, 1, "ExampleGen"))
+
+    entities[2].dns_cache["ExampleProc"] = 1
+    entities[1].dns_cache["ExampleProc_i0"] = 0
+
+    # but ideally, this should suffice:
+    #entities[2].deploy_service(ExampleGen(sim, 1, "ExampleGen"))
+
+    return sim
+
+def test4():
+    sim = dummy_sim_mec()
+    sim.run(200)
+
+    for ev in sim.eventlog.events:
+        print(ev.time, ev.component, ev.type, ev.data)
 
 test4()

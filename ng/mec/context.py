@@ -32,15 +32,17 @@ class Context:
                     yield self.entity.compute(comp)
                     ev.succeed()
             except simpy.Interrupt:
+                # todo: put comp back in queue!!!
                 pass
 
         def send_msgs():
             try:
                 while True:
-                    [msg, ev] = yield self.proc_q.get()
+                    [msg, ev] = yield self.send_q.get()
                     yield self.entity.send_msg(msg)
                     ev.succeed()
             except simpy.Interrupt:
+                # todo: put msg back in queue!!!
                 pass
 
         procs = [self.sim.env.process(compute()), self.sim.env.process(send_msgs())]

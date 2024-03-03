@@ -21,7 +21,7 @@ everything that has configurable properties:
 
 is AntennaPattern used? if not, how can we?
 
-Q:
+
 - antenna patterns usable? (eg SNIR modelling)
 - TTI? why generate app data only at self.TTI % MeasurementParams.channel_measurement_periodicity == 0:
 - RANSimulation/125: - calc_SNR is only defined for channelmodelinf?
@@ -50,4 +50,28 @@ by instance: instances are different => orchestrator must track instance use
 while we're at it: extendt to cyclic dependencies? are there any complications?
 
 simulation should support multiple physical environments (eg. to model physically distant RANs)
+
+how to identify services?
+
+UE -> GW -> inst[0]
+
+GW stateful => from UE always to that one
+
+GW,inst[0] both stateful
+
+stateful => migration must handle that
+service.state
+migrateState() can model some transfer / latency
+
+every entity has map
+service -> node
+service.set_node_for_service()
+
+Q: if service runs on this entity: should even ask orchestrator or directly give to that?
+
+# orchestration paper
+# metrics
+# topology
+
+
 

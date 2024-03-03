@@ -46,6 +46,6 @@ class SimpleSingleThreadedCPU(CPU):
             [comp, ev] = yield self.proc_q.get()
             cycles = comp.cycles
             seconds = cycles / self.clock_speed
-            yield self.sim.wait_ms(seconds * seconds)
+            yield self.sim.wait_ms(seconds * 1000)
             comp.remaining_cycles = 0
             ev.succeed()
