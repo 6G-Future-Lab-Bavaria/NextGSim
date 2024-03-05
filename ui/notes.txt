@@ -73,5 +73,22 @@ Q: if service runs on this entity: should even ask orchestrator or directly give
 # metrics
 # topology
 
+metrics:
+- loosely implemented as counters
+- characterized by:
+-- comp, name, type
+-- type should be overwritable:
+--- determines atomic type (e.g. scalar)
+--- provides logic to (post-)process atomic records
+--- determines how to display in frontend => provide set of visualizations
 
+services:
+- device-only: by constraints
+- orchestrator sees also device-only
+- descriptors
 
+# websocket
+- live update
+
+# UI
+- run: one timeline over all views

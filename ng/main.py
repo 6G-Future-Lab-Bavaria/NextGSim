@@ -162,4 +162,7 @@ def test4():
     for ev in sim.eventlog.events:
         print(ev.time, ev.component, ev.type, ev.data)
 
+    print(sim.metric_writer.metrics)
+    print(sim.metric_writer.metrics[1].get_values())
+
 test4()

@@ -2,7 +2,6 @@ from ng.networking.interface.base import Interface
 import simpy
 from ng.networking.interface.connection import Connection
 
-
 class RadioInterface(Interface):
 
     def __init__(self, sim, id):
@@ -29,6 +28,6 @@ class RadioConnection(Connection):
             self._unlink(intf, if1)
             self._unlink(if1, intf)
 
-    def transfer(self, from_if_idx, frame):
+    def transfer_frame(self, from_if_idx, frame):
         yield self.env.timeout(5)
         yield simpy.AllOf(self.env, [intf.inbuf.put(frame) for intf in self.ifs if intf != self.ifs[from_if_idx]])

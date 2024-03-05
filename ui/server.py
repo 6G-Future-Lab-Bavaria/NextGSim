@@ -68,6 +68,16 @@ def get_events(project):
         ev.serialize() for ev in sim.eventlog.events
     ]
 
+@app.route("/projects/<string:project>/api/metrics")
+def get_metrics(project):
+    return [
+        {
+            "comp": str(metric.comp),
+            "name": metric.name,
+            "values": metric.get_values(),
+        } for metric in sim.metric_writer.metrics
+    ]
+
 @app.route("/tree/<path:path>")
 def get_tree(path):
     path = os.path.normpath(path)

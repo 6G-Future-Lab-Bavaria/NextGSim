@@ -1,4 +1,6 @@
 from __future__ import annotations
+
+import random
 from typing import TYPE_CHECKING, Type
 if TYPE_CHECKING:
     from ng.simulation import Simulation
@@ -72,7 +74,8 @@ class ExampleGen(Service):
     def run(self):
         while True:
             yield self.sim.wait_ms(50)
-            msg = Message("ExampleGen", "ExampleProc", 10, "Hello")
+            size = random.random() * 1000
+            msg = Message("ExampleGen", "ExampleProc", size, "Hello")
             yield self.send_message(msg)
             print(self.sim.env.now, "Example msg sent:", msg)
 

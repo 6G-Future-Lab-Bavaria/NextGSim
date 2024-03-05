@@ -4,6 +4,7 @@
     import Timeline2 from "$lib/Timeline2.svelte";
     import {getEvents} from "$lib/backend.js";
     import EventViewer from "$lib/EventViewer.svelte";
+    import MetricsViewer from "$lib/MetricsViewer.svelte";
 
     let currentComp = EventViewer;
 </script>
@@ -11,7 +12,7 @@
 <div id="app">
     <div id="header">
         <button on:click={() => currentComp = Test}>Network</button>
-        <button>Metrics</button>
+        <button on:click={() => currentComp = MetricsViewer}>Metrics</button>
         <button on:click={() => currentComp = EventViewer}>Events</button>
     </div>
     <div id="body">

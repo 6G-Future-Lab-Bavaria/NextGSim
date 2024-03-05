@@ -54,6 +54,15 @@ export async function getNetworkTopology() {
     }*/
 }
 
+export async function getMetrics() {
+    await fetch(ENDPOINT + "/api/create");
+    await fetch(ENDPOINT + "/api/start");
+    let res = await fetch(ENDPOINT + "/api/metrics");
+    let events = await res.json();
+
+    return events;
+}
+
 export async function getEvents() {
     await fetch(ENDPOINT + "/api/create");
     await fetch(ENDPOINT + "/api/start");

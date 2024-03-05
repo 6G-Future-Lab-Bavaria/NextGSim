@@ -2,6 +2,7 @@ import simpy
 from typing import Optional
 from abc import ABC
 
+from metrics import ScalarMetric, IntegratedScalarMetric
 from ng.networking.node import Node
 from ng.networking.interface.connection import Connection
 from ng.simulation import Simulation
@@ -43,6 +44,8 @@ class Interface(ABC):
         self.recv_proc = None
         self.inbuf = simpy.Store(self.env)  # interfaces buffer messages, could be modeled differently ...
         self.up_ev = simpy.Event(self.env)
+        self.m_tx = IntegratedScalarMetric(self.sim, self, "TX")
+        self.m_rx = IntegratedScalarMetric(self.sim, self, "RX")
 
     def __repr__(self):
         return "%s.if%s" % (self.node, self.id)
@@ -77,6 +80,7 @@ class Interface(ABC):
     def recv(self):
         def receive_data():
             frame = yield self.inbuf.get()
+            self.m_rx.record(frame.size)
             data = frame.data
 
             while not frame.is_last:
@@ -96,6 +100,7 @@ class Interface(ABC):
             raise ConnectionError("Interface down")
         for frame in self._frames_from_packet(packet, size, if1):
             self.env.process(self.conn.send(frame))
+            self.m_tx.record(frame.size)
         self.sim.eventlog.register_event(self, "PACKET_SENT", str(packet))
         yield simpy.Event(self.env).succeed()
 

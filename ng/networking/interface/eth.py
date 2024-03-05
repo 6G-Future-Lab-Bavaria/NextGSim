@@ -1,3 +1,4 @@
+from metrics import ScalarMetric
 from networking.interface.frame import Frame
 from ng.networking.interface.base import Interface
 import simpy
@@ -41,11 +42,11 @@ class FiberConnection(EthernetConnection):
         self.bw = 10e9                          # 1 Gbps
         self.latency = 0.00333 * length         # milliseconds per meter * meter = ms
 
-    def transfer(self, from_if, frame: Frame):
+    # note: not modelled correctly: multiple frames can overlap, but latency is always 100%
+    def transfer_frame(self, from_if, frame: Frame):
         bits = frame.size
         transmit = (bits / self.bw) * 1e3       # milliseconds
         propagation = self.latency              # milliseconds
         latency = transmit + propagation
         yield self.sim.wait_ms(latency)
         yield simpy.AllOf(self.env, [intf.inbuf.put(frame) for intf in self.ifs if intf != from_if])
-

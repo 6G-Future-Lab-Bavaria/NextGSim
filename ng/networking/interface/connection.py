@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 
+import simpy
+
 from networking.interface.frame import Frame
 from ng.simulation import Simulation
 
@@ -19,7 +21,7 @@ class Connection(ABC):
             self.conn.disconnect(self.intf)
 
         def send(self, frame):
-            yield self.conn.env.process(self.conn.transfer(self.intf, frame))
+            yield self.conn.transfer(self.intf, frame)
 
     def __init__(self, sim: Simulation, *ifs: "Interface"):
         ifs = list(ifs)
@@ -27,6 +29,8 @@ class Connection(ABC):
         self.env = sim.env
         self.network = sim.network
         self.ifs = []
+        self.q = simpy.Store(self.env)
+        self.proc = self.env.process(self.transfer_frames())
 
         for intf in ifs:
             self.connect(intf)
@@ -69,6 +73,18 @@ class Connection(ABC):
     def _is_compatible(self, interface):
         pass
 
-    @abstractmethod
     def transfer(self, if0, frame: Frame):
+        ev = simpy.Event(self.env)
+        self.q.put([ev, if0, frame])
+        return ev
+
+    # todo: abstract this as serialconnection
+    def transfer_frames(self):
+        while True:
+            [ev, from_if, frame] = yield self.q.get()
+            yield self.env.process(self.transfer_frame(from_if, frame))
+            ev.succeed()
+
+    @abstractmethod
+    def transfer_frame(self, if0, frame: Frame):
         pass

@@ -1,4 +1,6 @@
 import simpy
+
+from metrics import MetricWriter
 from ng.networking.network import NetworkTopology
 from ng.eventlog import EventLog
 
@@ -13,9 +15,13 @@ class Simulation:
         self.ms_per_ts = ms_per_ts
         self.routing = routing_t(self)
         self.orchestrator = orchestrator_t(self)
+        self.metric_writer = MetricWriter(self)
 
     def run(self, until):
         self.env.run(until)
+
+    def now(self):
+        return self.env.now
 
     def wait_ms(self, ms):
         steps = ms / self.ms_per_ts
