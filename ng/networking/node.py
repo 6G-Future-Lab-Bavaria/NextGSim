@@ -12,7 +12,7 @@ from ng.networking.packet import Packet
 
 class Node:
 
-    def __init__(self, sim: Simulation, id):
+    def __init__(self, sim: Simulation, id, ifs):
         self.sim = sim
         self.env = sim.env
         self.id = id
@@ -21,6 +21,10 @@ class Node:
         sim.network.register_node(self)
         self.routing_table = sim.routing.get_routing_table(self.id)
         self.incoming_packets = simpy.Store(self.env)
+
+        if ifs is not None:
+            for intf in ifs:
+                self.attach_if(intf)
 
     def __repr__(self):
         return "n%s" % self.id
@@ -53,6 +57,7 @@ class Node:
         link = self.routing_table.get_next_hop(n1)  # l3 -> l2
 
         if link is None:
+            # todo: no error, but record event, return normally
             raise RuntimeError("No route from %s to %s" % (self.id, n1))
 
         [if0, if1] = link

@@ -14,13 +14,20 @@ from networking.node import Node
 
 class Entity(Node):
 
-    def __init__(self, sim, id, cpu_t: Type[CPU]):
-        super().__init__(sim, id)
+    def __init__(self, sim, id, cpu: CPU, dns=None, services=None, ifs=None):
+        super().__init__(sim, id, ifs)
         self.deployed_services: Dict[str, Service] = {}
         self.env.process(self._handle_incoming_msgs())
-        self.cpu: CPU = cpu_t(self)
+        self.cpu: CPU = cpu
         self.dns_cache: Dict[str, str] = {}
         self.sim.orchestrator.register_entity(self)
+
+        if services:
+            for service in services:
+                self.deploy_service(service)
+
+        if dns:
+            self.dns_cache = dns
 
     def _handle_incoming_msgs(self):
         while True:

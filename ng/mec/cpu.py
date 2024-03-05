@@ -13,8 +13,8 @@ import simpy
 
 class CPU(ABC):
 
-    def __init__(self, entity: Entity):
-        self.sim = entity.sim
+    def __init__(self, sim):
+        self.sim = sim
         self.proc_q = simpy.Store(self.sim.env)
         self.process = self.sim.env.process(self.run())
 
@@ -32,14 +32,10 @@ class CPU(ABC):
 
 class SimpleSingleThreadedCPU(CPU):
 
-    def __init__(self, clock_speed: float, entity):
-        super().__init__(entity)
-        self.clock_speed = clock_speed
-
     # clock_speed = cycles per second
-    @staticmethod
-    def create_type(clock_speed):
-        return lambda entity: SimpleSingleThreadedCPU(clock_speed, entity)
+    def __init__(self, clock_speed: float, sim):
+        super().__init__(sim)
+        self.clock_speed = clock_speed
 
     def run(self):
         while True:

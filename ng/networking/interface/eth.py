@@ -13,8 +13,8 @@ class EthernetInterface(Interface):
 
 class EthernetConnection(Connection):
 
-    def __init__(self, sim, *ifs):
-        super().__init__(sim, *ifs)
+    def __init__(self, sim, ifs):
+        super().__init__(sim, ifs)
 
     def _is_compatible(self, interface):
         return isinstance(interface, EthernetInterface)
@@ -37,8 +37,8 @@ class EthernetConnection(Connection):
 
 class FiberConnection(EthernetConnection):
 
-    def __init__(self, sim, length, if0, if1):
-        super().__init__(sim, if0, if1)
+    def __init__(self, sim, length, ifs):
+        super().__init__(sim, ifs)
         self.bw = 10e9                          # 1 Gbps
         self.latency = 0.00333 * length         # milliseconds per meter * meter = ms
 

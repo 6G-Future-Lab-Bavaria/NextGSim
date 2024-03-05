@@ -10,8 +10,8 @@ class RadioInterface(Interface):
 
 class RadioConnection(Connection):
 
-    def __init__(self, sim, *ifs):
-        super().__init__(sim, *ifs)
+    def __init__(self, sim, ifs):
+        super().__init__(sim, ifs)
 
     def _is_compatible(self, interface):
         return isinstance(interface, RadioInterface)

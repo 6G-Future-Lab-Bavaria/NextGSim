@@ -5,7 +5,7 @@ import os
 from flask_cors import CORS, cross_origin
 
 from ng.simulation import Simulation
-from ng.main import dummy_sim, dummy_sim_mec
+from ng.main import dummy_sim, dummy_sim_mec, create_from_config
 
 projects_folder = os.path.join(os.getcwd(), "ui/projects")
 
@@ -19,7 +19,7 @@ sim: typing.Optional[Simulation] = None
 @app.route("/projects/<string:project>/api/create")
 def create_sim(project):
     global sim
-    sim = dummy_sim_mec()
+    sim = create_from_config()
     return ('', 204)
 
 @app.route("/projects/<string:project>/api/start")

@@ -34,6 +34,7 @@ from mec.message import Message
 # todo: actually, id should be reserved for global (simulation) id ...
 # then consider some "address" or port for routing
 
+
 class Service(ABC):
 
     def __init__(self, sim: Simulation, id, name):
@@ -94,9 +95,9 @@ class ExampleProc(Service):
 
 class GW(Service):
 
-    def __init__(self, sim, id, n):
-        super().__init__(sim, id, n)
-        self.mapping = {} # would be considered state
+    def __init__(self, sim, id, name, mapping={}):
+        super().__init__(sim, id, name)
+        self.mapping = mapping # would be considered state
 
     def get_dependencies(self) -> List[Type[Service]]:
         return [ExampleProc]
