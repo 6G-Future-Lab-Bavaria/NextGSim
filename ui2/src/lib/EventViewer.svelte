@@ -3,6 +3,8 @@
     import {getEvents} from "$lib/backend";
     import Timeline from "$lib/Timeline.svelte";
 
+    export let project: string;
+
     let events = [];
     let displayedEvents = [];
     let tracks: { [key: string] : {
@@ -23,7 +25,7 @@
     let compIncludeStates = {};
 
     async function loadEvs() {
-        events = await getEvents();
+        events = await getEvents(project);
         for (let ev of events) {
             comps.add(ev.comp);
             compIncludeStates[ev.comp] = true;

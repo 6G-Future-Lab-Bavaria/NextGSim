@@ -1,62 +1,78 @@
 <script lang="ts">
-    import Test from "$lib/Test.svelte";
-    import Timeline from "$lib/Timeline.svelte";
-    import Timeline2 from "$lib/Timeline2.svelte";
-    import {getEvents} from "$lib/backend.js";
-    import EventViewer from "$lib/EventViewer.svelte";
-    import MetricsViewer from "$lib/MetricsViewer.svelte";
-
-    let currentComp = EventViewer;
+    import {getProjects} from "$lib/backend";
 </script>
 
-<div id="app">
-    <div id="header">
-        <button on:click={() => currentComp = Test}>Network</button>
-        <button on:click={() => currentComp = MetricsViewer}>Metrics</button>
-        <button on:click={() => currentComp = EventViewer}>Events</button>
+<div id="modal">
+    <div id="controls">
+        <button>+</button>
     </div>
-    <div id="body">
-        <svelte:component this={currentComp} />
-    </div>
+    <ul id="projects">
+    {#await getProjects() then projects}
+        {#each projects as proj}
+        <li class="project">
+            <a href="/projects/{proj}">{proj}</a>
+        </li>
+        {/each}
+    {/await}
+    </ul>
 </div>
 
 <style>
     :global(body) {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         font-family: sans-serif;
     }
 
-    #app {
+    #modal {
+        min-height: 50%;
+        max-height: 70%;
+        background-color: #1abc9c;
+        min-width: 40%;
+        max-width: 70%;
+        padding: 2em;
+        box-sizing: border-box;
         display: flex;
         flex-direction: column;
-        width: 100%;
-        height: 100%;
     }
 
-    #header {
-        flex-basis: 2em;
-        flex-grow: 0;
-        flex-shrink: 0;
-        border-bottom: 1px solid black;
-        display: flex;
-        flex-direction: row;
-        align-items: baseline;
+    #controls {
+        margin-bottom: .5em;
     }
 
-    #header button {
-        background-color: transparent;
+    #controls button {
+        float: right;
         border: none;
+        font-size: 1.5em;
+        font-weight: bold;
+        background: none;
+        cursor: pointer;
+    }
+
+    #projects {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        overflow-y: scroll;
+        flex: 1;
+    }
+
+    .project {
+        margin-bottom: 1em;
+    }
+
+    .project a {
+        color: inherit;
+        text-decoration: none;
         font-weight: bold;
         font-size: 1.2em;
-        cursor: pointer;
-        margin: 0 1em;
-        margin-top: .1em;
-    }
-
-    #body {
-        flex-basis: auto;
-        flex-grow: 0;
-        flex-shrink: 0;
     }
 </style>
-
-<!--Test></Test-->

@@ -3,13 +3,15 @@
 
     import {getMetrics} from "$lib/backend";
 
+    export let project: string;
+
     let metrics: any[];
 
     let type = "line";
 
     async function load() {
         metrics = [];
-        let ms = await getMetrics();
+        let ms = await getMetrics(project);
 
         for (let m of ms) {
             let values = m.values;

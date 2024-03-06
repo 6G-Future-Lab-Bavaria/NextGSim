@@ -1,9 +1,9 @@
 
-const ENDPOINT = "http://localhost:5000/projects/test1";
+const ENDPOINT = "http://localhost:5000/";
 
-export async function getNetworkTopology() {
-    await fetch(ENDPOINT + "/api/create");
-    let res = await fetch(ENDPOINT + "/api/network");
+export async function getNetworkTopology(project, run) {
+    await fetch(ENDPOINT + `projects/${project}/api/create`);
+    let res = await fetch(ENDPOINT + `projects/${project}/api/network`);
     let top = await res.json();
 
     let nodes: [any] = top.nodes;
@@ -54,19 +54,19 @@ export async function getNetworkTopology() {
     }*/
 }
 
-export async function getMetrics() {
-    await fetch(ENDPOINT + "/api/create");
-    await fetch(ENDPOINT + "/api/start");
-    let res = await fetch(ENDPOINT + "/api/metrics");
+export async function getMetrics(project, run) {
+    await fetch(ENDPOINT + `projects/${project}/api/create`);
+    await fetch(ENDPOINT + `projects/${project}/api/start`);
+    let res = await fetch(ENDPOINT + `projects/${project}/api/metrics`);
     let events = await res.json();
 
     return events;
 }
 
-export async function getEvents() {
-    await fetch(ENDPOINT + "/api/create");
-    await fetch(ENDPOINT + "/api/start");
-    let res = await fetch(ENDPOINT + "/api/events");
+export async function getEvents(project, run) {
+    await fetch(ENDPOINT + `projects/${project}/api/create`);
+    await fetch(ENDPOINT + `projects/${project}/api/start`);
+    let res = await fetch(ENDPOINT + `projects/${project}/api/events`);
     let events = await res.json();
 
     return events.map((ev) => {return {
@@ -75,6 +75,35 @@ export async function getEvents() {
         type: ev.type,
         data: ev.data,
     }})
+}
+
+export async function getRunConfig(project, run) {
+}
+
+export async function getProjects() {
+    let res = await fetch(ENDPOINT + "/api/projects");
+    return await res.json();
+}
+
+export async function getConfig(project) {
+    let res = await fetch(ENDPOINT + `projects/${project}/api/config`);
+    return await res.json();
+}
+
+export async function updateConfig(project, config) {
+    let res = await fetch(ENDPOINT + `projects/${project}/api/config`, {
+        method: "POST",
+        headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(config),
+    });
+    return res.status == 200;
+}
+
+export async function getRuns(project) {
+    let res = await fetch(ENDPOINT + `projects/${project}/api/runs`);
+    return await res.json();
 }
 
 export function getMECTopology() {

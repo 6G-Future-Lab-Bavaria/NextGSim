@@ -22,6 +22,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"d3": "^7.8.5"
+		"d3": "^7.8.5",
+		"svelte-jsoneditor": "^0.22.0"
 	}
 }

@@ -4,6 +4,8 @@
     import * as d3 from "d3";
     import {onMount} from "svelte";
 
+    export let project: string;
+
     let svg;
     $: currentNode = "";
     $: modalDisplay = "none";
@@ -24,7 +26,7 @@
         .attr("d", d3.line()([[0, 0], [0, s], [s, s/2]]))
         .style("fill", "black");
 
-        let top = await getNetworkTopology();
+        let top = await getNetworkTopology(project);
         let nodes = top.nodes;
         let links = top.links;
 
