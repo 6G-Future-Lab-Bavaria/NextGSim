@@ -7,9 +7,6 @@
 
     //export let events: {time: number, comp: string, type: string}[];
 
-    let minTs = 0;
-    let maxTs = 0;
-
     $: tracks = getTracks(tracks_);
     let trackEls = {};
 
@@ -24,18 +21,39 @@
         });
     }
 
-    for (let track of Object.values(getTracks(tracks_))) {
-        for (let ev of track.events) {
-            if (ev.time < minTs) minTs = ev.time;
-            if (ev.time > maxTs) maxTs = ev.time;
-        }
-    }
-
     function getTimeTicks(fromT, toT) {
 
         let timeInterval = toT - fromT;
 
         let markers = [];
+
+        let ts: any[] = [
+            [60*60*1000, 2, "h"],
+            [60*1000, 2, "m"],
+            [1000, 2, "s"],
+            [100, 0, "ms"],
+            [10, 0, "ms"],
+            [5, 0, "ms"],
+            [1, 0, "ms"],
+            [.5, 0, "ms"],
+            [.1, 0, "ms"],
+        ];
+
+        for (let [t,prec,tick] of ts) {
+            if (timeInterval > 1 * t) {
+                for (let i = Math.ceil(fromT / t) * t; i < toT; i += t) {
+                    markers.push({
+                        t: i,
+                        //type: "100ns",
+                        tick: i.toFixed(prec) + tick,
+                        //interval: 0.01,
+                    });
+                }
+                break;
+            }
+        }
+
+        /*
 
         // can be optimized
         if (timeInterval <= .05) {
@@ -104,30 +122,53 @@
     const NUM_TILES = 10; // loaded = #children in tile-container
     const NUM_TILES_SCROLL_PAD = 3; // 4 tiles in screen
 
-    let dur = maxTs - minTs;
-    let timePad = TIME_PAD_PERC/100 * dur;
-    //let totalInterval = [minTs - timePad, maxTs + timePad];
-    let totalInterval = [-30, 170];
-    dur = totalInterval[1] - totalInterval[0]; // should be calculated for currentInterval dynamically
-    let currentInterval = [-30.0000002, 170.0]; //totalInterval;
-
-    let tilesOnScreen = NUM_TILES - 2 * NUM_TILES_SCROLL_PAD; // #tiles
     // left and right NUM_TILES_SCROLL_PAD
+    let tilesOnScreen = NUM_TILES - 2 * NUM_TILES_SCROLL_PAD; // #tiles
 
-    $: intervalPerTile = (currentInterval[1] - currentInterval[0]) / tilesOnScreen // interval
-    $: totalTiles = Math.ceil((totalInterval[1] - totalInterval[0]) / intervalPerTile); // #tiles
+    let totalInterval = [0, 1];
+    let currentInterval = totalInterval;
+    let totalTiles;
+    let currentIntervalStartTile;
+    let intervalPerTile;
+    let prec;
 
-    $: currentIntervalStartTile = Math.floor(currentInterval[0] / intervalPerTile);
+    let screenWidth = 0;
 
     let timelineEl: HTMLDivElement;
     let tileContainerEl: HTMLDivElement;
 
-    let screenWidth = 0;
+    $: {
+        console.log("UPDATE");
+
+        let minTs = 0;
+        let maxTs = 0;
+
+        for (let track of Object.values(getTracks(tracks_))) {
+            for (let ev of track.events) {
+                if (ev.time < minTs) minTs = ev.time;
+                if (ev.time > maxTs) maxTs = ev.time;
+            }
+        }
+
+        maxTs = Math.max(minTs + 100, maxTs);
+
+        let timePad = TIME_PAD_PERC/100 * (maxTs - minTs);
+        totalInterval = [minTs - timePad, maxTs + timePad];
+    }
+
+    $: currentInterval = [totalInterval[0], totalInterval[1]];
+
+    $: {
+        intervalPerTile = (currentInterval[1] - currentInterval[0]) / tilesOnScreen // interval
+
+        totalTiles = Math.ceil((totalInterval[1] - totalInterval[0]) / intervalPerTile); // #tiles
+
+        currentIntervalStartTile = Math.floor(currentInterval[0] / intervalPerTile);
+
+        prec = Math.max(2, -Math.log10(intervalPerTile / 5) + 1);
+    }
+
     $: tileWidth = screenWidth / tilesOnScreen; // px per tile
-
-    $: prec = Math.max(2, -Math.log10(intervalPerTile / 5) + 1);
-
-    let loadedTiles = [0, 0];
 
     function getMarkersInRange(track, fromT, toT) {
         let markers = [];
@@ -169,8 +210,6 @@
     // need to ensure that this is not clogging everything
     // consider eg. loading events once user stops scrolling
     function ensureTilesLoaded(fromI, toI) { // inclusive
-        loadedTiles = [fromI, toI];
-
         fromI = Math.max(0, fromI);
         toI = Math.min(totalTiles-1, toI);
 

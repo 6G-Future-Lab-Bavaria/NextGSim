@@ -1,11 +1,23 @@
 <script lang="ts">
-    import {getRuns} from "$lib/backend";
+    import {createRun, getRuns} from "$lib/backend";
 
     export let project: string;
+
+    let runs: string[];
+
+    async function load() {
+        runs = await getRuns(project)
+    }
+
+    async function newRun() {
+        await createRun(project);
+        runs = await getRuns(project);
+    }
 </script>
 
 <div>
-    {#await getRuns(project) then runs}
+    <button on:click={newRun}>New</button>
+    {#await load() then _}
         <ul>
             {#each runs as run}
             <li>

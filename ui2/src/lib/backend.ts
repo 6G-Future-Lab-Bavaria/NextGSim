@@ -2,8 +2,7 @@
 const ENDPOINT = "http://localhost:5000/";
 
 export async function getNetworkTopology(project, run) {
-    await fetch(ENDPOINT + `projects/${project}/api/create`);
-    let res = await fetch(ENDPOINT + `projects/${project}/api/network`);
+    let res = await fetch(ENDPOINT + `projects/${project}/api/runs/${run}/events`);
     let top = await res.json();
 
     let nodes: [any] = top.nodes;
@@ -55,18 +54,15 @@ export async function getNetworkTopology(project, run) {
 }
 
 export async function getMetrics(project, run) {
-    await fetch(ENDPOINT + `projects/${project}/api/create`);
-    await fetch(ENDPOINT + `projects/${project}/api/start`);
-    let res = await fetch(ENDPOINT + `projects/${project}/api/metrics`);
+    let res = await fetch(ENDPOINT + `projects/${project}/api/runs/${run}/metrics`);
     let events = await res.json();
 
     return events;
 }
 
 export async function getEvents(project, run) {
-    await fetch(ENDPOINT + `projects/${project}/api/create`);
-    await fetch(ENDPOINT + `projects/${project}/api/start`);
-    let res = await fetch(ENDPOINT + `projects/${project}/api/events`);
+    await fetch(ENDPOINT + `projects/${project}/api/runs/${run}/start`, {method: "POST"});
+    let res = await fetch(ENDPOINT + `projects/${project}/api/runs/${run}/events`);
     let events = await res.json();
 
     return events.map((ev) => {return {
@@ -104,6 +100,20 @@ export async function updateConfig(project, config) {
 export async function getRuns(project) {
     let res = await fetch(ENDPOINT + `projects/${project}/api/runs`);
     return await res.json();
+}
+
+export async function startRun(project, run) {
+    await fetch(ENDPOINT + `projects/${project}/api/runs/${run}/start`, {method: "POST"});
+}
+
+export async function loadRun(project, run) {
+    let res = await fetch(ENDPOINT + `projects/${project}/api/runs/${run}/load`, { method: "POST" });
+    return await res.text();
+}
+
+export async function createRun(project) {
+    let res = await fetch(ENDPOINT + `projects/${project}/api/runs`, { method: "POST" });
+    return await res.text();
 }
 
 export function getMECTopology() {

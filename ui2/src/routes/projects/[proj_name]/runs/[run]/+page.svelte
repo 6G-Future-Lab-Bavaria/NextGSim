@@ -2,23 +2,61 @@
     import Test from "$lib/Test.svelte";
     import EventViewer from "$lib/EventViewer.svelte";
     import MetricsViewer from "$lib/MetricsViewer.svelte";
+    import {onMount} from "svelte";
+    import {loadRun, startRun} from "$lib/backend";
 
     export let data;
     let project = data.project;
+    let run = data.run;
 
-    console.log(project)
+    let events = [];
+    let metrics = [];
 
-    let currentComp = EventViewer;
+    let currTime = 0;
+
+    onMount(async () => {
+        await loadRun(project, run);
+        let ws = new WebSocket(`ws://localhost:5000/projects/${project}/api/runs/${run}/ws`);
+        ws.onmessage = (msg) => {
+            let data = JSON.parse(msg.data);
+            if (data.type == "EVENTS" && data.data.length > 0) {
+                events.push(...data.data.map((ev) => {return {
+                    time: ev.time,
+                    comp: ev.component.name + "/" + ev.component.ref,
+                    type: ev.type,
+                    data: ev.data,
+                }}));
+                events = events;
+            } else if (data.type == "METRICS") {
+                metrics = data.data;
+            } else if (data.type == "TIME") {
+                currTime = data.data;
+            }
+        };
+    });
+
+    async function start() {
+        await startRun(project, run);
+    }
+
+    let currentComp: string = "events";
 </script>
 
 <div id="app">
     <div id="header">
-        <button on:click={() => currentComp = Test}>Network</button>
-        <button on:click={() => currentComp = MetricsViewer}>Metrics</button>
-        <button on:click={() => currentComp = EventViewer}>Events</button>
+        <button on:click={() => currentComp = "topology"}>Topology</button>
+        <button on:click={() => currentComp = "metrics"}>Metrics</button>
+        <button on:click={() => currentComp = "events"}>Events</button>
+
+        <button on:click={start}>Start</button>
+        <span>{currTime}</span>
     </div>
     <div id="body">
-        <svelte:component this={currentComp} project={project} />
+        {#if currentComp === "events"}
+            <EventViewer bind:events={events} />
+        {:else if currentComp === "metrics" }
+            <MetricsViewer bind:metrics={metrics} />
+        {/if}
     </div>
 </div>
 
@@ -55,9 +93,7 @@
     }
 
     #body {
-        flex-basis: auto;
-        flex-grow: 0;
-        flex-shrink: 0;
+        flex: 1;
     }
 </style>
 

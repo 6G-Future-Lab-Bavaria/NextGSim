@@ -1,70 +1,173 @@
+from typing import Dict
+
 import flask
 from flask import Flask
 import os
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 import json
-
+from flask_sock import Sock
 from config import load_config
+import time
+from shutil import copy
+import threading
+from simulation import Simulation
 
 projects_folder = os.path.join(os.getcwd(), "ui/projects")
 
 root = os.getcwd()
 
 app = Flask(__name__, static_url_path='/static/')
+sock = Sock(app)
 CORS(app)
 
-sims = {}
 
-def get_project_config(proj):
-    p = os.path.join(projects_folder, proj, "config.json")
-    print(p)
-    if not os.path.exists(p):
-        return None
-    try:
-        with open(p, "r") as f:
-            return json.load(f)
-    except Exception as e:
-        print("Error while reading config:", e)
-        return None
+class Project:
 
-def overwrite_project_config(proj, config):
-    p = os.path.join(projects_folder, proj, "config.json")
-    if not os.path.exists(p):
-        return False
-    try:
-        with open(p, "w") as f:
+    def __init__(self, p):
+        self.root_p = p
+        self.runs_p = os.path.join(p, "runs")
+        self.config_p = os.path.join(p, "config.json")
+        self.runs = {}
+
+        if not os.path.exists(self.runs_p):
+            os.mkdir(self.runs_p)
+
+        if not os.path.exists(self.config_p):
+            with open(self.config_p, "w") as f:
+                f.write("{}")
+
+        self._read_config()
+
+        with os.scandir(self.runs_p) as it:
+            for entry in it:
+                self.runs[entry.name] = {}
+
+        for run in self.runs.keys():
+            self.load_run(run)
+
+    def _read_config(self):
+        try:
+            with open(self.config_p, "r") as f:
+                self.config = json.load(f)
+        except Exception as e:
+            raise Exception("Error while reading project config:", e)
+
+    def overwrite_config(self, config):
+        with open(self.config_p, "w") as f:
             json.dump(config, f)
-            return True
-    except Exception as e:
-        print("Error while writing config:", e)
-        return False
+        self._read_config()
 
-def get_run_names(proj):
-    p = os.path.join(projects_folder, proj, "runs")
-    if not os.path.exists(p):
-        return None
-    res = []
-    with os.scandir(p) as it:
+    def get_run_names(self):
+        return self.runs.keys()
+
+    def create_run(self):
+        t = str(time.time_ns())
+        os.mkdir(os.path.join(self.runs_p, t))
+        config_p = os.path.join(self.runs_p, t, "config.json")
+        with open(config_p, "w") as f:
+            json.dump(self.config, f)
+        self.runs[t] = {
+            "thr": None,
+            "simulation": load_config(self.config),
+            "events": [],
+            "metrics": [],
+            "topologies": [],
+        }
+        return t
+
+    def load_run(self, run):
+        config_p = os.path.join(self.runs_p, run, "config.json")
+        with open(config_p, "r") as f:
+            config = json.load(f)
+        self.runs[run] = {
+            "thr": None,
+            "simulation": load_config(config),
+            "events": [],
+            "metrics": [],
+            "topologies": [],
+        }
+
+    def start_run(self, run, t):
+        def do():
+            events_p = os.path.join(self.runs_p, run, "events.byline")
+            simulator: Simulation = self.runs[run]["simulation"]
+            env = simulator.env
+
+            def log():
+                while True:
+                    time.sleep(.1)
+                    print("T", env.now)
+                    yield env.timeout(10)
+                    print("T1", env.now)
+                    with open(events_p, "w") as f:
+                        json.dump([ev.serialize() for ev in simulator.eventlog.events], f)
+
+            env.process(log())
+            simulator.run(t)
+
+        thr = threading.Thread(target=do, args=[])
+        self.runs[run]["thr"] = thr
+        thr.start()
+
+
+sims: Dict[str, Project] = {}
+
+def load_from_disk():
+    projects = []
+    with os.scandir(projects_folder) as it:
         for entry in it:
-            ts = entry.name
-            #details_path = os.path.join(entry.path, "details")
-            res.append(ts)
-    return res
+            if entry.name.startswith(".") or not entry.is_dir():
+                continue
+            if not os.path.exists(os.path.join(entry.path, ".ngs")):
+                continue
+            sims[entry.name] = Project(os.path.join(entry.path))
+            projects.append(entry.name)
 
-@app.route("/projects/<string:project>/api/create")
-def create_sim(project):
-    config = get_project_config(project)
-    if config is None:
-        print("Bad config for project", project)
+@sock.route("/projects/<string:project>/api/runs/<string:run>/ws")
+def run_ws(ws, project, run):
+    sim: Simulation = sims[project].runs[run]["simulation"]
+    i_ev = 0
+    while True:
+        time.sleep(1)
+        ws.send(json.dumps({
+            "type": "TIME",
+            "data": sim.env.now
+        }))
+        events = sim.eventlog.events[i_ev:]
+        i_ev += len(events)
+        ws.send(json.dumps({
+            "type": "EVENTS",
+            "data": [ev.serialize() for ev in events],
+        }))
+        metrics = sim.metric_writer.metrics # todo: better streaming
+        ws.send(json.dumps({
+            "type": "METRICS",
+            "data": [
+                {
+                    "comp": str(metric.comp),
+                    "name": metric.name,
+                    "values": metric.get_values(),
+                } for metric in metrics
+            ]
+        }))
+
+@app.post("/projects/<string:project>/api/runs/")
+def create_run(project):
+    run = sims[project].create_run()
+    if run is None:
         return ('', 500)
-    sims[project] = load_config(config)
     return ('', 204)
 
-@app.route("/projects/<string:project>/api/start")
-def start_sim(project):
+@app.post("/projects/<string:project>/api/runs/<string:run>/load")
+def load_run(project, run):
+    sims[project].load_run(run)
+    return ('', 204)
+
+@app.post("/projects/<string:project>/api/runs/<string:run>/start")
+def start_sim(project, run):
     if project not in sims:
         return ('', 400)
-    sims[project].run(200)
+    sims[project].start_run(run, 500)
     return ('', 204)
 
 @app.route("/projects/<string:project>/api/physical")
@@ -84,11 +187,11 @@ def get_ues(project):
         ]
     }
 
-@app.route("/projects/<string:project>/api/network")
-def get_network(project):
+@app.route("/projects/<string:project>/api/runs/<string:run>/network")
+def get_network(project, run):
     if project not in sims:
         return ('', 400)
-    sim = sims[project]
+    sim = sims[project].runs[run]["simulation"]
     return {
         "nodes": [
             {
@@ -105,20 +208,20 @@ def get_network(project):
         ]
     }
 
-@app.route("/projects/<string:project>/api/events")
-def get_events(project):
+@app.route("/projects/<string:project>/api/runs/<string:run>/events")
+def get_events(project, run):
     if project not in sims:
         return ('', 400)
-    sim = sims[project]
+    sim = sims[project].runs[run]["simulation"]
     return [
         ev.serialize() for ev in sim.eventlog.events
     ]
 
-@app.route("/projects/<string:project>/api/metrics")
-def get_metrics(project):
+@app.route("/projects/<string:project>/api/runs/<string:run>/metrics")
+def get_metrics(project, run):
     if project not in sims:
         return ('', 400)
-    sim = sims[project]
+    sim = sims[project].runs[run]["simulation"]
     return [
         {
             "comp": str(metric.comp),
@@ -129,27 +232,25 @@ def get_metrics(project):
 
 @app.get("/projects/<string:project>/api/config")
 def get_config(project):
-    config = get_project_config(project)
-    if config is None:
-        print("Bad config for project", project)
-        return ('', 500)
-    return config
+    if project in sims:
+        return sims[project].config
+    return ('', 404)
 
 @app.post("/projects/<string:project>/api/config")
 def post_config(project):
-    config = get_project_config(project)
-    if config is None:
-        print("Bad config for project", project)
-        return ('', 500)
     config = flask.request.json
     # todo: validate config somehow?
-    success = overwrite_project_config(project, config)
-    return ('', 200 if success else 500)
+    if project in sims:
+        sims[project].overwrite_config(config)
+        return ('', 200)
+    else:
+        return ('', 404)
 
 @app.get("/projects/<string:project>/api/runs")
 def get_runs(project):
-    runs = get_run_names(project)
-    return runs
+    if project in sims:
+        return list(sims[project].runs.keys())
+    return ('', 404)
 
 @app.route("/tree/<path:path>")
 def get_tree(path):
@@ -217,3 +318,4 @@ def index():
 def project(name):
     return flask.send_file("./app.html")
 
+load_from_disk()

@@ -5,6 +5,7 @@
     import {onMount} from "svelte";
 
     export let project: string;
+    export let run: string;
 
     let svg;
     $: currentNode = "";
@@ -26,7 +27,7 @@
         .attr("d", d3.line()([[0, 0], [0, s], [s, s/2]]))
         .style("fill", "black");
 
-        let top = await getNetworkTopology(project);
+        let top = await getNetworkTopology(project, run);
         let nodes = top.nodes;
         let links = top.links;
 

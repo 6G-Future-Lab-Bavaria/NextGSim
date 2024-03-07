@@ -3,85 +3,79 @@
 
     import {getMetrics} from "$lib/backend";
 
-    export let project: string;
+    // todo: fix type change
+    // todo: fix live updates (only updated when destroyed)
 
-    let metrics: any[];
+    export let metrics: any[];
 
     let type = "line";
 
-    async function load() {
-        metrics = [];
-        let ms = await getMetrics(project);
+    function render(svgEl: SVGElement, values) {
+        if (values.length == 0) return {}
 
-        for (let m of ms) {
-            let values = m.values;
+        const width = 500;
+        const height = 100;
+        const margin = {top: 10, right: 30, bottom: 30, left: 60};
 
-            let width = 500;
-            let height = 100;
-            let margin = {top: 10, right: 30, bottom: 30, left: 60};
+        svgEl.innerHTML = "";
 
-            let render = function(svgEl: SVGElement) {
-                let svg = d3.select(svgEl)
-                    .attr("width", width + margin.left + margin.right)
-                    .attr("height", height + margin.top + margin.bottom)
-                    .append("g")
-                    .attr("transform",
-                          "translate(" + margin.left + "," + margin.top + ")");
+        let svg = d3.select(svgEl)
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform",
+                  "translate(" + margin.left + "," + margin.top + ")");
 
-                let xvals = [];
-                let yvals = [];
-                for (let [x,y] of values) {
-                    xvals.push(x);
-                    yvals.push(y);
-                }
-
-                let x = d3.scaleLinear()
-                    .domain([Math.min(...xvals), Math.max(...xvals)])
-                    .range([ 0, width]);
-                let y = d3.scaleLinear()
-                    .domain([Math.min(...yvals), Math.max(...yvals)])
-                    .range([ height, 0]);
-                svg.append("g")
-                    .call(d3.axisBottom(x))
-                    .attr("transform", `translate(0,${height})`);
-                svg.append("g").call(d3.axisLeft(y));
-
-                if (type == "scatter") {
-                    svg.append('g')
-                    .selectAll("dot")
-                    .data(values)
-                    .enter()
-                    .append("circle")
-                      .attr("cx", function (d) { return x(d[0]); } )
-                      .attr("cy", function (d) { return y(d[1]); } )
-                      .attr("r", 3)
-                      .style("fill", "red");
-                } else if (type == "line") {
-                    svg.append("path")
-                      .datum(values)
-                      .attr("fill", "none")
-                      .attr("stroke", "red")
-                      .attr("stroke-width", 2)
-                      .attr("d", d3.line()
-                        .x(function(d) { return x(d[0]) })
-                        .y(function(d) { return y(d[1]) })
-                        );
-
-                }
-            }
-
-            if (values.length == 0)
-                render = () => {};
-
-            metrics.push({
-                comp: m.comp,
-                name: m.name,
-                values: m.values,
-                render: render,
-            });
+        let xvals = [];
+        let yvals = [];
+        for (let [x,y] of values) {
+            xvals.push(x);
+            yvals.push(y);
         }
 
-        metrics = metrics;
+        let x = d3.scaleLinear()
+            .domain([Math.min(...xvals), Math.max(...xvals)])
+            .range([ 0, width]);
+        let y = d3.scaleLinear()
+            .domain([Math.min(...yvals), Math.max(...yvals)])
+            .range([ height, 0]);
+        svg.append("g")
+            .call(d3.axisBottom(x))
+            .attr("transform", `translate(0,${height})`);
+        svg.append("g").call(d3.axisLeft(y));
+
+        if (type == "scatter") {
+            svg.append('g')
+            .selectAll("dot")
+            .data(values)
+            .enter()
+            .append("circle")
+              .attr("cx", function (d) { return x(d[0]); } )
+              .attr("cy", function (d) { return y(d[1]); } )
+              .attr("r", 3)
+              .style("fill", "red");
+        } else if (type == "line") {
+            svg.append("path")
+              .datum(values)
+              .attr("fill", "none")
+              .attr("stroke", "red")
+              .attr("stroke-width", 2)
+              .attr("d", d3.line()
+                .x(function(d) { return x(d[0]) })
+                .y(function(d) { return y(d[1]) })
+                );
+
+        }
+    }
+
+    function action(svg, values) {
+        render(svg, values);
+
+        return {
+            update(values) {
+                render(svg, values);
+            }
+        }
     }
 
 </script>
@@ -89,20 +83,19 @@
 
 <div id="controls">
     <span>Type: </span>
-    <select bind:value={type} on:change={load}>
+    <select bind:value={type}>
         <option value="line">line</option>
         <option value="scatter">scatter</option>
     </select>
 </div>
 
-{#await load() then _}
-    <div id="metrics">
+<div id="metrics">
         {#each metrics as metric}
         <div class="metric">
             <div class="metric-id">{metric.comp}#{metric.name}</div>
             {#if metric.values.length > 0}
                 <div class="metric-values">
-                <svg class="metric-svg" use:metric.render></svg>
+                <svg class="metric-svg" use:action={metric.values}></svg>
             </div>
                 {:else}
                 <p>No measurements</p>
@@ -110,7 +103,6 @@
         </div>
         {/each}
     </div>
-{/await}
 
 <style>
     #controls {
