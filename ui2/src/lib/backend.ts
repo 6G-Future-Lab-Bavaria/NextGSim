@@ -106,6 +106,10 @@ export async function startRun(project, run) {
     await fetch(ENDPOINT + `projects/${project}/api/runs/${run}/start`, {method: "POST"});
 }
 
+export async function stopRun(project, run) {
+    await fetch(ENDPOINT + `projects/${project}/api/runs/${run}/stop`, {method: "POST"});
+}
+
 export async function loadRun(project, run) {
     let res = await fetch(ENDPOINT + `projects/${project}/api/runs/${run}/load`, { method: "POST" });
     return await res.text();

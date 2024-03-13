@@ -46,6 +46,9 @@ class Service(ABC):
         self.process = sim.env.process(self.run())
         self.name = name
 
+    def __repr__(self):
+        return "SV[%s]" % (self.name)
+
     # dependency can be either static => depend on a service type
     # or dynamic: depend on a service state
     @abstractmethod

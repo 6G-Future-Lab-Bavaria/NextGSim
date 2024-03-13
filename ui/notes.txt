@@ -83,12 +83,14 @@ metrics:
 --- determines how to display in frontend => provide set of visualizations
 
 services:
-- device-only: by constraints
-- orchestrator sees also device-only
-- descriptors
+!- device-only: by constraints
+!- orchestrator sees also device-only
+!- descriptors
 
 # websocket
-- live update
+! - live update
 
 # UI
 - run: one timeline over all views
+
+

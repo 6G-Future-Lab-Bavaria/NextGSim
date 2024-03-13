@@ -3,7 +3,7 @@
     import EventViewer from "$lib/EventViewer.svelte";
     import MetricsViewer from "$lib/MetricsViewer.svelte";
     import {onMount} from "svelte";
-    import {loadRun, startRun} from "$lib/backend";
+    import {loadRun, startRun, stopRun} from "$lib/backend";
 
     export let data;
     let project = data.project;
@@ -11,6 +11,7 @@
 
     let events = [];
     let metrics = [];
+    let topology;
 
     let currTime = 0;
 
@@ -31,13 +32,24 @@
                 metrics = data.data;
             } else if (data.type == "TIME") {
                 currTime = data.data;
+            } else if (data.type == "TOPOLOGY") {
+                topology = data.data;
+                console.log(topology)
             }
         };
     });
 
     async function start() {
         await startRun(project, run);
+        running = true;
     }
+
+    async function stop() {
+        await stopRun(project, run);
+        running = false;
+    }
+
+    let running = false;
 
     let currentComp: string = "events";
 </script>
@@ -48,11 +60,13 @@
         <button on:click={() => currentComp = "metrics"}>Metrics</button>
         <button on:click={() => currentComp = "events"}>Events</button>
 
-        <button on:click={start}>Start</button>
+        <button on:click={running ? stop : start}>{#if !running}Start{:else}Stop{/if}</button>
         <span>{currTime}</span>
     </div>
     <div id="body">
-        {#if currentComp === "events"}
+        {#if currentComp === "topology"}
+            <Test bind:topology={topology} />
+        {:else if currentComp === "events"}
             <EventViewer bind:events={events} />
         {:else if currentComp === "metrics" }
             <MetricsViewer bind:metrics={metrics} />

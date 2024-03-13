@@ -1,5 +1,8 @@
 import sys, importlib
 
+from mec.orchestrator import ServiceDeploymentDescriptor
+from simulation import Simulation
+
 
 def get_type(fqn):
     module = ".".join(fqn.split(".")[:-1])
@@ -39,8 +42,9 @@ def init(config):
     sim = config["simulation"]
     nodes = config["nodes"]
     conns = config["connections"]
+    sdds = config["sdds"]
     sim_t = sim["_type"]
-    simulation = sim_t.from_config(sim)
+    simulation: Simulation = sim_t.from_config(sim)
 
     def res(tree):
         if type(tree) == dict:
@@ -75,6 +79,12 @@ def init(config):
 
         connection = typ(**{ **con, "sim": simulation, "ifs": ifs })
         connections.append(connection)
+
+    sdds = res(sdds)
+    for sdd in sdds:
+        sdd = ServiceDeploymentDescriptor(sdd["services"], sdd["interlinks"], sdd["sla"])
+        # todo: this should be simulated, add ts in config when this is deployed, or class Developer who deploys
+        simulation.orchestrator.deploy(sdd)
 
     return simulation, nodes, connections
 

@@ -4,8 +4,36 @@
     import * as d3 from "d3";
     import {onMount} from "svelte";
 
-    export let project: string;
-    export let run: string;
+    /*export let project: string;
+    export let run: string;*/
+    export let topology;
+
+    function convert(top) {
+        let nodes: [any] = top.nodes;
+        for (let node of nodes) {
+            node.inLinks = [];
+            node.outLinks = [];
+        }
+
+        let links = [];
+        for (let l of top.links) {
+            let fromNode = nodes.find((n) => n.id == l.from.node);
+            let toNode = nodes.find((n) => n.id == l.from.node);
+            fromNode.outLinks.push(l);
+            toNode.inLinks.push(l);
+            links.push({
+                source: l.from.node,
+                target: l.to.node,
+                ifs: [l.from.if, l.to.if],
+            });
+        }
+        return {
+            nodes: nodes,
+            links: links,
+        }
+    }
+
+    $: network = convert(topology);
 
     let svg;
     $: currentNode = "";
@@ -27,7 +55,7 @@
         .attr("d", d3.line()([[0, 0], [0, s], [s, s/2]]))
         .style("fill", "black");
 
-        let top = await getNetworkTopology(project, run);
+        let top = network; //await getNetworkTopology(project, run);
         let nodes = top.nodes;
         let links = top.links;
 
@@ -53,7 +81,7 @@
             //console.log(nodes);
 
             link
-                .each(function(this: SVGLineElement, d) {
+                .each(function(this: SVGLineElement, d: any) {
                     let dir = [d.target.x - d.source.x, d.target.y - d.source.y];
                     this.setAttribute("x1", d.source.x + dir[0]*.4);
                     this.setAttribute("y1", d.source.y + dir[1]*.4);
@@ -64,7 +92,7 @@
             node
                  .attr("cx", function (d: any) { return d.x; })
                  .attr("cy", function(d: any) { return d.y; })
-                .on("click", function(ev: MouseEvent, d) {
+                .on("click", function(ev: MouseEvent, d: any) {
                    modalDisplay = "block";
                    let x = ev.clientX;
                    let y = ev.clientY;

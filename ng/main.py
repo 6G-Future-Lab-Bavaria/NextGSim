@@ -1,7 +1,8 @@
 import simpy
 
 from config import load_config
-from mec.service import GW
+from mec.orchestrator import ServiceDeploymentDescriptor
+from mec.service import GW, ExampleProc, ExampleGen
 
 
 def dummy_sim():
@@ -288,9 +289,175 @@ def create_from_config():
                 ]
             }
         ],
+        "sdds": []
     }
 
     sim = load_config(config)
+
+    sim.run(200)
+
+    for ev in sim.eventlog.events:
+        print(ev.time, ev.component, ev.type, ev.data)
+
+    print(sim.metric_writer.metrics)
+    print(sim.metric_writer.metrics[1].get_values())
+
+def create_from_config_dynamic_mec():
+    config = {
+        "simulation": {
+            "_type": "ng.simulation.Simulation",  # fully qualified type name
+            "routing": {
+                "_type": "ng.networking.routing.ShortestPathRouting",
+            },
+            "orchestrator": {
+                "_type": "ng.mec.orchestrator.SimpleOrchestrator"
+            },
+            "ms_per_ts": 1
+        },
+        "nodes": [
+            {
+                "_type": "ng.mec.entity.Entity",
+                "id": 0,
+                "ifs": [
+                    {
+                        "_type": "ng.networking.interface.eth.EthernetInterface",
+                        "id": "eth0",
+                    },
+                ],
+                "cpu": {
+                    "_type": "ng.mec.cpu.SimpleSingleThreadedCPU",
+                    "clock_speed": 1000,
+                },
+                "services": [  # services deployed at start
+                ],
+                "dns": {  # dns entries
+
+                }
+            },
+            {
+                "_type": "ng.mec.entity.Entity",
+                "id": 1,
+                "ifs": [
+                    {
+                        "_type": "ng.networking.interface.eth.EthernetInterface",
+                        "id": "eth0",
+                    },
+                    {
+                        "_type": "ng.networking.interface.eth.EthernetInterface",
+                        "id": "eth1",
+                    }
+                ],
+                "cpu": {
+                    "_type": "ng.mec.cpu.SimpleSingleThreadedCPU",
+                    "clock_speed": 100,
+                },
+                "services": [  # services deployed at start
+                ],
+                "dns": {  # dns entries
+                }
+            },
+            {
+                "_type": "ng.mec.entity.Entity",
+                "id": 2,
+                "ifs": [
+                    {
+                        "_type": "ng.networking.interface.eth.EthernetInterface",
+                        "id": "eth0",
+                    },
+                    {
+                        "_type": "ng.networking.interface.eth.EthernetInterface",
+                        "id": "eth1",
+                    }
+                ],
+                "cpu": {
+                    "_type": "ng.mec.cpu.SimpleSingleThreadedCPU",
+                    "clock_speed": 100,
+                },
+                "services": [  # services deployed at start
+                ],
+                "dns": {  # dns entries
+                }
+            },
+            {
+                "_type": "ng.networking.node.Node",
+                "id": 3,
+                "ifs": [
+                    {
+                        "_type": "ng.networking.interface.eth.EthernetInterface",
+                        "id": "eth0",
+                    },
+                    {
+                        "_type": "ng.networking.interface.eth.EthernetInterface",
+                        "id": "eth1",
+                    }
+                ],
+            }
+            # routers, ...
+        ],
+        "connections": [
+            {
+                "_type": "ng.networking.interface.eth.FiberConnection",
+                "length": 2,
+                "ifs": [
+                    # references to connected ifs
+                    {"node": 0, "if": "eth0"},
+                    {"node": 1, "if": "eth0"},
+                ]
+            },
+            {
+                "_type": "ng.networking.interface.eth.FiberConnection",
+                "length": 2,
+                "ifs": [
+                    # references to connected ifs
+                    {"node": 1, "if": "eth1"},
+                    {"node": 2, "if": "eth0"},
+                ]
+            }
+        ],
+        "sdds": [{
+            "services": [
+                {
+                    "_type": "mec.service.ExampleProc",
+                    "id": 0,
+                    "name": "ExampleProc_i0",
+                },
+                {
+                    "_type": "mec.service.GW",
+                    "id": 0,
+                    "name": "ExampleProc",
+                    "mapping": {"ExampleProc": ["ExampleProc_i0"]}
+                },
+                {
+                    "_type": "mec.service.ExampleGen",
+                    "id": 0,
+                    "name": "ExampleGen",
+                },
+            ],
+            "interlinks": {
+                "ExampleGen": ["ExampleProc"],
+                "ExampleProc": ["ExampleProc_i0"],
+                "ExampleProc_i0": [],
+            },
+            "sla": {}
+        }]
+    }
+
+    sim = load_config(config)
+
+    # sim.orchestrator.deploy(
+    ServiceDeploymentDescriptor(
+        [
+            ExampleProc(sim, 0, "ExampleProc_i0"),
+            GW(sim, 0, "ExampleProc", {"ExampleProc": ["ExampleProc_i0"]}),
+            ExampleGen(sim, 0, "ExampleGen"),
+        ],
+        {
+            "ExampleGen": ["ExampleProc"],
+            "ExampleProc": ["ExampleProc_i0"],
+            "ExampleProc_i0": [],
+        },
+        {}
+    )
 
     sim.run(200)
 
@@ -311,5 +478,5 @@ def test4():
     print(sim.metric_writer.metrics)
     print(sim.metric_writer.metrics[1].get_values())
 
-create_from_config()
+create_from_config_dynamic_mec()
 #test4()

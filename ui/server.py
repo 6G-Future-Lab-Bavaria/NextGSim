@@ -1,6 +1,7 @@
 from typing import Dict
 
 import flask
+import simpy
 from flask import Flask
 import os
 from flask_cors import CORS
@@ -88,6 +89,9 @@ class Project:
         }
 
     def start_run(self, run, t):
+        env = self.runs[run]["simulation"].env
+        stop_ev = simpy.Event(env)
+
         def do():
             events_p = os.path.join(self.runs_p, run, "events.byline")
             simulator: Simulation = self.runs[run]["simulation"]
@@ -103,11 +107,17 @@ class Project:
                         json.dump([ev.serialize() for ev in simulator.eventlog.events], f)
 
             env.process(log())
-            simulator.run(t)
+            simulator.run(stop_ev)
+            print("> STOPPED RUN", run, env.now)
 
         thr = threading.Thread(target=do, args=[])
         self.runs[run]["thr"] = thr
+        self.runs[run]["stop_ev"] = stop_ev
         thr.start()
+
+    def stop_run(self, run):
+        if run in self.runs and "stop_ev" in self.runs[run]:
+            self.runs[run]["stop_ev"].succeed()
 
 
 sims: Dict[str, Project] = {}
@@ -150,6 +160,25 @@ def run_ws(ws, project, run):
                 } for metric in metrics
             ]
         }))
+        topology = {
+            "nodes": [
+                {
+                    "id": node.id,
+                }
+                for node in sim.network.nodes
+            ],
+            "links": [
+                {
+                    "from": { "node": n0, "if": if0 },
+                    "to": { "node": n1, "if": if1 },
+                }
+                for [n0, if0, n1, if1] in sim.network.get_links()
+            ]
+        }
+        ws.send(json.dumps({
+            "type": "TOPOLOGY",
+            "data": topology
+        }))
 
 @app.post("/projects/<string:project>/api/runs/")
 def create_run(project):
@@ -168,6 +197,13 @@ def start_sim(project, run):
     if project not in sims:
         return ('', 400)
     sims[project].start_run(run, 500)
+    return ('', 204)
+
+@app.post("/projects/<string:project>/api/runs/<string:run>/stop")
+def stop_sim(project, run):
+    if project not in sims:
+        return ("", 400)
+    sims[project].stop_run(run)
     return ('', 204)
 
 @app.route("/projects/<string:project>/api/physical")

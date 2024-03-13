@@ -47,3 +47,6 @@ class NetworkTopology:
             return sp(self.graph, source=n0, target=n1)
         except NetworkXNoPath:
             return None
+
+    def has_route(self, n0, n1):
+        return self.shortest_path(n0, n1) is not None
