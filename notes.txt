@@ -91,6 +91,18 @@ services:
 ! - live update
 
 # UI
-- run: one timeline over all views
+- run: one timeline over all view
+
+# ran:
+- physical area
+- ue(entity), have position and coord controlled by motion model
+- motion model per ue, uses physical area
+- gnb
+- ran process => schedule PRBs each tti (modeled using simpy events) who does ran process, i.e. schedule PRBs?
+- radio interface, buffers data to send, stores current device state, connected bs, etc.
+- prb schedulers as classes
+- channel model is connection for radio interfaces ...
+
+
 
 
