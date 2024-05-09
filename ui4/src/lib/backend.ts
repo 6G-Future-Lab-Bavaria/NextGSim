@@ -1,7 +1,7 @@
 
 const ENDPOINT = "";
 
-export async function getNetworkTopology(project, run) {
+export async function getNetworkTopology(project: string, run: string) {
     let res = await fetch(ENDPOINT + `projects/${project}/api/runs/${run}/events`);
     let top = await res.json();
 
@@ -110,17 +110,22 @@ export async function stopRun(project, run) {
     await fetch(ENDPOINT + `/api/projects/${project}/runs/${run}/stop`, {method: "POST"});
 }
 
+export async function getRun(project: string, run: string): Promise<{config: any, status: string}> {
+    let res = await fetch(ENDPOINT + `/api/projects/${project}/runs/${run}`, { method: "GET" });
+    return await res.json();
+}
+
 export async function loadRun(project, run) {
     let res = await fetch(ENDPOINT + `/api/projects/${project}/runs/${run}/load`, { method: "POST" });
     return await res.text();
 }
 
-export async function createRun(project) {
+export async function createRun(project: string) {
     let res = await fetch(ENDPOINT + `/api/projects/${project}/runs`, { method: "POST" });
     return await res.text();
 }
 
-export async function createProject(name) {
+export async function createProject(name: string) {
     let res = await fetch(ENDPOINT + `/api/projects/${name}`, { method: "POST" })
     return res.status == 200;
 }

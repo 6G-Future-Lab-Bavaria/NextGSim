@@ -9,45 +9,68 @@
     import EventViewer from "../../lib/EventViewer.svelte";
     import Test from "../../lib/Test.svelte";
     import {onMount} from "svelte";
-    import {loadRun} from "../../lib/backend";
+    import {getRun, getRuns, loadRun, startRun, stopRun} from "../../lib/backend";
+    import StatusIndicator from "../../lib/StatusIndicator.svelte";
 
     let activePane = "m";
 
-    let events = [];
-    let metrics = [];
-    let topology;
+    $: runStatus = "UNKNOWN";
+
+    let events: any[] = [];
+    let metrics: any[] = [];
+    let topology: any;
 
     let currTime = 0;
 
+    async function setupWebsocket() {
+        console.log("WS")
+        let ws = new WebSocket(`ws://${window.location.host}/api/projects/${project}/runs/${run}/ws`);
+            ws.onmessage = (msg) => {
+                let data = JSON.parse(msg.data);
+                if (data.type == "EVENTS" && data.data.length > 0) {
+                    events.push(...data.data.map((ev: any) => {return {
+                        time: ev.time,
+                        comp: ev.component.name + "/" + ev.component.ref,
+                        type: ev.type,
+                        data: ev.data,
+                    }}));
+                    events = events;
+                } else if (data.type == "METRICS") {
+                    metrics = data.data;
+                } else if (data.type == "TIME") {
+                    currTime = data.data;
+                } else if (data.type == "TOPOLOGY") {
+                    topology = data.data;
+                    console.log(topology)
+                } else if (data.type == "END") {
+                    runStatus = "STOPPED"
+                }
+            };
+    }
+
+    async function stop() {
+        await stopRun(project, run);
+    }
+
     onMount(async () => {
-        await loadRun(project, run);
-        let ws = new WebSocket(`ws://localhost:5000/projects/${project}/api/runs/${run}/ws`);
-        ws.onmessage = (msg) => {
-            let data = JSON.parse(msg.data);
-            if (data.type == "EVENTS" && data.data.length > 0) {
-                events.push(...data.data.map((ev) => {return {
-                    time: ev.time,
-                    comp: ev.component.name + "/" + ev.component.ref,
-                    type: ev.type,
-                    data: ev.data,
-                }}));
-                events = events;
-            } else if (data.type == "METRICS") {
-                metrics = data.data;
-            } else if (data.type == "TIME") {
-                currTime = data.data;
-            } else if (data.type == "TOPOLOGY") {
-                topology = data.data;
-                console.log(topology)
-            }
-        };
+        let runData = await getRun(project, run);
+        runStatus = runData.status;
+        console.log(runStatus);
+
+        await setupWebsocket();
     });
 
 </script>
 
 <div id="app">
     <header>
-        <h1>{project} // {run}</h1>
+        <h1><a href="/projects/{project}">{project}</a> // {run}</h1>
+        <div class="right">
+            {#if runStatus === "RUNNING"}
+            <button id="stop-btn" on:click={stop}>Stop</button>
+            {/if}
+            <StatusIndicator status={runStatus}></StatusIndicator>
+        </div>
     </header>
 
     <main>
@@ -104,20 +127,47 @@
     }
 
     header {
+        font-size: 1.4rem;
         flex: 1em;
         flex-grow: 0;
         border-bottom: 2px solid teal;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
     }
 
     header h1 {
-        font-size: 1rem;
+        font-size: inherit;
         margin: .5em;
+    }
+
+    header .right {
+        display: flex;
+        align-items: center;
+    }
+
+    header a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    #stop-btn {
+        /*width: 1em;
+        height: 1em;*/
+        margin: .5em;
+        background-color: transparent;
+        border: none;
+        font-size: 1.5rem;
+        font-weight: bold;
+        cursor: pointer;
     }
 
     main {
         flex: auto;
         display: flex;
         flex-direction: column;
+        min-height: 0;
     }
 
     #time-slider {
@@ -128,16 +178,19 @@
     }
 
     #bottom {
+        flex: auto;
         display: flex;
         flex-direction: row;
-        height: 100%;
+        min-height: 0;
     }
 
     #main-pane {
         padding: 1em;
         box-sizing: border-box;
         width: 100%;
-        height: 100%;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
     }
 
     aside {
@@ -169,20 +222,6 @@
     main h4 {
         font-size: 1rem;
         margin: .7em;
-    }
-
-    #pane-left, #pane-right {
-        display: flex;
-        flex-direction: column;
-    }
-
-    #pane-left {
-        flex: 3;
-    }
-
-    #pane-right {
-        flex: 1;
-        margin-left: 1em;
     }
 
 

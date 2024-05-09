@@ -23,7 +23,7 @@ export default defineConfig(({mode}) => { return {
     },
     // @ts-ignore
     sourcemap: mode == "development" ? "inline" : false,
-    cssCodeSplit: true,
+    // cssCodeSplit: true,
   },
   optimizeDeps: {
     force: true,

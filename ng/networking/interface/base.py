@@ -2,7 +2,7 @@ import simpy
 from typing import Optional
 from abc import ABC
 
-from metrics import ScalarMetric, IntegratedScalarMetric
+from metrics import IntegratedFloatMetric
 from ng.networking.node import Node
 from ng.networking.interface.connection import Connection
 from ng.simulation import Simulation
@@ -44,8 +44,8 @@ class Interface(ABC):
         self.recv_proc = None
         self.inbuf = simpy.Store(self.env)  # interfaces buffer messages, could be modeled differently ...
         self.up_ev = simpy.Event(self.env)
-        self.m_tx = IntegratedScalarMetric(self.sim, self, "TX")
-        self.m_rx = IntegratedScalarMetric(self.sim, self, "RX")
+        self.m_tx = IntegratedFloatMetric(self.sim, self, "TX")
+        self.m_rx = IntegratedFloatMetric(self.sim, self, "RX")
 
     def __repr__(self):
         return "%s.if%s" % (self.node, self.id)

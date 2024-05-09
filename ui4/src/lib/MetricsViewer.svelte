@@ -111,6 +111,11 @@
         padding: 1em;
     }
 
+    #metrics {
+        min-height: 0;
+        overflow-y: scroll;
+    }
+
     .metric {
         margin-bottom: 1em;
         width: 100%;

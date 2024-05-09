@@ -1,4 +1,3 @@
-from metrics import ScalarMetric
 from networking.interface.frame import Frame
 from ng.networking.interface.base import Interface
 import simpy

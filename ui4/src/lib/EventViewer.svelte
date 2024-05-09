@@ -96,5 +96,6 @@
 
     #timeline {
         flex: 12;
+        display: flex;
     }
 </style>
