@@ -14,13 +14,14 @@
 
         const width = 500;
         const height = 100;
-        const margin = {top: 10, right: 30, bottom: 30, left: 60};
+        const margin = {top: 10, right: 30, bottom: 50, left: 30};
 
         svgEl.innerHTML = "";
 
         let svg = d3.select(svgEl)
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
+            //.attr("width", width + margin.left + margin.right)
+            //.attr("height", height + margin.top + margin.bottom)
+            .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
             .append("g")
             .attr("transform",
                   "translate(" + margin.left + "," + margin.top + ")");
@@ -119,7 +120,6 @@
     .metric {
         margin-bottom: 1em;
         width: 100%;
-        padding: 1em;
         box-sizing: border-box;
         display: flex;
         flex-direction: row;
@@ -131,8 +131,11 @@
         font-weight: bold;
     }
 
+    .metric-values {
+        flex: auto;
+        padding: 1em;
+    }
+
     .metric-svg {
-        width: 100%;
-        margin: 1em;
     }
 </style>
