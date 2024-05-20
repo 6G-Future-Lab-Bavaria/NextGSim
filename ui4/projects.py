@@ -145,13 +145,6 @@ class Project:
         run_p = pjoin(self.runs_p, run_id)
         os.mkdir(run_p)
 
-        with open(pjoin(run_p, "run.ngs"), "w") as f:
-            json.dump({
-                "time": t,
-                "started": None,
-                "stopped": None,
-            }, f)
-
         config_p = pjoin(run_p, "config.json")
         with open(config_p, "w") as f:
             json.dump(self.config, f)
@@ -161,14 +154,27 @@ class Project:
 
         os.mkdir(pjoin(run_p, "metrics"))
 
+        sim = load_config(self.config)
+
+        with open(pjoin(run_p, "run.ngs"), "w") as f:
+            json.dump({
+                "time": t,
+                "started": None,
+                "stopped": None,
+                "duration_ts": None,
+                "ms_per_ts": sim.ms_per_ts
+            }, f)
+
         self.runs[run_id] = {
             "thr": None,
             "creation_time": t,
             "status": "CREATED",
             "started": None,
             "stopped": None,
-            "simulation": load_config(self.config),
+            "duration_ts": None,
+            "simulation": sim,
             "config": self.config,
+            "ms_per_ts": sim.ms_per_ts,
             "events": [],
             "metrics": [],
             "topologies": [],
@@ -220,8 +226,10 @@ class Project:
             "status": "DEAD",
             "started": run_meta["started"],
             "stopped": run_meta["stopped"],
+            "duration_ts": run_meta["duration_ts"],
             "simulation": None,
             "config": config,
+            "ms_per_ts": run_meta["ms_per_ts"],
             "events": [ev.serialize() for ev in evs],
             "metrics": metrics,
             "topologies": [],
@@ -297,6 +305,8 @@ class Project:
             run["status"] = "STOPPED"
             run["stopped"] = datetime.datetime.utcnow().isoformat()
             meta["stopped"] = run["stopped"]
+            meta["duration_ts"] = env.now
+            run["duration_ts"] = env.now
             with open(meta_p, "w") as f:
                 json.dump(meta, f)
             print("> STOPPED RUN", run_id, env.now)
@@ -305,6 +315,7 @@ class Project:
         self.runs[run_id]["thr"] = thr
         self.runs[run_id]["stop_ev"] = stop_ev
         thr.start()
+        return True
 
     def stop_run(self, run_id):
         if run_id in self.runs and "stop_ev" in self.runs[run_id]:

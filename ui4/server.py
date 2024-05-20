@@ -73,9 +73,6 @@ def run_ws(ws, proj_name, run_id):
                 "type": "TOPOLOGY",
                 "data": topology
             }))
-        ws.send(json.dumps({
-            "type": "END",
-        }))
 
     events = run["events"]
     ws.send(json.dumps({
@@ -86,8 +83,10 @@ def run_ws(ws, proj_name, run_id):
         "type": "METRICS",
         "data": run["metrics"],  # todo: stream this
     }))
-
-
+    ws.send(json.dumps({
+        "type": "END",
+        "data": run["duration_ts"]
+    }))
 
 # ---------- BACKEND ------------------
 

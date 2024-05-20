@@ -11,6 +11,9 @@
     import {onMount} from "svelte";
     import {getRun, getRuns, loadRun, startRun, stopRun} from "../../lib/backend";
     import StatusIndicator from "../../lib/StatusIndicator.svelte";
+    import TimeSlider from "../../TimeSlider.svelte";
+    import {FontAwesomeIcon} from "@fortawesome/svelte-fontawesome";
+    import {faChartSimple, faDiagramProject, faExclamation} from "@fortawesome/free-solid-svg-icons";
 
     let activePane = "m";
 
@@ -20,10 +23,16 @@
     let metrics: any[] = [];
     let topology: any;
 
-    let currTime = 0;
+    let currTimeOffset = .5; // relative to time window
+    let currTimeWindow_ts = [0, 1];
+
+    let minTime_ts = 0;
+    let maxTime_ts = 1;
+
+    let currSimulationTime_ts = 0;
 
     async function setupWebsocket() {
-        console.log("WS")
+        console.log("WS");
         let ws = new WebSocket(`ws://${window.location.host}/api/projects/${project}/runs/${run}/ws`);
             ws.onmessage = (msg) => {
                 let data = JSON.parse(msg.data);
@@ -38,12 +47,14 @@
                 } else if (data.type == "METRICS") {
                     metrics = data.data;
                 } else if (data.type == "TIME") {
-                    currTime = data.data;
+                    currSimulationTime_ts = data.data;
+                    maxTime_ts = data.data;
                 } else if (data.type == "TOPOLOGY") {
                     topology = data.data;
-                    console.log(topology)
                 } else if (data.type == "END") {
-                    runStatus = "STOPPED"
+                    maxTime_ts = data.data;
+                    runStatus = "STOPPED";
+                    console.log(maxTime_ts);
                 }
             };
     }
@@ -74,24 +85,37 @@
     </header>
 
     <main>
-        <div id="time-slider">TIME SLIDER</div>
+        <div id="time-slider">
+            <TimeSlider absoluteMinTs={minTime_ts} absoluteMaxTs={maxTime_ts} isLive={runStatus === "RUNNING"}></TimeSlider>
+        </div>
         <div id="bottom">
             <aside>
-                <ul>
+                <ul id="sidebar-controls">
                     <li>
                         <button class:active={activePane==="m"}
                                 on:click={() => activePane = "m"}
-                        >M</button>
+                        ><FontAwesomeIcon icon={faChartSimple}
+                        fixedWidth={false}
+                        size="1x"></FontAwesomeIcon>
+                        </button>
                     </li>
                     <li>
                         <button class:active={activePane==="t"}
                                 on:click={() => activePane = "t"}
-                        >N</button>
+                        >
+                            <FontAwesomeIcon icon={faDiagramProject}
+                            fixedWidth={false}
+                            size="1x"></FontAwesomeIcon>
+                        </button>
                     </li>
                     <li>
                         <button class:active={activePane==="e"}
                                 on:click={() => activePane = "e"}
-                        >E</button>
+                        >
+                            <FontAwesomeIcon icon={faExclamation}
+                            fixedWidth={false}
+                            size="1x"></FontAwesomeIcon>
+                        </button>
                     </li>
                 </ul>
             </aside>
@@ -171,10 +195,6 @@
     }
 
     #time-slider {
-        background-color: lightgray;
-        text-align: center;
-        color: white;
-        height: 4em;
     }
 
     #bottom {
@@ -197,16 +217,20 @@
         border-right: 2px solid teal;
     }
 
-    aside ul {
+    #sidebar-controls {
         padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        list-style: none;
     }
 
-    aside ul li {
+    #sidebar-controls li {
         text-decoration: none;
         margin: .5em;
     }
 
-    aside ul li button {
+    #sidebar-controls li button {
         background-color: transparent;
         border: none;
         cursor: pointer;
@@ -215,7 +239,7 @@
         padding: .4em;
     }
 
-    aside ul li button.active {
+    #sidebar-controls li button.active {
         font-weight: bold;
     }
 
