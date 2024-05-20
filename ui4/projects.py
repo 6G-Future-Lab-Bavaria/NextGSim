@@ -86,6 +86,8 @@ class Project:
         if len(remaining_projects) > 0:
             print("WARNING: Disk out of sync: projects deleted on disk that are present in memory: ", remaining_projects)
 
+        if project not in Project.projects:
+            return None
         return Project.projects[project]
 
     @staticmethod

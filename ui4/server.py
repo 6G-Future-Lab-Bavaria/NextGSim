@@ -93,6 +93,7 @@ def run_ws(ws, proj_name, run_id):
 
 @app.get("/api/projects")
 def get_projects():
+    Project.get_project("")
     #return list(Project.load_from_disk(projects_folder).keys())
     return list(Project.projects.keys())
 
@@ -107,41 +108,42 @@ def post_projects(name):
 @app.get("/api/projects/<string:name>/config")
 def get_config(name):
     #projects = Project.load_from_disk(projects_folder)
-    if name in Project.projects:
-        return Project.get_project(name).config, 200
-    else:
+    proj = Project.get_project(name)
+    if not proj:
         return "", 404
+    return proj.config, 200
 
 @app.post("/api/projects/<string:project>/config")
 def post_config(project):
     config = flask.request.json
     #projects = Project.load_from_disk(projects_folder)
     # todo: validate config somehow?
-    if project in Project.projects:
-        Project.get_project(project).overwrite_config(config)
-        return ('', 200)
-    else:
-        return ('', 404)
+    proj = Project.get_project(project)
+    if not proj:
+        return "", 404
+    proj.overwrite_config(config)
+    return ('', 200)
 
 @app.get("/api/projects/<string:project>/runs")
 def get_runs(project):
     #projects = Project.load_from_disk(projects_folder)
-    if project not in Project.projects:
+    proj = Project.get_project(project)
+    if not proj:
         return "", 404
     return [{
         "run_id": run_id,
         "started": run["started"],
         "stopped": run["stopped"],
         "status": run["status"],
-    } for run_id, run in Project.get_project(project).runs.items()], 200
+    } for run_id, run in proj.runs.items()], 200
 
 @app.get("/api/projects/<string:proj_name>/runs/<string:run_id>")
 def get_run(proj_name, run_id):
     #projects = Project.load_from_disk(projects_folder)
-    if proj_name not in Project.projects:
+    project = Project.get_project(proj_name)
+    if not project:
         return "project not found", 404
 
-    project = Project.get_project(proj_name)
     if run_id not in project.runs:
         return "run not found", 404
 
@@ -155,9 +157,11 @@ def get_run(proj_name, run_id):
 @app.post("/api/projects/<string:project>/runs")
 def post_runs(project):
     #projects = Project.load_from_disk(projects_folder)
-    if project not in Project.projects:
-        return "", 404
     project = Project.get_project(project)
+
+    if not project:
+        return "", 404
+
     run_id = project.create_run()
     if run_id is None:
         return ('', 500)
@@ -168,10 +172,11 @@ def post_runs(project):
 
 @app.post("/api/projects/<string:proj_name>/runs/<string:run_id>/stop")
 def post_stop_runs(proj_name, run_id):
-    if proj_name not in Project.projects:
+    project = Project.get_project(proj_name)
+
+    if not project:
         return "project not found", 404
 
-    project = Project.get_project(proj_name)
     if run_id not in project.runs:
         return "run not found", 404
 
