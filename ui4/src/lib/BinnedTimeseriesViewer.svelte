@@ -1,0 +1,238 @@
+<script lang="ts">
+
+    import * as d3 from "d3";
+    import {zip} from "d3";
+
+    export let from_ts: number;
+    export let to_ts: number;
+    export let cursorPos_ts: number | null;
+
+    $: range_ts = to_ts - from_ts;
+
+    export let data: {
+        from_ts: number,
+        to_ts: number,
+        count: number,
+        min: number | null,
+        max: number | null,
+        mean: number | null
+    }[] | null;
+
+    let displaySettings = {
+        showMin: true,
+        showMax: true,
+        showMean: true,
+    }
+
+    const width = 500;
+    const height = 100;
+    const margin = {top: 10, right: 30, bottom: 50, left: 30};
+
+    let renderInfo: {
+        xDomain: number[],
+        xScale:  d3.ScaleLinear<number, number, never>,
+        applyXAxis: (g: SVGGElement) => any,
+        applyYAxis: (g: SVGGElement) => any,
+        series: {
+            id: string, // used to check if should rerender
+            color: string,
+            applyF: ((p: SVGPathElement) => any)
+        }[]
+    } | null = null;
+
+    function updateRenderInfo() {
+        if (data === null) {
+            renderInfo = null;
+            return;
+        }
+        // for the first element, from_ts is null (no lower bound)
+        // for the last element, to_ts is null (no upper bound)
+        let xDomain = data.map(d => d.from_ts === null ? d.to_ts : d.from_ts);
+        let xScale = d3.scaleLinear()
+            .domain([from_ts, to_ts])
+            .range([ 0, width]);
+
+        let yMins = data.map(d => d.min);
+        let yMaxs = data.map(d => d.max);
+        let yMeans = data.map(d => d.mean);
+
+        let yMin: number | null = null;
+        let yMax: number | null = null;
+        let sift = function(vals: (number | null)[]) {
+            for (let y of vals) {
+                if (y === null) continue;
+                if (yMin === null || y < yMin) yMin = y;
+                if (yMax === null || y > yMax) yMax = y;
+            }
+        }
+        sift(yMins);
+        sift(yMaxs);
+        sift(yMeans);
+
+        if (yMin === null || yMax === null) {
+            // all null
+            renderInfo = null;
+            return;
+        }
+
+        let yScale = d3.scaleLinear()
+            .domain([Math.min(yMin, 0.), yMax])
+            .range([ height, 0]);
+
+        function zip(x: number[], y: (number | null)[]) {
+            let vals: [number, (number | null)][] = [];
+            for (let i = 0; i < x.length; i++) {
+                vals[i] = [x[i], y[i]];
+            }
+            return vals;
+        }
+
+        let valsMin = zip(xDomain, yMins);
+        let valsMax = zip(xDomain, yMaxs);
+        let valsMean = zip(xDomain, yMeans);
+
+        function createF(vals: [number, number | null][], debug: string) {
+            let valsNullToZero: [number, number][] = vals.map(v => [v[0], v[1] === null ? 0 : v[1]]);
+
+            return (p: SVGPathElement) => {
+                d3.select(p)
+                    .datum(valsNullToZero)
+                    .attr("d", d3.line()
+                        .x(d => {
+                            return xScale(d[0]);
+                        })
+                        .y(d => yScale(d[1]))
+                    )
+            }
+        }
+
+        let series: {
+            id: string, // used to check if should rerender
+            color: string,
+            applyF: ((p: SVGPathElement) => any)
+        }[] = [];
+        if (displaySettings.showMax)
+            series.push({
+                id: "max",
+                color: "gray",
+                applyF: createF(valsMax, "1")
+            });
+        if (displaySettings.showMean)
+            series.push({
+                id: "mean",
+                color: "red",
+                applyF: createF(valsMean, "2")
+            });
+        if (displaySettings.showMin)
+            series.push({
+                id: "min",
+                color: "gray",
+                applyF: createF(valsMin, "2")
+            });
+
+        renderInfo = {
+            xDomain: xDomain,
+            xScale: xScale,
+            applyXAxis: (g: SVGGElement) => {d3.axisBottom(xScale)(d3.select(g))},
+            applyYAxis: (g: SVGGElement) => {d3.axisLeft(yScale)(d3.select(g))},
+            series: series
+        }
+    }
+
+    $: {
+        data;
+        displaySettings;
+        updateRenderInfo();
+    }
+
+    /*$: {
+        xvals = [];
+        yvals = [];
+        for (let [x,y] of values) {
+            xvals.push(x);
+            yvals.push(y);
+        }
+    }*/
+
+    function onMouseMove(ev: MouseEvent) {
+        let path = ev.target as SVGPathElement;
+        let bb = path.getBoundingClientRect();
+        cursorPos_ts = ((ev.clientX - bb.x) / bb.width) * (to_ts - from_ts) + from_ts;
+    }
+
+    let rect: SVGRectElement;
+
+    function calcCursorPos_px(cursorPos_ts: number) {
+        return width * (cursorPos_ts - from_ts) / range_ts;
+    }
+
+
+</script>
+
+<div id="container">
+    <div id="controls">
+        <div class="ctrl-group">
+            <input id="show-min" type="checkbox" bind:checked={displaySettings.showMin} on:change={() => displaySettings = displaySettings}/>
+            <label for="show-min">Show Min</label>
+        </div>
+        <div class="ctrl-group">
+            <input id="show-mean" type="checkbox" bind:checked={displaySettings.showMean} on:change={() => displaySettings = displaySettings}/>
+            <label for="show-mean">Show Mean</label>
+        </div>
+        <div class="ctrl-group">
+            <input id="show-max" type="checkbox" bind:checked={displaySettings.showMax} on:change={() => displaySettings = displaySettings}/>
+            <label for="show-max">Show Max</label>
+        </div>
+    </div>
+    {#if renderInfo === null}
+        <p style="font-style: italic">No measurements.</p>
+    {:else}
+    <svg viewBox="0 0 {width + margin.left + margin.right} {height + margin.top + margin.bottom}">
+        <g transform="translate({margin.left}, {margin.top})">
+            <g use:renderInfo.applyXAxis transform="translate(0, {height})"></g>
+            <g use:renderInfo.applyYAxis></g>
+            {#each renderInfo.series as series (series.id)}
+                <path
+                    fill="none"
+                    stroke={series.color}
+                    stroke-width="1"
+                    use:series.applyF
+                ></path>
+            {/each}
+            <rect
+                bind:this={rect}
+                fill="none"
+                stroke="none"
+                height={height}
+                width={width}
+                pointer-events="all"
+                on:mousemove={onMouseMove}
+                on:mouseleave={() => cursorPos_ts = null}
+            ></rect>
+            {#if rect && cursorPos_ts !== null}
+                <rect
+                height={height}
+                width="1px"
+                opacity="1"
+                fill="black"
+                stroke="none"
+                x={calcCursorPos_px(cursorPos_ts)}
+                pointer-events="none"
+                ></rect>
+            {/if}
+        </g>
+    </svg>
+    {/if}
+</div>
+
+<style>
+
+    #controls {
+        display: flex;
+    }
+
+    .ctrl-group {
+        margin-right: 1em;
+    }
+
+</style>

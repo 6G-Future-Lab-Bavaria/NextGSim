@@ -53,27 +53,30 @@ export async function getNetworkTopology(project: string, run: string) {
     }*/
 }
 
-export async function getMetrics(project, run) {
-    let res = await fetch(ENDPOINT + `projects/${project}/api/runs/${run}/metrics`);
-    let events = await res.json();
+export async function getMetrics(project: string, run: string, from: number, to: number, args: { [id: string] : any; }) {
+    let params = Object.entries(args).map(([k,v]) => `${k}=${v}`).join("&");
+    let res = await fetch(ENDPOINT + `/api/projects/${project}/runs/${run}/metrics?from=${from}&to=${to}&${params}`);
+    let metrics = await res.json();
+    return metrics;
+}
 
+export async function getEvents(project: string, run: string, from: number, to: number, args: { [id: string] : any; }) {
+    let params = Object.entries(args).map(([k,v]) => `${k}=${v}`).join("&");
+    let res = await fetch(ENDPOINT + `/api/projects/${project}/runs/${run}/events?from=${from}&to=${to}&${params}`);
+    let events = await res.json();
     return events;
 }
 
-export async function getEvents(project, run) {
-    await fetch(ENDPOINT + `projects/${project}/api/runs/${run}/start`, {method: "POST"});
-    let res = await fetch(ENDPOINT + `projects/${project}/api/runs/${run}/events`);
-    let events = await res.json();
-
-    return events.map((ev) => {return {
-        time: ev.time,
-        comp: ev.component.name + "/" + ev.component.ref,
-        type: ev.type,
-        data: ev.data,
-    }})
+export async function getTopology(project: string, run: string, from: number, to: number, args: { [id: string] : any; }) {
+    let params = Object.entries(args).map(([k,v]) => `${k}=${v}`).join("&");
+    let res = await fetch(ENDPOINT + `/api/projects/${project}/runs/${run}/topologies?from=${from}&to=${to}&${params}`);
+    let tops = await res.json();
+    return tops;
 }
 
-export async function getRunConfig(project, run) {
+export async function getRunConfig(project: string, run: string) {
+    let res = await fetch(ENDPOINT + `/api/projects/${project}/runs/${run}/config`);
+    return await res.json();
 }
 
 export async function getProjects() {
@@ -110,7 +113,7 @@ export async function stopRun(project, run) {
     await fetch(ENDPOINT + `/api/projects/${project}/runs/${run}/stop`, {method: "POST"});
 }
 
-export async function getRun(project: string, run: string): Promise<{config: any, status: string}> {
+export async function getRun(project: string, run: string): Promise<{config: any, status: string, duration_ts: number}> {
     let res = await fetch(ENDPOINT + `/api/projects/${project}/runs/${run}`, { method: "GET" });
     return await res.json();
 }

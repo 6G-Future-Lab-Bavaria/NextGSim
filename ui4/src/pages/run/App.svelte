@@ -9,13 +9,16 @@
     import EventViewer from "../../lib/EventViewer.svelte";
     import Test from "../../lib/Test.svelte";
     import {onMount} from "svelte";
-    import {getRun, getRuns, loadRun, startRun, stopRun} from "../../lib/backend";
+    import {getEvents, getMetrics, getRun, getRunConfig, getRuns, loadRun, startRun, stopRun} from "../../lib/backend";
     import StatusIndicator from "../../lib/StatusIndicator.svelte";
     import TimeSlider from "../../TimeSlider.svelte";
     import {FontAwesomeIcon} from "@fortawesome/svelte-fontawesome";
-    import {faChartSimple, faDiagramProject, faExclamation} from "@fortawesome/free-solid-svg-icons";
+    import {faChartSimple, faDiagramProject, faExclamation, faFile} from "@fortawesome/free-solid-svg-icons";
+    import {JSONEditor} from "svelte-jsoneditor";
 
     let activePane = "m";
+
+    const BIN_COUNT = 500;
 
     $: runStatus = "UNKNOWN";
 
@@ -25,9 +28,26 @@
 
     let currTimeOffset = .5; // relative to time window
     let currTimeWindow_ts = [0, 1];
+    $: currRange = currTimeWindow_ts[1] - currTimeWindow_ts[0];
+
+    $: displayedEvents = events.filter(ev => ev.time >= currTimeWindow_ts[0] && ev.time <= currTimeWindow_ts[1]);
+    $: displayMetrics = metrics
+        .map(m => {
+            let copy = structuredClone(m);
+            copy.values = m.values.filter((v:[number,number]) => v[0] >= currTimeWindow_ts[0] && v[0] <= currTimeWindow_ts[1])
+            return copy;
+        })
+        .filter((m: any) => m.values.length != 0);
 
     let minTime_ts = 0;
     let maxTime_ts = 1;
+
+    let trackLive = true;
+
+    function onTimeWindowChanged(ev: CustomEvent<{minTs:number, maxTs:number}>) {
+        console.log(ev.detail.minTs, ev.detail.maxTs);
+        currTimeWindow_ts = [ev.detail.minTs, ev.detail.maxTs];
+    }
 
     let currSimulationTime_ts = 0;
 
@@ -54,7 +74,6 @@
                 } else if (data.type == "END") {
                     maxTime_ts = data.data;
                     runStatus = "STOPPED";
-                    console.log(maxTime_ts);
                 }
             };
     }
@@ -66,10 +85,12 @@
     onMount(async () => {
         let runData = await getRun(project, run);
         runStatus = runData.status;
-        console.log(runStatus);
+        maxTime_ts = runData.duration_ts;
 
         await setupWebsocket();
     });
+
+    let cursorPos_ts: number | null = 0;
 
 </script>
 
@@ -86,7 +107,7 @@
 
     <main>
         <div id="time-slider">
-            <TimeSlider absoluteMinTs={minTime_ts} absoluteMaxTs={maxTime_ts} isLive={runStatus === "RUNNING"}></TimeSlider>
+            <TimeSlider bind:cursorPos_ts={cursorPos_ts} trackLive={trackLive} absoluteMinTs={minTime_ts} absoluteMaxTs={maxTime_ts} on:onChange={onTimeWindowChanged} isLive={runStatus === "RUNNING"}></TimeSlider>
         </div>
         <div id="bottom">
             <aside>
@@ -117,15 +138,33 @@
                             size="1x"></FontAwesomeIcon>
                         </button>
                     </li>
+                    <li>
+                        <button class:active={activePane==="c"}
+                                on:click={() => activePane = "c"}
+                        >
+                            <FontAwesomeIcon icon={faFile}
+                            fixedWidth={false}
+                            size="1x"></FontAwesomeIcon>
+                        </button>
+                    </li>
                 </ul>
             </aside>
             <div id="main-pane">
                 {#if activePane === "m"}
-                    <MetricsViewer metrics={metrics}></MetricsViewer>
+                    <!--MetricsViewer metrics={displayMetrics}></MetricsViewer-->
+                    {#await getMetrics(project, run, currTimeWindow_ts[0], currTimeWindow_ts[1], { "bin_count": BIN_COUNT }) then metrics}
+                        <MetricsViewer bind:cursorPos_ts={cursorPos_ts} from_ts={currTimeWindow_ts[0]} to_ts={currTimeWindow_ts[1]} metrics={metrics}></MetricsViewer>
+                    {/await}
                 {:else if activePane === "t"}
                     <Test topology={topology}></Test>
                 {:else if activePane === "e"}
-                    <EventViewer events={events}></EventViewer>
+                    {#await getEvents(project, run, currTimeWindow_ts[0], currTimeWindow_ts[1], { "min_ts_between": 0.01 * currRange }) then events}
+                        <EventViewer bind:cursorPos_ts={cursorPos_ts} from_ts={currTimeWindow_ts[0]} to_ts={currTimeWindow_ts[1]} events={events}></EventViewer>
+                    {/await}
+                {:else if activePane === "c"}
+                    {#await getRunConfig(project, run) then config}
+                        <JSONEditor content={{json: config}} readOnly={true}></JSONEditor>
+                    {/await}
                 {/if}
             </div>
         </div>

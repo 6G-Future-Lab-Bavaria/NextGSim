@@ -1,10 +1,14 @@
 import os
+from copy import deepcopy
 
 import flask
 from flask import Flask
 from flask_cors import CORS
 from flask_sock import Sock
-from projects import Project
+from flask import request
+
+import config
+from projects import Project, Run
 import time
 import json
 
@@ -35,57 +39,57 @@ def run_ws(ws, proj_name, run_id):
 
     i_ev = 0
 
-    if run["status"] != "DEAD":
-        sim: Simulation = run["simulation"]
-        while run["status"] == "RUNNING":
+    if run.status != "DEAD":
+        sim: Simulation = run.sim
+        while run.is_running():
             time.sleep(1)
             ws.send(json.dumps({
                 "type": "TIME",
                 "data": sim.env.now
             }))
             #events = sim.eventlog.events[i_ev:]
-            events = run["events"]
-            ws.send(json.dumps({
-                "type": "EVENTS",
-                "data": events[i_ev:],
-            }))
-            i_ev = len(events)
-            ws.send(json.dumps({
-                "type": "METRICS",
-                "data": run["metrics"], # todo: stream this
-            }))
-            topology = {
-                "nodes": [
-                    {
-                        "id": node.id,
-                    }
-                    for node in sim.network.nodes
-                ],
-                "links": [
-                    {
-                        "from": { "node": n0, "if": if0 },
-                        "to": { "node": n1, "if": if1 },
-                    }
-                    for [n0, if0, n1, if1] in sim.network.get_links()
-                ]
-            }
-            ws.send(json.dumps({
-                "type": "TOPOLOGY",
-                "data": topology
-            }))
+            #events = run.events
+            #ws.send(json.dumps({
+            #    "type": "EVENTS",
+            #    "data": events[i_ev:],
+            #}))
+            #i_ev = len(events)
+            #ws.send(json.dumps({
+            #    "type": "METRICS",
+            #    "data": run.get_metrics(), # todo: stream this
+            #}))
+            #topology = {
+            #    "nodes": [
+            #        {
+            #            "id": node.id,
+            #        }
+            #        for node in sim.network.nodes
+            #    ],
+            #    "links": [
+            #        {
+            #            "from": { "node": n0, "if": if0 },
+            #            "to": { "node": n1, "if": if1 },
+            #        }
+            #        for [n0, if0, n1, if1] in sim.network.get_links()
+            #    ]
+            #}
+            #ws.send(json.dumps({
+            #    "type": "TOPOLOGY",
+            #    "data": topology
+            #}))
 
-    events = run["events"]
-    ws.send(json.dumps({
-        "type": "EVENTS",
-        "data": events[i_ev:],
-    }))
-    ws.send(json.dumps({
-        "type": "METRICS",
-        "data": run["metrics"],  # todo: stream this
-    }))
+    #events = run.events
+    #ws.send(json.dumps({
+    #    "type": "EVENTS",
+    #    "data": events[i_ev:],
+    #}))
+    #ws.send(json.dumps({
+    #    "type": "METRICS",
+    #    "data": run.get_metrics(),  # todo: stream this
+    #}))
     ws.send(json.dumps({
         "type": "END",
-        "data": run["duration_ts"]
+        "data": run.duration_ts
     }))
 
 # ---------- BACKEND ------------------
@@ -131,9 +135,9 @@ def get_runs(project):
         return "", 404
     return [{
         "run_id": run_id,
-        "started": run["started"],
-        "stopped": run["stopped"],
-        "status": run["status"],
+        "started": run.started,
+        "stopped": run.stopped,
+        "status": run.status,
     } for run_id, run in proj.runs.items()], 200
 
 @app.get("/api/projects/<string:proj_name>/runs/<string:run_id>")
@@ -149,8 +153,9 @@ def get_run(proj_name, run_id):
     run = project.runs[run_id]
 
     return {
-        "config": run["config"],
-        "status": run["status"],
+        "config": run.config,
+        "status": run.status,
+        "duration_ts": run.duration_ts
     }, 200
 
 @app.post("/api/projects/<string:project>/runs")
@@ -181,12 +186,185 @@ def post_stop_runs(proj_name, run_id):
 
     run = project.runs[run_id]
 
-    if run["status"] != "RUNNING":
+    if not run.is_running():
         return "not running", 400
 
     project.stop_run(run_id)
 
     return "", 200
+
+@app.get("/api/projects/<string:proj_name>/runs/<string:run_id>/metrics")
+def get_metrics(proj_name, run_id):
+    project = Project.get_project(proj_name)
+
+    if not project:
+        return "project not found", 404
+
+    if run_id not in project.runs:
+        return "run not found", 404
+
+    run: Run = project.runs[run_id]
+
+    from_ts = request.args.get("from")
+    to_ts = request.args.get("to")
+
+    views = []
+
+    if from_ts is None:
+        from_ts = 0
+    else:
+        from_ts = float(from_ts)
+
+    if to_ts is None:
+        if run.is_running():
+            to_ts = run.sim.env.now
+        else:
+            to_ts = run.duration_ts
+    else:
+        to_ts = float(to_ts)
+
+    for metric in run.metrics:
+        comp, data = metric["typ"].generate_view(metric["values"], from_ts, to_ts, **request.args.to_dict())
+        views.append({
+            "comp": metric["comp"],
+            "name": metric["name"],
+            "ui_comp": comp,
+            "data": data
+        })
+
+    return views
+
+@app.get("/api/projects/<string:proj_name>/runs/<string:run_id>/events")
+def get_events(proj_name, run_id):
+    project = Project.get_project(proj_name)
+
+    if not project:
+        return "project not found", 404
+
+    if run_id not in project.runs:
+        return "run not found", 404
+
+    run: Run = project.runs[run_id]
+
+    from_ts = request.args.get("from")
+    to_ts = request.args.get("to")
+
+    if from_ts is None:
+        from_ts = 0
+    else:
+        from_ts = float(from_ts)
+
+    if to_ts is None:
+        if run.is_running():
+            to_ts = run.sim.env.now
+        else:
+            to_ts = run.duration_ts
+    else:
+        to_ts = float(to_ts)
+
+    # filter by time
+    evs = []
+
+    # assumes run.events are sorted by time
+
+    for event in run.events:
+        if event.time < from_ts:
+            continue
+        if event.time > to_ts:
+            break
+        evs.append(event)
+
+    # group by comp
+    comps = {}
+    for ev in evs:
+        comp = ev.component_meta["name"] + "/" + ev.component_meta["ref"]
+        if comp not in comps:
+            comps[comp] = []
+        comps[comp].append(ev)
+
+    views = []
+    min_ts_between = float(request.args["min_ts_between"])
+
+    for comp in comps.keys():
+        evs = comps[comp]
+
+        groups = []
+        i = 0
+        n = len(evs)
+
+        while i < n:
+            j = i+1
+            t = evs[i].time
+            curr_group_evs = [evs[i]]
+
+            while j < n and (evs[j].time - t) < min_ts_between:
+                curr_group_evs.append(evs[j])
+                t = evs[j].time
+                j += 1
+
+            groups.append({
+                "from_ts": curr_group_evs[0].time,
+                "to_ts": curr_group_evs[-1].time,
+                "evs": [{
+                    "comp": comp,
+                    "time": ev.time,
+                    "type": ev.type,
+                    "data": ev.data
+                } for ev in curr_group_evs]
+            })
+
+            i = j
+
+        views.append({
+            "comp": comp,
+            "groups": groups
+        })
+
+    return views
+
+@app.get("/api/projects/<string:proj_name>/runs/<string:run_id>/topologies")
+def get_topologies(proj_name, run_id):
+    project = Project.get_project(proj_name)
+
+    if not project:
+        return "project not found", 404
+
+    if run_id not in project.runs:
+        return "run not found", 404
+
+    run: Run = project.runs[run_id]
+
+    from_ts = request.args.get("from")
+    to_ts = request.args.get("to")
+
+    if from_ts is None:
+        from_ts = 0
+    else:
+        from_ts = float(from_ts)
+
+    if to_ts is None:
+        if run.is_running():
+            to_ts = run.sim.env.now
+        else:
+            to_ts = run.duration_ts
+    else:
+        to_ts = float(to_ts)
+
+    return views
+
+@app.get("/api/projects/<string:proj_name>/runs/<string:run_id>/config")
+def get_run_config(proj_name, run_id):
+    project = Project.get_project(proj_name)
+
+    if not project:
+        return "project not found", 404
+
+    if run_id not in project.runs:
+        return "run not found", 404
+
+    run: Run = project.runs[run_id]
+
+    return run.config
 
 # ------------ FRONTEND ---------------
 

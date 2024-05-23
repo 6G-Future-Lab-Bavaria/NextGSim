@@ -1,12 +1,37 @@
 <script lang="ts">
 
-    import {onMount} from "svelte";
+    import {createEventDispatcher, onMount} from "svelte";
 
     export let absoluteMinTs: number;
     export let absoluteMaxTs: number;
+    export let trackLive: boolean;
+    export let cursorPos_ts: number | null;
 
     let minTs = absoluteMinTs;
     let maxTs = absoluteMaxTs;
+
+    $: {
+        absoluteMinTs;
+        if (trackLive) {
+            minTs = absoluteMinTs;
+            recalculateTime();
+            fireChangeEvent();
+        }
+    }
+
+    $: {
+        absoluteMaxTs;
+        if (trackLive) {
+            maxTs = absoluteMaxTs;
+            recalculateTime();
+            fireChangeEvent();
+        }
+    }
+
+    const dispatch = createEventDispatcher<{onChange:{minTs:number, maxTs:number}}>();
+    function fireChangeEvent() {
+        dispatch("onChange", {minTs, maxTs});
+    }
 
     $: {
         absoluteMaxTs;
@@ -34,7 +59,7 @@
     let timelineLeftOffset: number = 0;
     let timelineRightOffset: number = 0;
 
-    let ticks: { time: string, offset: number }[] = []
+    let ticks: { time: string, offset: number, widthPx: number, label: string | null }[] = []
 
     let globalPosIndicatorRelWidth = 0;
     let globalPosIndicatorRelLeftOffset = 0;
@@ -53,16 +78,25 @@
         // 9-10 ticks all the time
         range = maxTs - minTs;
         let tks = []
-        let tickWidthMs = range / 10;
+
+        // if range >= 2s:
+
+        // seconds
+        let tickWidthMs = 100; //range / 10;
         let tickWidthPx = timelineWidthPx / (range / tickWidthMs);
 
-        for (let t = minTs, offset = 0; t < maxTs; t += tickWidthMs, offset += tickWidthPx) {
+        for (let t = Math.ceil(minTs / 100) * 100, offset = 0; t < maxTs; t += tickWidthMs, offset += tickWidthPx) {
             tks.push({
                 time: t.toFixed(2),
-                offset: offset
+                offset: offset,
+                widthPx: t % 1000 === 0 ? 2 : 1,
+                label: t % 1000 === 0 ? Math.round(t / 1000) + "" : null,
             });
         }
         ticks = tks;
+
+        // if range < 2s:
+        // big-ticks: 100ms steps, small-ticks: 10ms
 
         recalculateGlobalPositionIndicator();
     }
@@ -74,6 +108,7 @@
         handleRightOffset = timelineWidthPx;
 
         recalculateTime();
+        fireChangeEvent();
     });
 
     function onOver(ev: MouseEvent) {
@@ -111,7 +146,7 @@
                 if (expandTimeframeIntv === null) {
                     // @ts-ignore
                     expandTimeframeIntv = setInterval(() => {
-                        maxTs += (maxTs - minTs) * factor;
+                        maxTs += (absoluteMaxTs - absoluteMinTs) * factor;
                         maxTs = Math.min(absoluteMaxTs, maxTs);
                         recalculateTime();
                     }, 100);
@@ -154,12 +189,14 @@
                 minTs = timeStart;
                 handleLeftOffset = 0;
                 recalculateTime();
+                fireChangeEvent();
             } else {
                 let timeEnd = (handleRightOffset / timelineWidthPx) * (maxTs - minTs);
                 timeEnd = minTs + Math.max(1e-5, timeEnd);
-                maxTs = timeEnd;
+                maxTs = timeEnd
                 handleRightOffset = timelineWidthPx;
                 recalculateTime();
+                fireChangeEvent();
             }
         }, 1000);
     }
@@ -176,13 +213,33 @@
         }
     }
 
+    function mouseMoveRel(ev: MouseEvent) {
+        console.log("fired");
+        let trackX = rel.getBoundingClientRect().x;
+        let trackWidth = rel.getBoundingClientRect().width;
+        let x = ev.clientX - trackX;
+        let relX = x / trackWidth;
+        cursorPos_ts = relX * (maxTs - minTs) + minTs;
+    }
+
+    function calcCursorPos_px(cursorPos_ts: number) {
+        let trackWidth = rel.getBoundingClientRect().width;
+        return trackWidth * (cursorPos_ts - minTs) / (maxTs - minTs);
+    }
+
 </script>
 
 <div id="container" on:mousemove={onOver} on:mouseleave={onOut} on:mouseup={onUp}>
-    <div id="rel" bind:this={rel}>
+    <div id="rel" bind:this={rel} on:mousemove={mouseMoveRel} on:mouseleave={() => cursorPos_ts = null}>
+        {#if rel !== undefined && cursorPos_ts !== null}
+            <div id="cursor" style:left="{calcCursorPos_px(cursorPos_ts)}px"></div>
+        {/if}
+
         {#each ticks as tick}
-            <div class="tick" style:transform="translateX({tick.offset}px)">
-                {tick.time} Ts
+            <div class="tick" style:transform="translateX({tick.offset}px)" style:border-left="{tick.widthPx}px solid teal">
+                {#if tick.label}
+                    {tick.label}
+                {/if}
             </div>
         {/each}
 
@@ -229,8 +286,10 @@
     .tick {
         position: absolute;
         border-left: 2px solid teal;
-        padding-left: .5em;
+        padding-left: .1em;
         pointer-events: none;
+        height: 1.5em;
+        font-weight: bold;
     }
 
     .handle {

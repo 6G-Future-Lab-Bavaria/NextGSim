@@ -6,6 +6,9 @@ from simulation import Simulation
 def get_type_fqn(thing):
     return type(thing).__module__ + "." + type(thing).__qualname__
 
+def get_type_fqn_from_type(typ):
+    return typ.__module__ + "." + typ.__qualname__
+
 def get_type(fqn):
     module = ".".join(fqn.split(".")[:-1])
     typename = fqn.split(".")[-1]

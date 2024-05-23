@@ -1,15 +1,31 @@
 <script lang="ts">
     import * as d3 from "d3";
+    import BinnedTimeseriesViewer from "./BinnedTimeseriesViewer.svelte";
+    import type {SvelteComponent, SvelteComponent_1} from "svelte";
 
+    const COMPONENT_MAP: {[key: string]: ConstructorOfATypedSvelteComponent} = {
+        "BinnedTimeseriesViewer": BinnedTimeseriesViewer
+    };
 
     // todo: fix type change
     // todo: fix live updates (only updated when destroyed)
 
-    export let metrics: any[];
+    export let metrics: {
+        comp: string,
+        name: string,
+        ui_comp: string,
+        data: any,
+    }[];
+
+    export let from_ts: number;
+    export let to_ts: number;
+    export let cursorPos_ts: number | null;
 
     let type = "line";
 
-    function render(svgEl: SVGElement, values) {
+    let cursors: SVGRectElement[] = [];
+
+    function render(svgEl: SVGElement, values: [number, number][]) {
         if (values.length == 0) return {}
 
         const width = 500;
@@ -32,6 +48,8 @@
             xvals.push(x);
             yvals.push(y);
         }
+
+        console.log("domain", [Math.min(...xvals), Math.max(...xvals)])
 
         let x = d3.scaleLinear()
             .domain([Math.min(...xvals), Math.max(...xvals)])
@@ -56,24 +74,61 @@
               .style("fill", "red");
         } else if (type == "line") {
             svg.append("path")
-              .datum(values)
-              .attr("fill", "none")
-              .attr("stroke", "red")
-              .attr("stroke-width", 2)
-              .attr("d", d3.line()
+                .datum(values)
+                .attr("fill", "none")
+                .attr("stroke", "red")
+                .attr("stroke-width", 2)
+                .attr("d", d3.line()
                 .x(function(d) { return x(d[0]) })
                 .y(function(d) { return y(d[1]) })
                 );
-
         }
+
+        let rect = svg.append("rect")
+            .attr("fill", "none")
+            .attr("stroke", "none")
+            .attr("height", height)
+            .attr("width", width)
+            .attr("pointer-events", "all")
+            .on("mousemove", (ev: MouseEvent) => {
+                // @ts-ignore
+                let path: SVGPathElement = ev.target;
+                let bb = path.getBoundingClientRect();
+                cursorPos_ts = ((ev.clientX - bb.x) / bb.width) * (to_ts - from_ts) + from_ts;
+            })
+            .on("mouseleave", (ev: MouseEvent) => {
+                cursorPos_ts = null;
+            });
+
+        let cursor = svg.append("rect")
+            .attr("fill", "black")
+            .attr("stroke", "none")
+            .attr("height", height)
+            .attr("width", "2px")
+            .attr("display", "none");
+
+        //if (!cursors.includes(cursor.node()!!))
+        //    cursors.push(cursor.node()!!);
     }
 
-    function action(svg, values) {
-        render(svg, values);
+    /*$: {
+        cursorPos_ts;
+        if (cursorPos_ts === null)
+            for (let c of cursors) {
+
+                c.attr("display", "none");
+            }
+        else {
+            cursor.attr("left", )
+        }
+    }*/
+
+    function action(svgEl: SVGElement, values: [number, number][]) {
+        render(svgEl, values);
 
         return {
-            update(values) {
-                render(svg, values);
+            update(values: [number, number][]) {
+                render(svgEl, values);
             }
         }
     }
@@ -82,27 +137,42 @@
 
 
 <div id="controls">
-    <span>Type: </span>
-    <select bind:value={type}>
-        <option value="line">line</option>
-        <option value="scatter">scatter</option>
-    </select>
 </div>
 
 <div id="metrics">
         {#each metrics as metric}
-        <div class="metric">
+        <!--div-- class="metric">
             <div class="metric-id">{metric.comp}#{metric.name}</div>
             {#if metric.values.length > 0}
                 <div class="metric-values">
-                <svg class="metric-svg" use:action={metric.values}></svg>
+                <svg class="metric-svg" use:action={metric.values}>
+
+
+
+                </svg>
             </div>
-                {:else}
-                <p>No measurements</p>
-                {/if}
-        </div>
+            {:else}
+            <p>No measurements</p>
+            {/if}
+        </div-->
+            <div class="metric">
+                <div class="metric-id">{metric.comp}#{metric.name}</div>
+                <div class="metric-container">
+                    {#if COMPONENT_MAP[metric.ui_comp] !== undefined}
+                        <svelte:component
+                                this={COMPONENT_MAP[metric.ui_comp]}
+                                data={metric.data}
+                                from_ts={from_ts}
+                                to_ts={to_ts}
+                                bind:cursorPos_ts={cursorPos_ts}
+                        ></svelte:component>
+                    {:else}
+                        <p style="font-style: italic">Cannot render '{metric.ui_comp}'</p>
+                    {/if}
+                </div>
+            </div>
         {/each}
-        {#if metrics.length == 0}
+        {#if metrics.length === 0}
             <p style="font-style: italic">No metrics available</p>
         {/if}
     </div>
@@ -122,13 +192,18 @@
         width: 100%;
         box-sizing: border-box;
         display: flex;
-        flex-direction: row;
-        align-items: center;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: left;
     }
 
     .metric-id {
         margin-right: 1em;
         font-weight: bold;
+    }
+
+    .metric-container {
+        width: 100%;
     }
 
     .metric-values {
