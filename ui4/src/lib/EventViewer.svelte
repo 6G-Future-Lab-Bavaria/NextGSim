@@ -21,6 +21,7 @@
 
     // cursor pos in ts
     export let cursorPos_ts: number | null;
+    export let selectedPos_ts: number;
 
     $: range_ts = to_ts - from_ts;
 
@@ -84,6 +85,9 @@
     >
         {#if tracksEl !== undefined && cursorPos_ts !== null}
             <div id="cursor" style:left="{calcCursorPos_px(cursorPos_ts)}px"></div>
+        {/if}
+        {#if tracksEl !== undefined}
+            <div id="selection" style:left="{calcCursorPos_px(selectedPos_ts)}px"></div>
         {/if}
         {#each events as compEvs}
             {#if compIncludeStates[compEvs.comp]}
@@ -181,6 +185,21 @@
         z-index: -100;
         opacity: .3;
         pointer-events: none;
+        transform: translateX(-50%);
+    }
+
+    #selection {
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 2px;
+        background-color: teal;
+        border-left: 1px solid black;
+        border-right: 1px solid black;
+        z-index: 10;
+        pointer-events: none;
+        transform: translateX(-50%);
     }
 
     .timeline {

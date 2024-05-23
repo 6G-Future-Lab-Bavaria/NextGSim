@@ -6,6 +6,7 @@
     export let absoluteMaxTs: number;
     export let trackLive: boolean;
     export let cursorPos_ts: number | null;
+    export let selectedPos_ts: number;
 
     let minTs = absoluteMinTs;
     let maxTs = absoluteMaxTs;
@@ -173,6 +174,13 @@
     }
 
     function onUp(ev: MouseEvent) {
+        if (!grabbing) {
+            let pos_ts = calcPosTsFromClientX(ev.clientX);
+            if (pos_ts >= minTs && pos_ts < maxTs)
+                selectedPos_ts = pos_ts;
+            return;
+        }
+
         let tmp = grabbing;
         grabbing = null;
 
@@ -213,13 +221,16 @@
         }
     }
 
-    function mouseMoveRel(ev: MouseEvent) {
-        console.log("fired");
+    function calcPosTsFromClientX(clientX: number) {
         let trackX = rel.getBoundingClientRect().x;
         let trackWidth = rel.getBoundingClientRect().width;
-        let x = ev.clientX - trackX;
+        let x = clientX - trackX;
         let relX = x / trackWidth;
-        cursorPos_ts = relX * (maxTs - minTs) + minTs;
+        return relX * (maxTs - minTs) + minTs;
+    }
+
+    function mouseMoveRel(ev: MouseEvent) {
+        cursorPos_ts = calcPosTsFromClientX(ev.clientX);
     }
 
     function calcCursorPos_px(cursorPos_ts: number) {
@@ -233,6 +244,9 @@
     <div id="rel" bind:this={rel} on:mousemove={mouseMoveRel} on:mouseleave={() => cursorPos_ts = null}>
         {#if rel !== undefined && cursorPos_ts !== null}
             <div id="cursor" style:left="{calcCursorPos_px(cursorPos_ts)}px"></div>
+        {/if}
+        {#if rel !== undefined}
+            <div id="selection" style:left="{calcCursorPos_px(selectedPos_ts)}px"></div>
         {/if}
 
         {#each ticks as tick}
@@ -315,7 +329,19 @@
         top: 0;
         bottom: 0;
         width: 2px;
+        background-color: black;
+        transform: translateX(-50%);
+    }
+
+    #selection {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 2px;
         background-color: teal;
+        border-left: 2px solid black;
+        border-right: 2px solid black;
+        transform: translateX(-50%);
     }
 
     #global-scale {

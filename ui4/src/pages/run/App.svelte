@@ -28,6 +28,8 @@
 
     let currTimeOffset = .5; // relative to time window
     let currTimeWindow_ts = [0, 1];
+    let selectedPos_ts: number = 0;
+
     $: currRange = currTimeWindow_ts[1] - currTimeWindow_ts[0];
 
     $: displayedEvents = events.filter(ev => ev.time >= currTimeWindow_ts[0] && ev.time <= currTimeWindow_ts[1]);
@@ -47,6 +49,12 @@
     function onTimeWindowChanged(ev: CustomEvent<{minTs:number, maxTs:number}>) {
         console.log(ev.detail.minTs, ev.detail.maxTs);
         currTimeWindow_ts = [ev.detail.minTs, ev.detail.maxTs];
+
+        if (selectedPos_ts < ev.detail.minTs)
+            selectedPos_ts = ev.detail.minTs;
+
+        if (selectedPos_ts > ev.detail.maxTs)
+            selectedPos_ts = ev.detail.maxTs;
     }
 
     let currSimulationTime_ts = 0;
@@ -107,7 +115,7 @@
 
     <main>
         <div id="time-slider">
-            <TimeSlider bind:cursorPos_ts={cursorPos_ts} trackLive={trackLive} absoluteMinTs={minTime_ts} absoluteMaxTs={maxTime_ts} on:onChange={onTimeWindowChanged} isLive={runStatus === "RUNNING"}></TimeSlider>
+            <TimeSlider bind:cursorPos_ts={cursorPos_ts} bind:selectedPos_ts={selectedPos_ts} trackLive={trackLive} absoluteMinTs={minTime_ts} absoluteMaxTs={maxTime_ts} on:onChange={onTimeWindowChanged} isLive={runStatus === "RUNNING"}></TimeSlider>
         </div>
         <div id="bottom">
             <aside>
@@ -153,13 +161,13 @@
                 {#if activePane === "m"}
                     <!--MetricsViewer metrics={displayMetrics}></MetricsViewer-->
                     {#await getMetrics(project, run, currTimeWindow_ts[0], currTimeWindow_ts[1], { "bin_count": BIN_COUNT }) then metrics}
-                        <MetricsViewer bind:cursorPos_ts={cursorPos_ts} from_ts={currTimeWindow_ts[0]} to_ts={currTimeWindow_ts[1]} metrics={metrics}></MetricsViewer>
+                        <MetricsViewer bind:cursorPos_ts={cursorPos_ts} selectedPos_ts={selectedPos_ts} from_ts={currTimeWindow_ts[0]} to_ts={currTimeWindow_ts[1]} metrics={metrics}></MetricsViewer>
                     {/await}
                 {:else if activePane === "t"}
                     <Test topology={topology}></Test>
                 {:else if activePane === "e"}
                     {#await getEvents(project, run, currTimeWindow_ts[0], currTimeWindow_ts[1], { "min_ts_between": 0.01 * currRange }) then events}
-                        <EventViewer bind:cursorPos_ts={cursorPos_ts} from_ts={currTimeWindow_ts[0]} to_ts={currTimeWindow_ts[1]} events={events}></EventViewer>
+                        <EventViewer bind:cursorPos_ts={cursorPos_ts} selectedPos_ts={selectedPos_ts} from_ts={currTimeWindow_ts[0]} to_ts={currTimeWindow_ts[1]} events={events}></EventViewer>
                     {/await}
                 {:else if activePane === "c"}
                     {#await getRunConfig(project, run) then config}

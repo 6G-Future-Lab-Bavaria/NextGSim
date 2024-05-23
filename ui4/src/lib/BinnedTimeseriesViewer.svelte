@@ -6,6 +6,7 @@
     export let from_ts: number;
     export let to_ts: number;
     export let cursorPos_ts: number | null;
+    export let selectedPos_ts: number;
 
     $: range_ts = to_ts - from_ts;
 
@@ -39,6 +40,14 @@
             applyF: ((p: SVGPathElement) => any)
         }[]
     } | null = null;
+
+    let rect: SVGRectElement;
+
+    $: {
+        data;
+        displaySettings;
+        updateRenderInfo();
+    }
 
     function updateRenderInfo() {
         if (data === null) {
@@ -139,28 +148,11 @@
         }
     }
 
-    $: {
-        data;
-        displaySettings;
-        updateRenderInfo();
-    }
-
-    /*$: {
-        xvals = [];
-        yvals = [];
-        for (let [x,y] of values) {
-            xvals.push(x);
-            yvals.push(y);
-        }
-    }*/
-
     function onMouseMove(ev: MouseEvent) {
         let path = ev.target as SVGPathElement;
         let bb = path.getBoundingClientRect();
         cursorPos_ts = ((ev.clientX - bb.x) / bb.width) * (to_ts - from_ts) + from_ts;
     }
-
-    let rect: SVGRectElement;
 
     function calcCursorPos_px(cursorPos_ts: number) {
         return width * (cursorPos_ts - from_ts) / range_ts;
@@ -217,6 +209,18 @@
                 fill="black"
                 stroke="none"
                 x={calcCursorPos_px(cursorPos_ts)}
+                pointer-events="none"
+                ></rect>
+            {/if}
+            {#if rect}
+                <rect
+                height={height}
+                width="2px"
+                opacity="1"
+                fill="teal"
+                stroke="black"
+                stroke-width="1px"
+                x={calcCursorPos_px(selectedPos_ts)}
                 pointer-events="none"
                 ></rect>
             {/if}
