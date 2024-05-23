@@ -1,11 +1,11 @@
 from simpy import Environment
 from typing import List, Optional
-
+import json
 
 # every component should have their own event types that inherit from this class and handle serialization
 class Event:
 
-    def __init__(self, time, component_meta, type, data: Optional[str]):
+    def __init__(self, time, component_meta, type, data: Optional[any]):
         self.time = time
         self.component_meta = component_meta
         self.type = type
@@ -16,7 +16,7 @@ class Event:
             "time": self.time,
             "component": self.component_meta,
             "type": self.type,
-            "data": self.data
+            "data": json.dumps(self.data)
         }
 
     @staticmethod
@@ -25,7 +25,7 @@ class Event:
             obj["time"],
             obj["component"],
             obj["type"],
-            obj["data"]
+            json.loads(obj["data"]),
         )
 
 class EventLog:
@@ -34,7 +34,8 @@ class EventLog:
         self.env = env
         self.events: List[Event] = []
 
-    def register_event(self, component, typ, data: Optional[str] = None):
+    # Register an Event. Event data must be JSON-serializable.
+    def register_event(self, component, typ, data: Optional[any] = None):
         component_meta = {
             "_type": type(component).__qualname__,
             "name": type(component).__name__,
