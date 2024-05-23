@@ -1,6 +1,7 @@
 import simpy
 
 from metrics import MetricWriter
+from networklog import NetworkLogger
 from ng.networking.network import NetworkTopology
 from ng.eventlog import EventLog
 from physical import PhysicalEnvironment, Coords2D
@@ -13,7 +14,8 @@ class Simulation:
         # todo remove:
         self.physical = PhysicalEnvironment(Coords2D(0, 0), Coords2D(200, 100))
         self.eventlog = EventLog(self.env)
-        self.network = NetworkTopology(self.env)
+        self.networklog = NetworkLogger(self)
+        self.network = NetworkTopology(self.env, self.eventlog, self.networklog)
         self.ms_per_ts = ms_per_ts
         self.routing = routing_t(self)
         self.orchestrator = orchestrator_t(self)
