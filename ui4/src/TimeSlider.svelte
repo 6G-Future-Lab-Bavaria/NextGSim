@@ -233,7 +233,7 @@
         cursorPos_ts = calcPosTsFromClientX(ev.clientX);
     }
 
-    function calcCursorPos_px(cursorPos_ts: number) {
+    function calcCursorPos_px(minTs: number, maxTs: number, absoluteMinTs: number, absoluteMaxTs: number, cursorPos_ts: number) {
         let trackWidth = rel.getBoundingClientRect().width;
         return trackWidth * (cursorPos_ts - minTs) / (maxTs - minTs);
     }
@@ -243,10 +243,10 @@
 <div id="container" on:mousemove={onOver} on:mouseleave={onOut} on:mouseup={onUp}>
     <div id="rel" bind:this={rel} on:mousemove={mouseMoveRel} on:mouseleave={() => cursorPos_ts = null}>
         {#if rel !== undefined && cursorPos_ts !== null}
-            <div id="cursor" style:left="{calcCursorPos_px(cursorPos_ts)}px"></div>
+            <div id="cursor" style:left="{calcCursorPos_px(minTs, maxTs, absoluteMinTs, absoluteMaxTs, cursorPos_ts)}px"></div>
         {/if}
         {#if rel !== undefined}
-            <div id="selection" style:left="{calcCursorPos_px(selectedPos_ts)}px"></div>
+            <div id="selection" style:left="{calcCursorPos_px(minTs, maxTs, absoluteMinTs, absoluteMaxTs, selectedPos_ts)}px"></div>
         {/if}
 
         {#each ticks as tick}
