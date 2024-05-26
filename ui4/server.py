@@ -1,11 +1,13 @@
 import os
 from copy import deepcopy
+from typing import Union
 
 import flask
 from flask import Flask
 from flask_cors import CORS
 from flask_sock import Sock
 from flask import request
+from networkx import MultiDiGraph
 
 import config
 from projects import Project, Run
@@ -322,8 +324,8 @@ def get_events(proj_name, run_id):
 
     return views
 
-@app.get("/api/projects/<string:proj_name>/runs/<string:run_id>/topologies")
-def get_topologies(proj_name, run_id):
+@app.get("/api/projects/<string:proj_name>/runs/<string:run_id>/topology")
+def get_topology(proj_name, run_id):
     project = Project.get_project(proj_name)
 
     if not project:
@@ -334,23 +336,42 @@ def get_topologies(proj_name, run_id):
 
     run: Run = project.runs[run_id]
 
-    from_ts = request.args.get("from")
-    to_ts = request.args.get("to")
+    time_ts = float(request.args.get("time"))
 
-    if from_ts is None:
-        from_ts = 0
-    else:
-        from_ts = float(from_ts)
+    network_state: Union[MultiDiGraph, None] = None
 
-    if to_ts is None:
-        if run.is_running():
-            to_ts = run.sim.env.now
-        else:
-            to_ts = run.duration_ts
-    else:
-        to_ts = float(to_ts)
+    # todo: get at time
+    for t,net in run.topologies:
+        if t > time_ts:
+            break
+        network_state = net
 
-    return views
+    if network_state is None:
+        return "", 404
+
+    def get_links():
+        for n0, n1, a in network_state.edges(data=True):
+            edges = network_state[n0][n1].keys()  # list of connected interfaces
+            for [if0, if1] in edges:
+                yield [n0, if0, n1, if1]
+
+    topology = {
+        "nodes": [
+            {
+                "id": node,
+            }
+            for node in network_state.nodes
+        ],
+        "links": [
+            {
+                "from": { "node": n0, "if": if0 },
+                "to": { "node": n1, "if": if1 },
+            }
+            for [n0, if0, n1, if1] in get_links()
+        ]
+    }
+
+    return topology
 
 @app.get("/api/projects/<string:proj_name>/runs/<string:run_id>/config")
 def get_run_config(proj_name, run_id):

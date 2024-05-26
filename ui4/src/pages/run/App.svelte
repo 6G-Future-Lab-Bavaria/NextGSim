@@ -9,7 +9,17 @@
     import EventViewer from "../../lib/EventViewer.svelte";
     import Test from "../../lib/Test.svelte";
     import {onMount} from "svelte";
-    import {getEvents, getMetrics, getRun, getRunConfig, getRuns, loadRun, startRun, stopRun} from "../../lib/backend";
+    import {
+        getEvents,
+        getMetrics,
+        getRun,
+        getRunConfig,
+        getRuns,
+        getTopologyAtTime,
+        loadRun,
+        startRun,
+        stopRun
+    } from "../../lib/backend";
     import StatusIndicator from "../../lib/StatusIndicator.svelte";
     import TimeSlider from "../../TimeSlider.svelte";
     import {FontAwesomeIcon} from "@fortawesome/svelte-fontawesome";
@@ -164,7 +174,9 @@
                         <MetricsViewer bind:cursorPos_ts={cursorPos_ts} selectedPos_ts={selectedPos_ts} from_ts={currTimeWindow_ts[0]} to_ts={currTimeWindow_ts[1]} metrics={metrics}></MetricsViewer>
                     {/await}
                 {:else if activePane === "t"}
-                    <Test topology={topology}></Test>
+                    {#await getTopologyAtTime(project, run, selectedPos_ts, {}) then top}
+                    <Test topology={top}></Test>
+                    {/await}
                 {:else if activePane === "e"}
                     {#await getEvents(project, run, currTimeWindow_ts[0], currTimeWindow_ts[1], { "min_ts_between": 0.01 * currRange }) then events}
                         <EventViewer bind:cursorPos_ts={cursorPos_ts} selectedPos_ts={selectedPos_ts} from_ts={currTimeWindow_ts[0]} to_ts={currTimeWindow_ts[1]} events={events}></EventViewer>

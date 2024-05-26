@@ -1,7 +1,7 @@
 from networkx import MultiDiGraph, shortest_path as sp
 from networkx.exception import NetworkXNoPath
 from eventlog import EventLog
-from networklog import NetworkLogger
+from networklog import NetworkLog
 
 
 # network is multidigraph
@@ -10,7 +10,7 @@ from networklog import NetworkLogger
 
 class NetworkTopology:
 
-    def __init__(self, env, evlog: EventLog, networklog: NetworkLogger):
+    def __init__(self, env, evlog: EventLog, networklog: NetworkLog):
         self.env = env
         self.graph = MultiDiGraph()
         self.nodes = []
@@ -24,7 +24,7 @@ class NetworkTopology:
         self.nodes.append(node)
         self.graph.add_node(node.id)
         self.evlog.register_event(self, "NODE_ADD", node.id)
-        #self.netlog.log_state(self.graph)
+        self.netlog.log_state(self.graph)
 
     def get_links(self):
         for n0, n1, a in self.graph.edges(data=True):
@@ -41,11 +41,15 @@ class NetworkTopology:
 
     def link(self, if0, if1):
         self.evlog.register_event(self, "LINK_ADD", [if0.node.id, if0.id, if1.node.id, if1.id])
-        return self.graph.add_edge(if0.node.id, if1.node.id, key=(if0.id, if1.id))
+        succ = self.graph.add_edge(if0.node.id, if1.node.id, key=(if0.id, if1.id))
+        self.netlog.log_state(self.graph)
+        return succ
 
     def unlink(self, if0, if1):
         self.evlog.register_event(self, "LINK_REMOVE", [if0.node.id, if0.id, if1.node.id, if1.id])
-        self.graph.remove_edge(if0.node.id, if1.node.id, key=(if0.id, if1.id))
+        succ = self.graph.remove_edge(if0.node.id, if1.node.id, key=(if0.id, if1.id))
+        self.netlog.log_state(self.graph)
+        return succ
 
     def get_interfaces(self, n0, n1): # get interfaces for link from n0 to n1
         edges = self.graph[n0][n1]
@@ -54,6 +58,7 @@ class NetworkTopology:
     def remove_node(self, node_id):
         self.evlog.register_event(self, "NODE_REMOVE", node_id)
         self.graph.remove_node(node_id)
+        self.netlog.log_state(self.graph)
 
     def shortest_path(self, n0, n1):
         try:

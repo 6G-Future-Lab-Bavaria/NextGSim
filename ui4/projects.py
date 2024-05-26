@@ -12,7 +12,7 @@ import simpy
 import config
 from config import load_config, get_type
 from metrics import Metric
-from networklog import NetworkLogger
+from networklog import NetworkLog
 from ng.eventlog import Event
 from simulation import Simulation
 
@@ -118,6 +118,20 @@ class Run:
             self.stopped = datetime.datetime.utcnow().isoformat()
             self.duration_ts = env.now
 
+            metrics = []
+            for metric in simulator.metric_writer.metrics:
+                comp = str(metric.comp)
+                name = metric.name
+
+                metrics.append({
+                    "comp": comp,
+                    "name": name,
+                    "values": metric.get_values(),
+                    "typ": type(metric)
+                })
+            self.topologies = simulator.networklog.get_states()
+            self.events = self.sim.eventlog.events
+
             self.write_to_disk()
 
             print("> STOPPED RUN", self.id, env.now)
@@ -185,7 +199,7 @@ class Run:
             with open(pjoin(metric_p, "values"), "w") as f:
                 typ.serialize_values(f, metric["values"])
 
-        NetworkLogger.write_states_to_disk(self.topologies, topologies_p)
+        NetworkLog.write_states_to_disk(self.topologies, topologies_p)
 
     @staticmethod
     def load_from_disk(run_p, run_id):
@@ -224,12 +238,14 @@ class Run:
                             "typ": typ
                         })
 
-        topologies = NetworkLogger.load_states_from_disk(pjoin(run_p, "topologies"))
+        topologies = NetworkLog.load_states_from_disk(pjoin(run_p, "topologies"))
 
         return Run(run_p,  run_id,None, run_meta, "DEAD", None, config, topologies, evs, metrics)
 
     @staticmethod
     def create(run_p, run_id, config):
+        sim = load_config(config)
+
         os.mkdir(run_p)
 
         config_p = pjoin(run_p, "config.json")
@@ -241,8 +257,6 @@ class Run:
 
         os.mkdir(pjoin(run_p, "metrics"))
         os.mkdir(pjoin(run_p, "topologies"))
-
-        sim = load_config(config)
 
         run_meta = {
                 "created": datetime.datetime.utcnow().isoformat(),

@@ -67,9 +67,9 @@ export async function getEvents(project: string, run: string, from: number, to: 
     return events;
 }
 
-export async function getTopology(project: string, run: string, from: number, to: number, args: { [id: string] : any; }) {
+export async function getTopologyAtTime(project: string, run: string, ts: number, args: { [id: string] : any; }) {
     let params = Object.entries(args).map(([k,v]) => `${k}=${v}`).join("&");
-    let res = await fetch(ENDPOINT + `/api/projects/${project}/runs/${run}/topologies?from=${from}&to=${to}&${params}`);
+    let res = await fetch(ENDPOINT + `/api/projects/${project}/runs/${run}/topology?time=${ts}&${params}`);
     let tops = await res.json();
     return tops;
 }
