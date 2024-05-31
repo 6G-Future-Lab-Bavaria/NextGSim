@@ -7,17 +7,13 @@
 
     import MetricsViewer from "../../lib/MetricsViewer.svelte";
     import EventViewer from "../../lib/EventViewer.svelte";
-    import Test from "../../lib/Test.svelte";
     import {onMount} from "svelte";
     import {
         getEvents,
         getMetrics,
         getRun,
         getRunConfig,
-        getRuns,
         getTopologyAtTime,
-        loadRun,
-        startRun,
         stopRun
     } from "../../lib/backend";
     import StatusIndicator from "../../lib/StatusIndicator.svelte";
@@ -25,8 +21,9 @@
     import {FontAwesomeIcon} from "@fortawesome/svelte-fontawesome";
     import {faChartSimple, faDiagramProject, faExclamation, faFile} from "@fortawesome/free-solid-svg-icons";
     import {JSONEditor} from "svelte-jsoneditor";
+    import TopologyViewer from "../../lib/TopologyViewer.svelte";
 
-    let activePane = "m";
+    let activePane = "c";
 
     const BIN_COUNT = 500;
 
@@ -131,6 +128,15 @@
             <aside>
                 <ul id="sidebar-controls">
                     <li>
+                        <button class:active={activePane==="c"}
+                                on:click={() => activePane = "c"}
+                        >
+                            <FontAwesomeIcon icon={faFile}
+                            fixedWidth={false}
+                            size="1x"></FontAwesomeIcon>
+                        </button>
+                    </li>
+                    <li>
                         <button class:active={activePane==="m"}
                                 on:click={() => activePane = "m"}
                         ><FontAwesomeIcon icon={faChartSimple}
@@ -156,15 +162,6 @@
                             size="1x"></FontAwesomeIcon>
                         </button>
                     </li>
-                    <li>
-                        <button class:active={activePane==="c"}
-                                on:click={() => activePane = "c"}
-                        >
-                            <FontAwesomeIcon icon={faFile}
-                            fixedWidth={false}
-                            size="1x"></FontAwesomeIcon>
-                        </button>
-                    </li>
                 </ul>
             </aside>
             <div id="main-pane">
@@ -175,7 +172,7 @@
                     {/await}
                 {:else if activePane === "t"}
                     {#await getTopologyAtTime(project, run, selectedPos_ts, {}) then top}
-                    <Test topology={top}></Test>
+                    <TopologyViewer topology={top}></TopologyViewer>
                     {/await}
                 {:else if activePane === "e"}
                     {#await getEvents(project, run, currTimeWindow_ts[0], currTimeWindow_ts[1], { "min_ts_between": 0.01 * currRange }) then events}
@@ -290,16 +287,20 @@
     }
 
     #sidebar-controls li button {
+        height: 2em;
+        width: 2em;
         background-color: transparent;
         border: none;
         cursor: pointer;
         font-size: 1em;
         color: teal;
         padding: .4em;
+        border-radius: 20%;
     }
 
     #sidebar-controls li button.active {
         font-weight: bold;
+        background-color: #ebeaea;
     }
 
     main h4 {

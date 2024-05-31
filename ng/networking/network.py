@@ -1,7 +1,8 @@
 from networkx import MultiDiGraph, shortest_path as sp
 from networkx.exception import NetworkXNoPath
-from eventlog import EventLog
-from networklog import NetworkLog
+from ng.eventlog import EventLog
+from ng.mec.entity import Entity
+from ng.networklog import NetworkLog
 
 
 # network is multidigraph
@@ -22,7 +23,7 @@ class NetworkTopology:
 
     def register_node(self, node):
         self.nodes.append(node)
-        self.graph.add_node(node.id)
+        self.graph.add_node(node.id, is_mec = isinstance(node, Entity))
         self.evlog.register_event(self, "NODE_ADD", node.id)
         self.netlog.log_state(self.graph)
 

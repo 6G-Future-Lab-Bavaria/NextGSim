@@ -65,7 +65,7 @@
 
             let node = d3.select(svg).selectAll("circle")
                 .data(nodes).join("circle")
-                    .style("fill", "blue")
+                    .style("fill", n => n.is_mec ? "blue" : "gray")
                     .attr("r", 10);
 
         //@ts-ignore
@@ -121,8 +121,6 @@
 <style>
     #modal {
         position: absolute;
-        height: 2em;
-        width: 4em;
         left: 0;
         top: 0;
         border: 3px solid black;

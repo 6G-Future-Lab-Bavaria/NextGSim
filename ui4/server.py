@@ -39,8 +39,6 @@ def run_ws(ws, proj_name, run_id):
 
     run = project.runs[run_id]
 
-    i_ev = 0
-
     if run.status != "DEAD":
         sim: Simulation = run.sim
         while run.is_running():
@@ -49,46 +47,7 @@ def run_ws(ws, proj_name, run_id):
                 "type": "TIME",
                 "data": sim.env.now
             }))
-            #events = sim.eventlog.events[i_ev:]
-            #events = run.events
-            #ws.send(json.dumps({
-            #    "type": "EVENTS",
-            #    "data": events[i_ev:],
-            #}))
-            #i_ev = len(events)
-            #ws.send(json.dumps({
-            #    "type": "METRICS",
-            #    "data": run.get_metrics(), # todo: stream this
-            #}))
-            #topology = {
-            #    "nodes": [
-            #        {
-            #            "id": node.id,
-            #        }
-            #        for node in sim.network.nodes
-            #    ],
-            #    "links": [
-            #        {
-            #            "from": { "node": n0, "if": if0 },
-            #            "to": { "node": n1, "if": if1 },
-            #        }
-            #        for [n0, if0, n1, if1] in sim.network.get_links()
-            #    ]
-            #}
-            #ws.send(json.dumps({
-            #    "type": "TOPOLOGY",
-            #    "data": topology
-            #}))
 
-    #events = run.events
-    #ws.send(json.dumps({
-    #    "type": "EVENTS",
-    #    "data": events[i_ev:],
-    #}))
-    #ws.send(json.dumps({
-    #    "type": "METRICS",
-    #    "data": run.get_metrics(),  # todo: stream this
-    #}))
     ws.send(json.dumps({
         "type": "END",
         "data": run.duration_ts
@@ -168,7 +127,11 @@ def post_runs(project):
     if not project:
         return "", 404
 
-    run_id = project.create_run()
+    try:
+        run_id = project.create_run()
+    except (ModuleNotFoundError, ImportError) as e:
+        return (e, 400)
+
     if run_id is None:
         return ('', 500)
 
@@ -340,7 +303,6 @@ def get_topology(proj_name, run_id):
 
     network_state: Union[MultiDiGraph, None] = None
 
-    # todo: get at time
     for t,net in run.topologies:
         if t > time_ts:
             break
@@ -358,9 +320,10 @@ def get_topology(proj_name, run_id):
     topology = {
         "nodes": [
             {
-                "id": node,
+                "id": node_id,
+                "is_mec": attrs["is_mec"]
             }
-            for node in network_state.nodes
+            for (node_id, attrs) in network_state.nodes.items()
         ],
         "links": [
             {

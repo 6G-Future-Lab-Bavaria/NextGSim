@@ -34,7 +34,7 @@ class NetworkLog:
         # could also split in multiple files
         def serialize(graph: MultiDiGraph):
             return {
-                "nodes": list(graph.nodes.keys()),
+                "nodes": list(graph.nodes.data()),
                 # links is list of 3-tuples (start,end,key)
                 "links": list(graph.edges(keys=True))
             }
