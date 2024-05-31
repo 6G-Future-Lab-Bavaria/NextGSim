@@ -1,7 +1,7 @@
 <script lang="ts">
     import {getConfig, updateConfig} from "./backend";
 
-    import {JSONEditor} from "svelte-jsoneditor";
+    import {JSONEditor, Mode} from "svelte-jsoneditor";
 
     export let project: string;
 
@@ -30,7 +30,7 @@
 
 {#await load() then _}
     <div id="editor">
-        <JSONEditor bind:this={editor} content={props} onChange={changed}></JSONEditor>
+        <JSONEditor bind:this={editor} mode={Mode.text} content={props} onChange={changed}></JSONEditor>
     </div>
 {/await}
 

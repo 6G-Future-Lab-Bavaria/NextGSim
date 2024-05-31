@@ -20,7 +20,7 @@
     import TimeSlider from "../../TimeSlider.svelte";
     import {FontAwesomeIcon} from "@fortawesome/svelte-fontawesome";
     import {faChartSimple, faDiagramProject, faExclamation, faFile} from "@fortawesome/free-solid-svg-icons";
-    import {JSONEditor} from "svelte-jsoneditor";
+    import {JSONEditor, Mode} from "svelte-jsoneditor";
     import TopologyViewer from "../../lib/TopologyViewer.svelte";
 
     let activePane = "c";
@@ -154,7 +154,7 @@
                     <EventViewer bind:cursorPos_ts={cursorPos_ts} selectedPos_ts={selectedPos_ts} from_ts={currTimeWindow_ts[0]} to_ts={currTimeWindow_ts[1]} events={events}></EventViewer>
                 {:else if activePane === "c"}
                     {#await getRunConfig(project, run) then config}
-                        <JSONEditor content={{json: config}} readOnly={true}></JSONEditor>
+                        <JSONEditor content={{json: config}} readOnly={true} mode={Mode.text}></JSONEditor>
                     {/await}
                 {/if}
             </div>
