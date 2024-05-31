@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import List
 
 import simpy
 
@@ -23,7 +24,7 @@ class Connection(ABC):
         def send(self, frame):
             yield self.conn.transfer(self.intf, frame)
 
-    def __init__(self, sim: Simulation, ifs: "Interface"):
+    def __init__(self, sim: Simulation, ifs: List["Interface"]):
         ifs = list(ifs)
         self.sim = sim
         self.env = sim.env
