@@ -16,7 +16,7 @@ import json
 
 from simulation import Simulation
 
-projects_folder = os.path.join(os.getcwd(), "ui4/projects")
+projects_folder = os.path.join(os.getcwd(), "ui/projects")
 
 root = os.getcwd()
 
