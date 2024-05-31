@@ -57,12 +57,14 @@ class Node:
         link = self.routing_table.get_next_hop(n1)  # l3 -> l2
 
         if link is None:
-            # todo: no error, but record event, return normally
+            self.sim.eventlog.register_event(self, "NO_ROUTE", {
+                "target_node": n1
+            })
             raise RuntimeError("No route from %s to %s" % (self.id, n1))
 
         [if0, if1] = link
         intf = self.intf(if0)
-        return self.env.process(intf.send(packet, packet.size, if1))  # TODO: yield or not?
+        return self.env.process(intf.send(packet, packet.size, if1))
 
     # this process receives l3 packets and either forwards them to the next node
     # or puts them in self.incoming_packets
@@ -87,6 +89,7 @@ class Node:
                 try:
                     yield self._send_packet(packet)
                 except RuntimeError as e:
+                    self.sim.eventlog.register_event(self, "PACKET_FWD_FAIL", type(e))
                     print("Failed to forward packet")
 
         self.procs = [self.env.process(handle(intf_id)) for intf_id in self.interfaces.keys()]
