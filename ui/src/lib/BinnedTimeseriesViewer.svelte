@@ -42,16 +42,12 @@
 
     let rect: SVGRectElement;
 
-    $: {
-        data;
-        displaySettings;
-        updateRenderInfo();
-    }
+    $: renderInfo = updateRenderInfo(displaySettings, data);
 
-    function updateRenderInfo() {
+    function updateRenderInfo(displaySettings: any, data: any) {
         if (data === null) {
             renderInfo = null;
-            return;
+            return null;
         }
         // for the first element, from_ts is null (no lower bound)
         // for the last element, to_ts is null (no upper bound)
@@ -60,9 +56,30 @@
             .domain([from_ts, to_ts])
             .range([ 0, width]);
 
+        let seriess: { values: (number | null)[], id: string, color: string }[] = [];
+
         let yMins = data.map(d => d.min);
         let yMaxs = data.map(d => d.max);
         let yMeans = data.map(d => d.mean);
+
+        if (displaySettings.showMax)
+            seriess.push({
+                id: "max",
+                color: "gray",
+                values: yMaxs,
+            });
+        if (displaySettings.showMean)
+            seriess.push({
+                id: "mean",
+                color: "red",
+                values: yMeans,
+            });
+        if (displaySettings.showMin)
+            seriess.push({
+                id: "min",
+                color: "gray",
+                values: yMins
+            });
 
         let yMin: number | null = null;
         let yMax: number | null = null;
@@ -73,14 +90,14 @@
                 if (yMax === null || y > yMax) yMax = y;
             }
         }
-        sift(yMins);
-        sift(yMaxs);
-        sift(yMeans);
+        for (let s of seriess) {
+            sift(s.values);
+        }
 
         if (yMin === null || yMax === null) {
             // all null
             renderInfo = null;
-            return;
+            return null;
         }
 
         let yScale = d3.scaleLinear()
@@ -95,11 +112,7 @@
             return vals;
         }
 
-        let valsMin = zip(xDomain, yMins);
-        let valsMax = zip(xDomain, yMaxs);
-        let valsMean = zip(xDomain, yMeans);
-
-        function createF(vals: [number, number | null][], debug: string) {
+        function createF(vals: [number, number | null][]) {
             let valsNullToZero: [number, number][] = vals.map(v => [v[0], v[1] === null ? 0 : v[1]]);
 
             return (p: SVGPathElement) => {
@@ -114,39 +127,23 @@
             }
         }
 
-        let series: {
-            id: string, // used to check if should rerender
-            color: string,
-            applyF: ((p: SVGPathElement) => any)
-        }[] = [];
-        if (displaySettings.showMax)
-            series.push({
-                id: "max",
-                color: "gray",
-                applyF: createF(valsMax, "1")
-            });
-        if (displaySettings.showMean)
-            series.push({
-                id: "mean",
-                color: "red",
-                applyF: createF(valsMean, "2")
-            });
-        if (displaySettings.showMin)
-            series.push({
-                id: "min",
-                color: "gray",
-                applyF: createF(valsMin, "2")
-            });
-
         renderInfo = {
             xDomain: xDomain,
             xScale: xScale,
             applyXAxis: (g: SVGGElement) => {d3.axisBottom(xScale)(d3.select(g))},
             applyYAxis: (g: SVGGElement) => {d3.axisLeft(yScale)(d3.select(g))},
-            series: series
+            series: seriess.map(s => { return {
+                id: s.id,
+                color: s.color,
+                applyF: createF(zip(xDomain, s.values))
+            }; })
         }
 
+        renderInfo.applyXAxis = renderInfo.applyXAxis;
+        renderInfo.applyYAxis = renderInfo.applyYAxis;
         renderInfo.series = renderInfo.series;
+
+        return renderInfo;
     }
 
     function onMouseMove(ev: MouseEvent) {
@@ -179,53 +176,55 @@
     {#if renderInfo === null}
         <p style="font-style: italic">No measurements.</p>
     {:else}
-    <svg viewBox="0 0 {width + margin.left + margin.right} {height + margin.top + margin.bottom}">
-        <g transform="translate({margin.left}, {margin.top})">
-            <g use:renderInfo.applyXAxis transform="translate(0, {height})"></g>
-            <g use:renderInfo.applyYAxis></g>
-            {#each renderInfo.series as series (series.applyF)}
-                <path
+        {#key renderInfo}
+            <svg viewBox="0 0 {width + margin.left + margin.right} {height + margin.top + margin.bottom}">
+            <g transform="translate({margin.left}, {margin.top})">
+                <g use:renderInfo.applyXAxis transform="translate(0, {height})"></g>
+                <g use:renderInfo.applyYAxis></g>
+                {#each renderInfo.series as series (series.applyF)}
+                    <path
+                        fill="none"
+                        stroke={series.color}
+                        stroke-width="1"
+                        use:series.applyF
+                    ></path>
+                {/each}
+                <rect
+                    bind:this={rect}
                     fill="none"
-                    stroke={series.color}
-                    stroke-width="1"
-                    use:series.applyF
-                ></path>
-            {/each}
-            <rect
-                bind:this={rect}
-                fill="none"
-                stroke="none"
-                height={height}
-                width={width}
-                pointer-events="all"
-                on:mousemove={onMouseMove}
-                on:mouseleave={() => cursorPos_ts = null}
-            ></rect>
-            {#if rect && cursorPos_ts !== null}
-                <rect
-                height={height}
-                width="1px"
-                opacity="1"
-                fill="black"
-                stroke="none"
-                x={calcCursorPos_px(from_ts, to_ts, cursorPos_ts)}
-                pointer-events="none"
+                    stroke="none"
+                    height={height}
+                    width={width}
+                    pointer-events="all"
+                    on:mousemove={onMouseMove}
+                    on:mouseleave={() => cursorPos_ts = null}
                 ></rect>
-            {/if}
-            {#if rect}
-                <rect
-                height={height}
-                width="2px"
-                opacity="1"
-                fill="teal"
-                stroke="black"
-                stroke-width="1px"
-                x={calcCursorPos_px(from_ts, to_ts, selectedPos_ts)}
-                pointer-events="none"
-                ></rect>
-            {/if}
-        </g>
-    </svg>
+                {#if rect && cursorPos_ts !== null}
+                    <rect
+                    height={height}
+                    width="1px"
+                    opacity="1"
+                    fill="black"
+                    stroke="none"
+                    x={calcCursorPos_px(from_ts, to_ts, cursorPos_ts)}
+                    pointer-events="none"
+                    ></rect>
+                {/if}
+                {#if rect}
+                    <rect
+                    height={height}
+                    width="2px"
+                    opacity="1"
+                    fill="teal"
+                    stroke="black"
+                    stroke-width="1px"
+                    x={calcCursorPos_px(from_ts, to_ts, selectedPos_ts)}
+                    pointer-events="none"
+                    ></rect>
+                {/if}
+            </g>
+            </svg>
+        {/key}
     {/if}
 </div>
 
