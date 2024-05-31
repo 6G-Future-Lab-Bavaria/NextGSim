@@ -72,6 +72,10 @@
     $: getMetrics(project, run, currTimeWindow_ts[0], currTimeWindow_ts[1], { "bin_count": BIN_COUNT })
             .then((m) => metrics = m);
 
+    let events: any[] | undefined = undefined;
+    $: getEvents(project, run, currTimeWindow_ts[0], currTimeWindow_ts[1], { "min_ts_between": 0.01 * currRange })
+        .then((evs) => events = evs);
+
     onMount(async () => {
         let runData = await getRun(project, run);
         runStatus = runData.status;
@@ -147,9 +151,7 @@
                         <TopologyViewer topology={top}></TopologyViewer>
                     {/await}
                 {:else if activePane === "e"}
-                    {#await getEvents(project, run, currTimeWindow_ts[0], currTimeWindow_ts[1], { "min_ts_between": 0.01 * currRange }) then events}
-                        <EventViewer bind:cursorPos_ts={cursorPos_ts} selectedPos_ts={selectedPos_ts} from_ts={currTimeWindow_ts[0]} to_ts={currTimeWindow_ts[1]} events={events}></EventViewer>
-                    {/await}
+                    <EventViewer bind:cursorPos_ts={cursorPos_ts} selectedPos_ts={selectedPos_ts} from_ts={currTimeWindow_ts[0]} to_ts={currTimeWindow_ts[1]} events={events}></EventViewer>
                 {:else if activePane === "c"}
                     {#await getRunConfig(project, run) then config}
                         <JSONEditor content={{json: config}} readOnly={true}></JSONEditor>

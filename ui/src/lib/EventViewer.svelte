@@ -34,7 +34,7 @@
         cursorPos_ts = relX * range_ts + from_ts;
     }
 
-    function calcCursorPos_px(cursorPos_ts: number) {
+    function calcCursorPos_px(from_ts: number, range_ts: number, cursorPos_ts: number) {
         let trackWidth = tracksEl.getBoundingClientRect().width;
         return trackWidth * (cursorPos_ts - from_ts) / range_ts;
     }
@@ -84,10 +84,10 @@
          on:mouseleave={() => cursorPos_ts = null}
     >
         {#if tracksEl !== undefined && cursorPos_ts !== null}
-            <div id="cursor" style:left="{calcCursorPos_px(cursorPos_ts)}px"></div>
+            <div id="cursor" style:left="{calcCursorPos_px(from_ts, range_ts, cursorPos_ts)}px"></div>
         {/if}
         {#if tracksEl !== undefined}
-            <div id="selection" style:left="{calcCursorPos_px(selectedPos_ts)}px"></div>
+            <div id="selection" style:left="{calcCursorPos_px(from_ts, range_ts, selectedPos_ts)}px"></div>
         {/if}
         {#each events as compEvs}
             {#if compIncludeStates[compEvs.comp]}
