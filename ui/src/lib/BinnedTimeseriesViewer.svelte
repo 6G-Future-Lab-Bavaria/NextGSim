@@ -1,7 +1,6 @@
 <script lang="ts">
 
     import * as d3 from "d3";
-    import {zip} from "d3";
 
     export let from_ts: number;
     export let to_ts: number;
@@ -146,6 +145,8 @@
             applyYAxis: (g: SVGGElement) => {d3.axisLeft(yScale)(d3.select(g))},
             series: series
         }
+
+        renderInfo.series = renderInfo.series;
     }
 
     function onMouseMove(ev: MouseEvent) {
@@ -154,10 +155,9 @@
         cursorPos_ts = ((ev.clientX - bb.x) / bb.width) * (to_ts - from_ts) + from_ts;
     }
 
-    function calcCursorPos_px(cursorPos_ts: number) {
+    function calcCursorPos_px(from_ts: number, to_ts: number, cursorPos_ts: number) {
         return width * (cursorPos_ts - from_ts) / range_ts;
     }
-
 
 </script>
 
@@ -183,7 +183,7 @@
         <g transform="translate({margin.left}, {margin.top})">
             <g use:renderInfo.applyXAxis transform="translate(0, {height})"></g>
             <g use:renderInfo.applyYAxis></g>
-            {#each renderInfo.series as series (series.id)}
+            {#each renderInfo.series as series (series.applyF)}
                 <path
                     fill="none"
                     stroke={series.color}
@@ -208,7 +208,7 @@
                 opacity="1"
                 fill="black"
                 stroke="none"
-                x={calcCursorPos_px(cursorPos_ts)}
+                x={calcCursorPos_px(from_ts, to_ts, cursorPos_ts)}
                 pointer-events="none"
                 ></rect>
             {/if}
@@ -220,7 +220,7 @@
                 fill="teal"
                 stroke="black"
                 stroke-width="1px"
-                x={calcCursorPos_px(selectedPos_ts)}
+                x={calcCursorPos_px(from_ts, to_ts, selectedPos_ts)}
                 pointer-events="none"
                 ></rect>
             {/if}

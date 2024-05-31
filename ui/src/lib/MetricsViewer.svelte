@@ -1,7 +1,5 @@
 <script lang="ts">
-    import * as d3 from "d3";
     import BinnedTimeseriesViewer from "./BinnedTimeseriesViewer.svelte";
-    import type {SvelteComponent, SvelteComponent_1} from "svelte";
 
     const COMPONENT_MAP: {[key: string]: ConstructorOfATypedSvelteComponent} = {
         "BinnedTimeseriesViewer": BinnedTimeseriesViewer
@@ -29,29 +27,29 @@
 </div>
 
 <div id="metrics">
-        {#each metrics as metric}
-            <div class="metric">
-                <div class="metric-id">{metric.comp}#{metric.name}</div>
-                <div class="metric-container">
-                    {#if COMPONENT_MAP[metric.ui_comp] !== undefined}
-                        <svelte:component
-                                this={COMPONENT_MAP[metric.ui_comp]}
-                                data={metric.data}
-                                from_ts={from_ts}
-                                to_ts={to_ts}
-                                bind:cursorPos_ts={cursorPos_ts}
-                                selectedPos_ts={selectedPos_ts}
-                        ></svelte:component>
-                    {:else}
-                        <p style="font-style: italic">Cannot render '{metric.ui_comp}'</p>
-                    {/if}
-                </div>
+    {#each metrics as metric (metric.comp + metric.name) }
+        <div class="metric">
+            <div class="metric-id">{metric.comp}#{metric.name}</div>
+            <div class="metric-container">
+                {#if COMPONENT_MAP[metric.ui_comp] !== undefined}
+                    <svelte:component
+                            this={COMPONENT_MAP[metric.ui_comp]}
+                            data={metric.data}
+                            from_ts={from_ts}
+                            to_ts={to_ts}
+                            bind:cursorPos_ts={cursorPos_ts}
+                            selectedPos_ts={selectedPos_ts}
+                    ></svelte:component>
+                {:else}
+                    <p style="font-style: italic">Cannot render '{metric.ui_comp}'</p>
+                {/if}
             </div>
-        {/each}
-        {#if metrics.length === 0}
-            <p style="font-style: italic">No metrics available</p>
-        {/if}
-    </div>
+        </div>
+    {/each}
+    {#if metrics.length === 0}
+        <p style="font-style: italic">No metrics available</p>
+    {/if}
+</div>
 
 <style>
     #controls {

@@ -29,24 +29,10 @@
 
     $: runStatus = "UNKNOWN";
 
-    let events: any[] = [];
-    let metrics: any[] = [];
-    let topology: any;
-
-    let currTimeOffset = .5; // relative to time window
     let currTimeWindow_ts = [0, 1];
     let selectedPos_ts: number = 0;
 
     $: currRange = currTimeWindow_ts[1] - currTimeWindow_ts[0];
-
-    $: displayedEvents = events.filter(ev => ev.time >= currTimeWindow_ts[0] && ev.time <= currTimeWindow_ts[1]);
-    $: displayMetrics = metrics
-        .map(m => {
-            let copy = structuredClone(m);
-            copy.values = m.values.filter((v:[number,number]) => v[0] >= currTimeWindow_ts[0] && v[0] <= currTimeWindow_ts[1])
-            return copy;
-        })
-        .filter((m: any) => m.values.length != 0);
 
     let minTime_ts = 0;
     let maxTime_ts = 1;
@@ -64,38 +50,27 @@
             selectedPos_ts = ev.detail.maxTs;
     }
 
-    let currSimulationTime_ts = 0;
-
     async function setupWebsocket() {
         console.log("WS");
         let ws = new WebSocket(`ws://${window.location.host}/api/projects/${project}/runs/${run}/ws`);
-            ws.onmessage = (msg) => {
-                let data = JSON.parse(msg.data);
-                if (data.type == "EVENTS" && data.data.length > 0) {
-                    events.push(...data.data.map((ev: any) => {return {
-                        time: ev.time,
-                        comp: ev.component.name + "/" + ev.component.ref,
-                        type: ev.type,
-                        data: ev.data,
-                    }}));
-                    events = events;
-                } else if (data.type == "METRICS") {
-                    metrics = data.data;
-                } else if (data.type == "TIME") {
-                    currSimulationTime_ts = data.data;
-                    maxTime_ts = data.data;
-                } else if (data.type == "TOPOLOGY") {
-                    topology = data.data;
-                } else if (data.type == "END") {
-                    maxTime_ts = data.data;
-                    runStatus = "STOPPED";
-                }
-            };
+        ws.onmessage = (msg) => {
+            let data = JSON.parse(msg.data);
+            if (data.type == "TIME") {
+                maxTime_ts = data.data;
+            } else if (data.type == "END") {
+                maxTime_ts = data.data;
+                runStatus = "STOPPED";
+            }
+        };
     }
 
     async function stop() {
         await stopRun(project, run);
     }
+
+    let metrics: any[] | undefined = undefined;
+    $: getMetrics(project, run, currTimeWindow_ts[0], currTimeWindow_ts[1], { "bin_count": BIN_COUNT })
+            .then((m) => metrics = m);
 
     onMount(async () => {
         let runData = await getRun(project, run);
@@ -165,14 +140,11 @@
                 </ul>
             </aside>
             <div id="main-pane">
-                {#if activePane === "m"}
-                    <!--MetricsViewer metrics={displayMetrics}></MetricsViewer-->
-                    {#await getMetrics(project, run, currTimeWindow_ts[0], currTimeWindow_ts[1], { "bin_count": BIN_COUNT }) then metrics}
-                        <MetricsViewer bind:cursorPos_ts={cursorPos_ts} selectedPos_ts={selectedPos_ts} from_ts={currTimeWindow_ts[0]} to_ts={currTimeWindow_ts[1]} metrics={metrics}></MetricsViewer>
-                    {/await}
+                {#if activePane === "m" && metrics !== undefined}
+                    <MetricsViewer bind:cursorPos_ts={cursorPos_ts} selectedPos_ts={selectedPos_ts} from_ts={currTimeWindow_ts[0]} to_ts={currTimeWindow_ts[1]} metrics={metrics}></MetricsViewer>
                 {:else if activePane === "t"}
                     {#await getTopologyAtTime(project, run, selectedPos_ts, {}) then top}
-                    <TopologyViewer topology={top}></TopologyViewer>
+                        <TopologyViewer topology={top}></TopologyViewer>
                     {/await}
                 {:else if activePane === "e"}
                     {#await getEvents(project, run, currTimeWindow_ts[0], currTimeWindow_ts[1], { "min_ts_between": 0.01 * currRange }) then events}
