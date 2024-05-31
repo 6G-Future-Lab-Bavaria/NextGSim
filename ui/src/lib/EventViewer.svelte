@@ -78,46 +78,48 @@
         </ul>
     </div>
 
-    <div id="tracks"
-         bind:this={tracksEl}
-        on:mousemove={mouseMoveTracks}
-         on:mouseleave={() => cursorPos_ts = null}
-    >
+    <div id="tracks-container">
         {#if tracksEl !== undefined && cursorPos_ts !== null}
             <div id="cursor" style:left="{calcCursorPos_px(from_ts, range_ts, cursorPos_ts)}px"></div>
         {/if}
         {#if tracksEl !== undefined}
             <div id="selection" style:left="{calcCursorPos_px(from_ts, range_ts, selectedPos_ts)}px"></div>
         {/if}
-        {#each events as compEvs}
-            {#if compIncludeStates[compEvs.comp]}
-            <h5>{compEvs.comp}</h5>
-            <div class="timeline">
-                {#each compEvs.groups as group}
-                    <div class="marker"
-                         style:left="{100 * Math.min(1., (group.from_ts - from_ts) / range_ts)}%"
-                         style:width="{100 * Math.min(1., (group.to_ts - group.from_ts) / range_ts)}%"
-                        on:mouseover={(ev) => {
-                            tooltipVisible = true;
-                            tooltipPos = [ev.clientX, ev.clientY];
-                            tooltipEvents = group.evs.length;
-                            tooltipTypes = [...new Set(group.evs.map(e => e.type))].toSorted();
-                            tooltipFrom_ts = group.from_ts;
-                            tooltipTo_ts = group.to_ts;
-                            // @ts-ignore
-                            ev.target.style.backgroundColor = "teal";
-                        }}
-                         on:mouseleave={(ev) => {
-                            tooltipVisible = false;
-                            // @ts-ignore
-                            ev.target.style.backgroundColor = "black";
-                        }}
-                    >
-                    </div>
-                {/each}
-            </div>
-            {/if}
-        {/each}
+        <div id="tracks"
+             bind:this={tracksEl}
+            on:mousemove={mouseMoveTracks}
+             on:mouseleave={() => cursorPos_ts = null}
+        >
+            {#each events as compEvs}
+                {#if compIncludeStates[compEvs.comp]}
+                <h5>{compEvs.comp}</h5>
+                <div class="timeline">
+                    {#each compEvs.groups as group}
+                        <div class="marker"
+                             style:left="{100 * Math.min(1., (group.from_ts - from_ts) / range_ts)}%"
+                             style:width="{100 * Math.min(1., (group.to_ts - group.from_ts) / range_ts)}%"
+                            on:mouseover={(ev) => {
+                                tooltipVisible = true;
+                                tooltipPos = [ev.clientX, ev.clientY];
+                                tooltipEvents = group.evs.length;
+                                tooltipTypes = [...new Set(group.evs.map(e => e.type))].toSorted();
+                                tooltipFrom_ts = group.from_ts;
+                                tooltipTo_ts = group.to_ts;
+                                // @ts-ignore
+                                ev.target.style.backgroundColor = "teal";
+                            }}
+                             on:mouseleave={(ev) => {
+                                tooltipVisible = false;
+                                // @ts-ignore
+                                ev.target.style.backgroundColor = "black";
+                            }}
+                        >
+                        </div>
+                    {/each}
+                </div>
+                {/if}
+            {/each}
+        </div>
     </div>
 
     <Tooltip pos={tooltipPos} visible={tooltipVisible}>
@@ -167,13 +169,19 @@
         flex-direction: column;
     }
 
-    #tracks {
+    #tracks-container {
         flex: 12;
+        margin-left: 1em;
+        position: relative;
+    }
+
+    #tracks {
         display: flex;
         flex-direction: column;
         overflow-y: scroll;
         overflow-x: hidden;
         position: relative;
+        height: 100%;
     }
 
     #cursor {
@@ -182,7 +190,7 @@
         top: 0;
         height: 100%;
         border-left: 2px solid black;
-        z-index: -100;
+        z-index: 11;
         opacity: .3;
         pointer-events: none;
         transform: translateX(-50%);
