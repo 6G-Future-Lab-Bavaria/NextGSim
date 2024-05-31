@@ -23,7 +23,9 @@
 </script>
 
 <div id="container">
-    <button on:click={newRun}>+</button>
+    <div>
+        <button on:click={newRun}>+</button>
+    </div>
     {#await load() then _}
     <div class="table">
         <div class="table-header">
@@ -50,6 +52,8 @@
         padding: 1em;
         width: 100%;
         font-weight: bold;
+        display: flex;
+        flex-direction: column;
     }
 
     button {
@@ -66,6 +70,7 @@
         display: grid;
         grid-template-columns: repeat(4, minmax(0, auto));
         margin-top: .5em;
+        overflow-y: scroll;
     }
 
     .table-header, .table-row {
