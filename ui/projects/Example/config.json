@@ -1,1 +1,154 @@
-{"connections": [{"_self": "ng.networking.interface.eth.FiberConnection", "ifs": [{"if": "eth0", "node": 0}, {"if": "eth0", "node": 1}], "length": 2}, {"_self": "ng.networking.interface.eth.FiberConnection", "ifs": [{"if": "eth1", "node": 1}, {"if": "eth0", "node": 2}], "length": 2}], "nodes": [{"_self": "ng.mec.entity.Entity", "cpu": {"_self": "ng.mec.cpu.SimpleSingleThreadedCPU", "clock_speed": 1000}, "dns": {}, "id": 0, "ifs": [{"_self": "ng.networking.interface.eth.EthernetInterface", "id": "eth0"}], "services": []}, {"_self": "ng.mec.entity.Entity", "cpu": {"_self": "ng.mec.cpu.SimpleSingleThreadedCPU", "clock_speed": 100}, "dns": {"ExampleProc_i0": 0}, "id": 1, "ifs": [{"_self": "ng.networking.interface.eth.EthernetInterface", "id": "eth0"}, {"_self": "ng.networking.interface.eth.EthernetInterface", "id": "eth1"}], "services": []}, {"_self": "ng.mec.entity.Entity", "cpu": {"_self": "ng.mec.cpu.SimpleSingleThreadedCPU", "clock_speed": 100}, "dns": {"ExampleProc": 1}, "id": 2, "ifs": [{"_self": "ng.networking.interface.eth.EthernetInterface", "id": "eth0"}, {"_self": "ng.networking.interface.eth.EthernetInterface", "id": "eth1"}], "services": []}, {"_self": "ng.networking.node.Node", "id": 3, "ifs": [{"_self": "ng.networking.interface.eth.EthernetInterface", "id": "eth0"}, {"_self": "ng.networking.interface.eth.EthernetInterface", "id": "eth1"}]}, {"_self": "lib.test_node.TestNode", "id": 4, "ifs": [{"_self": "ng.networking.interface.eth.EthernetInterface", "id": "eth0"}, {"_self": "ng.networking.interface.eth.EthernetInterface", "id": "eth1"}]}], "sdds": [{"interlinks": {"ExampleGen": ["ExampleProc"], "ExampleProc": ["ExampleProc_i0"], "ExampleProc_i0": []}, "services": [{"_self": "mec.service.ExampleProc", "id": 0, "name": "ExampleProc_i0"}, {"_self": "mec.service.GW", "id": 1, "mapping": {"ExampleProc": ["ExampleProc_i0"]}, "name": "ExampleProc"}, {"_self": "mec.service.ExampleGen", "id": 2, "name": "ExampleGen"}], "sla": {}}], "simulation": {"_self": "ng.simulation.Simulation", "ms_per_ts": 1, "orchestrator": {"_self": "ng.mec.orchestrator.SimpleOrchestrator"}, "routing": {"_self": "ng.networking.routing.ShortestPathRouting"}}}
+{
+  "connections": [
+    {
+      "_type": "ng.networking.interface.eth.FiberConnection",
+      "ifs": [
+        {
+          "if": "eth0",
+          "node": 0
+        },
+        {
+          "if": "eth0",
+          "node": 1
+        }
+      ],
+      "length": 2
+    },
+    {
+      "_type": "ng.networking.interface.eth.FiberConnection",
+      "ifs": [
+        {
+          "if": "eth1",
+          "node": 1
+        },
+        {
+          "if": "eth0",
+          "node": 2
+        }
+      ],
+      "length": 2
+    }
+  ],
+  "nodes": [
+    {
+      "_type": "ng.mec.entity.Entity",
+      "cpu": {
+        "_type": "ng.mec.cpu.SimpleSingleThreadedCPU",
+        "clock_speed": 1000
+      },
+      "dns": {},
+      "id": 0,
+      "ifs": [
+        {
+          "_type": "ng.networking.interface.eth.EthernetInterface",
+          "id": "eth0"
+        }
+      ],
+      "services": []
+    },
+    {
+      "_type": "ng.mec.entity.Entity",
+      "cpu": {
+        "_type": "ng.mec.cpu.SimpleSingleThreadedCPU",
+        "clock_speed": 100
+      },
+      "dns": {
+        "ExampleProc_i0": 0
+      },
+      "id": 1,
+      "ifs": [
+        {
+          "_type": "ng.networking.interface.eth.EthernetInterface",
+          "id": "eth0"
+        },
+        {
+          "_type": "ng.networking.interface.eth.EthernetInterface",
+          "id": "eth1"
+        }
+      ],
+      "services": []
+    },
+    {
+      "_type": "ng.mec.entity.Entity",
+      "cpu": {
+        "_type": "ng.mec.cpu.SimpleSingleThreadedCPU",
+        "clock_speed": 100
+      },
+      "dns": {
+        "ExampleProc": 1
+      },
+      "id": 2,
+      "ifs": [
+        {
+          "_type": "ng.networking.interface.eth.EthernetInterface",
+          "id": "eth0"
+        },
+        {
+          "_type": "ng.networking.interface.eth.EthernetInterface",
+          "id": "eth1"
+        }
+      ],
+      "services": []
+    },
+    {
+      "_type": "ng.networking.node.Node",
+      "id": 3,
+      "ifs": [
+        {
+          "_type": "ng.networking.interface.eth.EthernetInterface",
+          "id": "eth0"
+        },
+        {
+          "_type": "ng.networking.interface.eth.EthernetInterface",
+          "id": "eth1"
+        }
+      ]
+    }
+  ],
+  "sdds": [
+    {
+      "interlinks": {
+        "ExampleGen": [
+          "ExampleProc"
+        ],
+        "ExampleProc": [
+          "ExampleProc_i0"
+        ],
+        "ExampleProc_i0": []
+      },
+      "services": [
+        {
+          "_type": "mec.service.ExampleProc",
+          "id": 0,
+          "name": "ExampleProc_i0"
+        },
+        {
+          "_type": "mec.service.GW",
+          "id": 0,
+          "mapping": {
+            "ExampleProc": [
+              "ExampleProc_i0"
+            ]
+          },
+          "name": "ExampleProc"
+        },
+        {
+          "_type": "mec.service.ExampleGen",
+          "id": 0,
+          "name": "ExampleGen"
+        }
+      ],
+      "sla": {}
+    }
+  ],
+  "simulation": {
+    "_type": "ng.simulation.Simulation",
+    "ms_per_ts": 1,
+    "orchestrator": {
+      "_type": "ng.mec.orchestrator.SimpleOrchestrator"
+    },
+    "routing": {
+      "_type": "ng.networking.routing.ShortestPathRouting"
+    }
+  }
+}

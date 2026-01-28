@@ -244,6 +244,7 @@ class Run:
 
     @staticmethod
     def create(run_p, run_id, config):
+        print(config)
         sim = load_config(config)
 
         os.mkdir(run_p)
