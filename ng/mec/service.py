@@ -9,9 +9,9 @@ from abc import ABC, abstractmethod
 from typing import List
 from simpy import Store
 
-from mec.computation import Computation
-from mec.context import Context
-from mec.message import Message
+from ng.mec.computation import Computation
+from ng.mec.context import Context
+from ng.mec.message import Message
 
 # service is bound to node (active) or not
 # if a service is inactive, no messages will recvd, sent or computation processed

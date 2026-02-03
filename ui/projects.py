@@ -9,12 +9,12 @@ import datetime
 
 import simpy
 
-import config
-from config import load_config, get_type
-from metrics import Metric
-from networklog import NetworkLog
+from ng import config
+from ng.config import load_config, get_type
+from ng.metrics import Metric
+from ng.networklog import NetworkLog
 from ng.eventlog import Event
-from simulation import Simulation
+from ng.simulation import Simulation
 
 # Folder structure:
 # projects

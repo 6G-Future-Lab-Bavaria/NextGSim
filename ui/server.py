@@ -9,12 +9,12 @@ from flask_sock import Sock
 from flask import request
 from networkx import MultiDiGraph
 
-import config
-from projects import Project, Run
+from ng import config
+from ui.projects import Project, Run
 import time
 import json
 
-from simulation import Simulation
+from ng.simulation import Simulation
 
 projects_folder = os.path.join(os.getcwd(), "ui/projects")
 

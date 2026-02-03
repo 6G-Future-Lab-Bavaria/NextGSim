@@ -1,7 +1,7 @@
 import sys, importlib
 
-from mec.orchestrator import ServiceDeploymentDescriptor
-from simulation import Simulation
+from ng.mec.orchestrator import ServiceDeploymentDescriptor
+from ng.simulation import Simulation
 
 def get_type_fqn(thing):
     return type(thing).__module__ + "." + type(thing).__qualname__

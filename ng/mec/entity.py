@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     from mec.cpu import CPU
 
 from typing import Dict
-from networking.node import Node
+from ng.networking.node import Node
 
 # and entity has a CPU, and possibly other resources and is also part of the network
 

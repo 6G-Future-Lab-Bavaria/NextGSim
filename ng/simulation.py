@@ -1,10 +1,10 @@
 import simpy
 
-from metrics import MetricWriter
-from networklog import NetworkLog
+from ng.metrics import MetricWriter
+from ng.networklog import NetworkLog
 from ng.networking.network import NetworkTopology
 from ng.eventlog import EventLog
-from physical import PhysicalEnvironment, Coords2D
+from ng.physical import PhysicalEnvironment, Coords2D
 
 
 class Simulation:

@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 
-from mec.service import Service
+from ng.mec.service import Service
 
 if TYPE_CHECKING:
     from ng.mec.entity import Entity

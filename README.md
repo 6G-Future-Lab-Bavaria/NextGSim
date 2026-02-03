@@ -86,4 +86,25 @@ RAN modules - Alba Jano (email: alba.jano@tum.de)
 Edge computing modules - Mehmet Mert Bese (mehmetmert.bese@tum.de)
 
 
+# nextgsim-reorg branch
+Modular organization with clear separation of Multi-accesss Edge Computing (MEC), Radio Access Network (RAN), and Networking Module.
 
+This branch also provides a Web-based UI via Svelte-based frontend. It provides real-time simulation visualization as well as timeline based view.
+
+## How to run the UI
+* Make sure the frontend is built:
+
+```bash
+cd ui
+npm install
+npm run build
+```
+* Properly address PYTHONPATH, so that Flask can find the modules
+```bash
+export PYTHONPATH="$PWD:$PWD/ng"
+```
+* Run the server
+```bash
+flask --app ui.server run
+```
+* You should see Flask's startup log (e.g. “Running on http://127.0.0.1:5000/”). You can open the url in your browser to run the UI.
